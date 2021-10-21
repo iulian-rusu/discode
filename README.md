@@ -1,2 +1,3 @@
-# Discode
-Like Discord, but with code. But not really.
+![Logo](assets/logo.png)
+#
+## Like Discord, but you can paste and run code in the chat.
