@@ -16,6 +16,22 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (MSVC)
+    add_compile_options(/W4)
+    if (CMAKE_BUILD_TYPE MATCHES Debug)
+        add_compile_options(/O2)
+    else()
+        add_compile_options(/Od)
+    endif()
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -Wuninitialized -Wshadow -Wunused)
+    if (CMAKE_BUILD_TYPE MATCHES Debug)
+        add_compile_options(-Og)
+    else()
+        add_compile_options(-O3)
+    endif()
+endif()
+
 find_package(QT NAMES Qt6 COMPONENTS Core Quick REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
 
@@ -29,7 +45,7 @@ set(PROJECT_SOURCES
     qml.qrc
 )
 
-qt_add_executable(discode-desktop
+qt_add_executable(${PROJECT_NAME}
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
 )
@@ -38,10 +54,10 @@ if(WIN32)
     deploy_qt(${PROJECT_NAME})
 endif()
 
-target_compile_definitions(discode-desktop
+target_compile_definitions(${PROJECT_NAME}
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(discode-desktop
+target_link_libraries(${PROJECT_NAME}
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
 
-qt_import_qml_plugins(discode-desktop)
-qt_finalize_executable(discode-desktop)
+qt_import_qml_plugins(${PROJECT_NAME})
+qt_finalize_executable(${PROJECT_NAME})
