@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~mdb-ui-kit/css/mdb.dark.min.css';
+
+$discode-darkest: #23272A;
+$discode-dark: #2C2F33;
+$discode-light:#97A9B4;
+$discode-blue: #7289DA;
+$discode-white: #FFFFFF;
+
+
+.bg-discode-darkest {
+    background-color: $discode-darkest;
+}
+
+.fg-discode-darkest {
+    color: $discode-darkest;
+}
+
+.bg-discode-dark {
+    background-color: $discode-dark;
+}
+
+.fg-discode-dark {
+    color: $discode-dark;
+}
+
+.bg-discode-light {
+    background-color: $discode-light;
+}
+
+.fg-discode-light {
+    color: $discode-light;
+}
+
+.bg-discode-blue {
+    background-color: $discode-blue;
+}
+
+.fg-discode-blue {
+    color: $discode-blue;
+}
+
+.bg-discode-white {
+    background-color: $discode-white;
+}
+
+.fg-discode-white {
+    color: $discode-white;
+}

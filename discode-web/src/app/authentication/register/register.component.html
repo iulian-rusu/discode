@@ -1,1 +1,38 @@
-<h2>Register</h2>
+<form>
+    <!-- 2 column grid layout with text inputs for the first and last names -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="form-outline border-bottom border-primary">
+                <input type="text" id="registerFirstName" class="form-control" />
+                <label class="form-label" for="registerFirstName">First name</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-outline  border-bottom border-primary">
+                <input type="text" id="registerLastName" class="form-control" />
+                <label class="form-label" for="registerLastName">Last name</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email input -->
+    <div class="form-outline mb-4  border-bottom border-primary">
+        <input type="email" id="registerEmail" class="form-control" />
+        <label class="form-label" for="registerEmail">Email address</label>
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4  border-bottom border-primary">
+        <input type="password" id="registerPassword" class="form-control" />
+        <label class="form-label" for="registerPassword">Password</label>
+    </div>
+
+    <!-- Confirm Password input -->
+    <div class="form-outline mb-4  border-bottom border-primary">
+        <input type="password" id="registerConfirmPassword" class="form-control" />
+        <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+</form>
