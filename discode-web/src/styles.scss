@@ -6,19 +6,28 @@ $discode-dark: #2C2F33;
 $discode-light:#97A9B4;
 $discode-blue: #7289DA;
 $discode-dark-blue: darken($discode-blue, 10%);
-$discode-white: #FFFFFF;
+$discode-green: rgb(59, 165, 93);
+$discode-light-green: lighten($discode-green, 10%);
+$discode-dark-green: darken($discode-green, 5%);
 
-
-a {
+code {
     color: $discode-blue !important;
 }
 
+a {
+    color: $discode-light-green !important;
+}
+
+a:hover {
+    color: $discode-green !important;
+}
+
 .form-discode-blue button {
-    background-color: $discode-blue !important;
+    background-color: $discode-green !important;
 }
 
 .form-discode-blue button:hover {
-    background-color: $discode-dark-blue !important;
+    background-color: $discode-dark-green !important;
 }
 
 .form-discode-blue * {
@@ -27,6 +36,14 @@ a {
 
 .form-discode-blue input:focus+label {
     color: $discode-blue !important;
+}
+
+.btn-discode-green {
+    background-color: $discode-green;
+}
+
+.btn-discode-green:hover,.btn-discode-green:focus {
+    background-color: $discode-dark-green;
 }
 
 .bg-discode-darkest {
@@ -61,10 +78,34 @@ a {
     color: $discode-blue !important;
 }
 
-.bg-discode-white {
-    background-color: $discode-white !important;
+.bg-discode-dark-blue {
+    background-color: $discode-dark-blue !important;
 }
 
-.fg-discode-white {
-    color: $discode-white !important;
+.fg-discode-dark-blue {
+    color: $discode-dark-blue !important;
+}
+
+.bg-discode-green {
+    background-color: $discode-green !important;
+}
+
+.fg-discode-green {
+    color: $discode-green !important;
+}
+
+.bg-discode-light-green {
+    background-color: $discode-light-green !important;
+}
+
+.fg-discode-light-green {
+    color: $discode-light-green !important;
+}
+
+.bg-discode-dark-green {
+    background-color: $discode-dark-green !important;
+}
+
+.fg-discode-dark-green {
+    color: $discode-dark-green !important;
 }
