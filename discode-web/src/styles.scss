@@ -5,45 +5,66 @@ $discode-darkest: #23272A;
 $discode-dark: #2C2F33;
 $discode-light:#97A9B4;
 $discode-blue: #7289DA;
+$discode-dark-blue: darken($discode-blue, 10%);
 $discode-white: #FFFFFF;
 
 
+a {
+    color: $discode-blue !important;
+}
+
+.form-discode-blue button {
+    background-color: $discode-blue !important;
+}
+
+.form-discode-blue button:hover {
+    background-color: $discode-dark-blue !important;
+}
+
+.form-discode-blue * {
+    border-color: $discode-blue !important;
+}
+
+.form-discode-blue input:focus+label {
+    color: $discode-blue !important;
+}
+
 .bg-discode-darkest {
-    background-color: $discode-darkest;
+    background-color: $discode-darkest !important;
 }
 
 .fg-discode-darkest {
-    color: $discode-darkest;
+    color: $discode-darkest !important;
 }
 
 .bg-discode-dark {
-    background-color: $discode-dark;
+    background-color: $discode-dark !important;
 }
 
 .fg-discode-dark {
-    color: $discode-dark;
+    color: $discode-dark !important;
 }
 
 .bg-discode-light {
-    background-color: $discode-light;
+    background-color: $discode-light !important;
 }
 
 .fg-discode-light {
-    color: $discode-light;
+    color: $discode-light !important;
 }
 
 .bg-discode-blue {
-    background-color: $discode-blue;
+    background-color: $discode-blue !important;
 }
 
 .fg-discode-blue {
-    color: $discode-blue;
+    color: $discode-blue !important;
 }
 
 .bg-discode-white {
-    background-color: $discode-white;
+    background-color: $discode-white !important;
 }
 
 .fg-discode-white {
-    color: $discode-white;
+    color: $discode-white !important;
 }
