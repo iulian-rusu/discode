@@ -22,6 +22,11 @@ a:hover {
     color: $discode-green !important;
 }
 
+.d-flex{
+    display: flex;
+    flex-direction: column;
+}
+
 .form-discode-blue button {
     background-color: $discode-green !important;
 }
