@@ -3,6 +3,8 @@
 
 $discode-darkest: #23272A;
 $discode-dark: #2C2F33;
+$discode-darker: darken($discode-dark, 2%);
+$discode-grey: lighten($discode-dark, 5%);
 $discode-light:#97A9B4;
 $discode-blue: #7289DA;
 $discode-dark-blue: darken($discode-blue, 10%);
@@ -44,11 +46,20 @@ a:hover {
 }
 
 .btn-discode-green {
-    background-color: $discode-green;
+    background-color: $discode-green !important;
 }
 
 .btn-discode-green:hover,.btn-discode-green:focus {
-    background-color: $discode-dark-green;
+    background-color: $discode-dark-green !important;
+}
+
+.btn-discode-dark {
+    background-color: $discode-grey !important;
+    font-weight: bold;
+}
+
+.btn-discode-dark:hover,.btn-discode-dark:focus {
+    background-color: $discode-dark !important;
 }
 
 .bg-discode-darkest {
@@ -65,6 +76,22 @@ a:hover {
 
 .fg-discode-dark {
     color: $discode-dark !important;
+}
+
+.bg-discode-darker {
+    background-color: $discode-darker !important;
+}
+
+.fg-discode-darker {
+    color: $discode-darker !important;
+}
+
+.bg-discode-grey {
+    background-color: $discode-grey !important;
+}
+
+.fg-discode-grey {
+    color: $discode-grey !important;
 }
 
 .bg-discode-light {
