@@ -12,6 +12,10 @@ $discode-green: rgb(59, 165, 93);
 $discode-light-green: lighten($discode-green, 10%);
 $discode-dark-green: darken($discode-green, 5%);
 
+body {
+    overflow-x: hidden;
+}
+
 code {
     color: $discode-blue !important;
 }
