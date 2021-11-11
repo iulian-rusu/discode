@@ -1,1 +1,40 @@
-<h2>User profile</h2>
+<div class="d-flex align-items-center justify-content-center p-5 mt-5">
+    <form class="form-discode-blue">
+        <!-- 2 column grid layout with text inputs for the first and last names -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="border-primary">
+                    <label class="form-label" for="updateFirstName">New first name</label>
+                    <input type="text" id="updateFirstName" class="form-control" placeholder="First name" aria-label="First name"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="border-primary">
+                    <label class="form-label" for="updateLastName">New last name</label>
+                    <input type="text" id="updateLastName" class="form-control" placeholder="Last name" aria-label="Last name"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email input -->
+        <div class="mb-4 border-primary">
+            <label class="form-label" for="updateEmail">New email address</label>
+            <input type="email" id="updateEmail" class="form-control" />
+        </div>
+
+        <!-- Password input -->
+        <div class="mb-4 border-primary">
+            <label class="form-label" for="updatePassword">New password</label>
+            <input type="password" id="updatePassword" class="form-control" />
+        </div>
+
+        <!-- Confirm Password input -->
+        <div class="mb-4 border-primary">
+            <label class="form-label" for="updateConfirmPassword">Confirm password</label>
+            <input type="password" id="updateConfirmPassword" class="form-control" />
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Update</button>
+    </form>
+</div>
