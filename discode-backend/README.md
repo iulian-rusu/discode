@@ -1,6 +1,17 @@
 # Discode Backend
 
-### Reference Documentation
+## Running the server
+1. Create a new databse in MySQL and connect to it.
+2. Run the `sql/create_database.sql` script (using a database user with all privileges).
+3. Create a `.env` file in the root folder of the project (`discode-backend/.env`) and add the following lines:
+   1. `DISCODE_DB_NAME=<database-name>`
+   2. `DISCODE_DB_USER_NAME=<user-name>` (for the user with read/write privileges only)
+   3. `DISCODE_DB_USER_PASSWORD=<user-password>`
+    * Don't forget to add `.env` to `.gitignore`
+4. In IntelliJ, go to `Run Configurations` -> `EnvFile` and add the `.env` file.
+5. Run the server.
+
+## Reference Documentation
 
 For further reference, please consider the following sections:
 
@@ -10,16 +21,3 @@ For further reference, please consider the following sections:
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.6/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [JDBC API](https://docs.spring.io/spring-boot/docs/2.5.6/reference/htmlsingle/#boot-features-sql)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.6/reference/htmlsingle/#boot-features-developing-web-applications)
-
-### Guides
-
-The following guides illustrate how to use some features concretely:
-
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Accessing Relational Data using JDBC with Spring](https://spring.io/guides/gs/relational-data-access/)
-* [Managing Transactions](https://spring.io/guides/gs/managing-transactions/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-
