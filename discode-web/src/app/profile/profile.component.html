@@ -1,17 +1,37 @@
 <div class="d-flex align-items-center justify-content-center p-5 mt-5">
     <form class="form-discode-blue" id="profileForm">
+        <!-- Image input -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="mb-4 border-primary text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" fill="currentColor"
+                        class="bi bi-person-bounding-box m-4" viewBox="0 0 16 16">
+                        <path
+                            d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label" for="updateImage">Profile picture</label>
+                <input type="file" class="form-control mb-4" id="customFile" />
+            </div>
+        </div>
+
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <div class="row mb-4">
             <div class="col">
                 <div class="border-primary">
                     <label class="form-label" for="updateFirstName">First name</label>
-                    <input type="text" id="updateFirstName" class="form-control" placeholder="First name" aria-label="First name"/>
+                    <input type="text" id="updateFirstName" class="form-control" placeholder="First name"
+                        aria-label="First name" />
                 </div>
             </div>
             <div class="col">
                 <div class="border-primary">
                     <label class="form-label" for="updateLastName">Last name</label>
-                    <input type="text" id="updateLastName" class="form-control" placeholder="Last name" aria-label="Last name"/>
+                    <input type="text" id="updateLastName" class="form-control" placeholder="Last name"
+                        aria-label="Last name" />
                 </div>
             </div>
         </div>
@@ -25,17 +45,8 @@
         <!-- Bio input -->
         <div class="mb-4 border-primary">
             <label class="form-label" for="updateBio">Bio</label>
-            <br />
-            <textarea rows="4" cols="60" name="bio" form="profileForm" class="form-control" placeholder="Enter something about you" style="resize: none;"></textarea>
-        </div>
-
-        <!-- Image input -->
-        <div class="mb-4 border-primary">
-            <label class="form-label" for="updateImage">Profile picture</label>
-            <br />
-            <input type="file" id="profilePicture" name="profilePicture" class="form-label">
-            <br />
-            <input type="submit" class="btn btn-primary mb-4" value="Upload">
+            <textarea rows="4" cols="60" name="bio" form="profileForm" class="form-control"
+                placeholder="Enter something about you" style="resize: none;"></textarea>
         </div>
 
         <!-- Password input -->
