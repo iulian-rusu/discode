@@ -1,16 +1,16 @@
 <div class="d-flex align-items-center justify-content-center p-5 mt-5">
-    <form class="form-discode-blue">
+    <form class="form-discode-blue" id="profileForm">
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <div class="row mb-4">
             <div class="col">
                 <div class="border-primary">
-                    <label class="form-label" for="updateFirstName">New first name</label>
+                    <label class="form-label" for="updateFirstName">First name</label>
                     <input type="text" id="updateFirstName" class="form-control" placeholder="First name" aria-label="First name"/>
                 </div>
             </div>
             <div class="col">
                 <div class="border-primary">
-                    <label class="form-label" for="updateLastName">New last name</label>
+                    <label class="form-label" for="updateLastName">Last name</label>
                     <input type="text" id="updateLastName" class="form-control" placeholder="Last name" aria-label="Last name"/>
                 </div>
             </div>
@@ -18,8 +18,24 @@
 
         <!-- Email input -->
         <div class="mb-4 border-primary">
-            <label class="form-label" for="updateEmail">New email address</label>
+            <label class="form-label" for="updateEmail">Email address</label>
             <input type="email" id="updateEmail" placeholder="Email" class="form-control" />
+        </div>
+
+        <!-- Bio input -->
+        <div class="mb-4 border-primary">
+            <label class="form-label" for="updateBio">Bio</label>
+            <br />
+            <textarea rows="4" cols="60" name="bio" form="profileForm" class="form-control" placeholder="Enter something about you" style="resize: none;"></textarea>
+        </div>
+
+        <!-- Image input -->
+        <div class="mb-4 border-primary">
+            <label class="form-label" for="updateImage">Profile picture</label>
+            <br />
+            <input type="file" id="profilePicture" name="profilePicture" class="form-label">
+            <br />
+            <input type="submit" class="btn btn-primary mb-4" value="Upload">
         </div>
 
         <!-- Password input -->
