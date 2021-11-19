@@ -35,7 +35,7 @@ class UserSearchCriteria(queryParams: Map<String, String>) : PagedSearchCriteria
         } else {
             conditionBuilder.append(
                 " LOCATE(LOWER(:username), LOWER(username)) AND" +
-                        " LOCATE(LOWER(:firstName), LOWER(last_name)) AND" +
+                        " LOCATE(LOWER(:firstName), LOWER(first_name)) AND" +
                         " LOCATE(LOWER(:lastName), LOWER(last_name)) AND"
             )
         }
