@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
 class UserRowMapper : RowMapper<User> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): User =
+    override fun mapRow(rs: ResultSet, rowNum: Int) =
         User(
             username = rs.getString("username"),
             profile = UserProfile(

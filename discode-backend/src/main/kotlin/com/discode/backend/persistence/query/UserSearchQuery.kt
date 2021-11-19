@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.query
 
-class UserSearchCriteria(queryParams: Map<String, String>) : PagedSearchCriteria(queryParams) {
+class UserSearchQuery(queryParams: Map<String, String>) : PagedSearchQuery(queryParams) {
     private val username: String
     private val firstName: String
     private val lastName: String
@@ -21,8 +21,8 @@ class UserSearchCriteria(queryParams: Map<String, String>) : PagedSearchCriteria
 
     override fun getParams() = paramMap
 
-    override fun getQuery(): String {
-        val queryBuilder = StringBuilder("SELECT * FROM user_credentials INNER JOIN user_accounts USING (user_id) ")
+    override fun getSql(): String {
+        val sqlBuilder = StringBuilder("SELECT * FROM user_credentials INNER JOIN user_accounts USING (user_id) ")
         val conditionBuilder = StringBuilder(" WHERE")
         val initialLength = conditionBuilder.length
         if (exactMatch) {
@@ -41,7 +41,7 @@ class UserSearchCriteria(queryParams: Map<String, String>) : PagedSearchCriteria
         }
         conditionBuilder.append(" 1 LIMIT :itemsPerPage OFFSET :offset")
         if (conditionBuilder.length > initialLength)
-            queryBuilder.append(conditionBuilder)
-        return queryBuilder.toString()
+            sqlBuilder.append(conditionBuilder)
+        return sqlBuilder.toString()
     }
 }

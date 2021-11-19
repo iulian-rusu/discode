@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.query
 
-interface QueryCriteria {
-    fun getQuery(): String
+interface ParametrizedQuery {
+    fun getSql(): String
     fun getParams(): Map<String, Any>
 }
