@@ -83,3 +83,20 @@ CREATE INDEX idx_user_last_name ON user_accounts (last_name);
 CREATE INDEX idx_user_email ON user_accounts (email);
 CREATE INDEX idx_user_image_path ON user_accounts (image_path);
 CREATE INDEX idx_chats_name ON chats (chat_name);
+
+-- Check constraints
+
+ALTER TABLE user_credentials
+    ADD CONSTRAINT ck_user_credentials_username CHECK (username REGEXP '^[_a-zA-Z]\\w{2,}$');
+ALTER TABLE user_accounts
+    ADD CONSTRAINT ck_user_accounts_first_name CHECK (first_name REGEXP '^[A-Z](?>[- ]?[a-zA-Z]+)+$');
+ALTER TABLE user_accounts
+    ADD CONSTRAINT ck_user_accounts_last_name CHECK (last_name REGEXP '^[A-Z](?>[- ]?[a-zA-Z]+)+$');
+ALTER TABLE user_accounts
+    ADD CONSTRAINT ck_user_accounts_email CHECK (email REGEXP '^\\w+(?:[-.]\\w+)*@\\w+(?:[-.]\\w+)+$');
+ALTER TABLE chats
+    ADD CONSTRAINT ck_chats_chat_name CHECK (LENGTH(chat_name) > 0);
+ALTER TABLE chat_members
+    ADD CONSTRAINT ck_chat_members_status CHECK (status REGEXP '^a|l$'); -- active|left
+ALTER TABLE message_reports
+    ADD CONSTRAINT ck_message_reports_status CHECK (status REGEXP '^p|r$'); -- pending|reviewed
