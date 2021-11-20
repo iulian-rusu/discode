@@ -1,46 +1,44 @@
 package com.discode.backend.persistence
 
 import com.discode.backend.models.User
-import com.discode.backend.models.UserCredentials
-import com.discode.backend.models.UserProfile
+import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.persistence.mappers.UserRowMapper
 import com.discode.backend.security.Encoder
 import org.springframework.stereotype.Repository
 
 @Repository
 class UserRepository : RepositoryBase() {
-    fun save(credentials: UserCredentials, profile: UserProfile): Long {
-        val passwordHash = Encoder.hashString(credentials.password)
+    fun save(request: RegisterUserRequest): User {
+        val passwordHash = Encoder.hashString(request.password)
         val params = mapOf(
-            "username" to credentials.username,
+            "username" to request.username,
             "passwordHash" to passwordHash,
-            "firstName" to profile.firstName,
-            "lastName" to profile.lastName,
-            "email" to profile.email,
-            "description" to profile.description,
-            "imagePath" to profile.imagePath
+            "firstName" to request.firstName,
+            "lastName" to request.lastName,
+            "email" to request.email
         )
         namedJdbcTemplate.update(
             """
                 START TRANSACTION;
                 INSERT INTO user_credentials (username, password_hash) VALUES (:username, BINARY :passwordHash);
-                INSERT INTO user_accounts (user_id, first_name, last_name, email, description, image_path) 
+                INSERT INTO user_accounts (user_id, first_name, last_name, email) 
                 VALUES (
                     (SELECT user_id FROM user_credentials WHERE username = :username),
-                    :firstName, :lastName, :email, :description, :imagePath
+                    :firstName, :lastName, :email
                 );
                 COMMIT;
             """,
             params
         )
 
-        return findId(credentials.username)
+        return findOne(request.username)
     }
 
-    fun findId(username: String) =
-        jdbcTemplate.queryForObject(
-            "SELECT user_id FROM user_credentials WHERE username = ?", Long::class.java, username
-        )
+    fun findOne(username: String): User =
+        jdbcTemplate.query(
+            "SELECT * FROM user_credentials INNER JOIN user_accounts USING(user_id) WHERE username = ?",
+            UserRowMapper(), username
+        ).first()
 
     fun findOne(userId: Long): User =
         jdbcTemplate.query(

@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.query
 
-class UserSearchQuery(queryParams: Map<String, String>) : PagedSearchQuery(queryParams) {
+class SearchUserQuery(queryParams: Map<String, String>) : PagedSearchQuery(queryParams) {
     private val username: String
     private val firstName: String
     private val lastName: String

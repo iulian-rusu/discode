@@ -1,8 +1,9 @@
 package com.discode.backend.controllers
 
-import com.discode.backend.models.RegistrationRequest
+import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.interfaces.UserInterface
-import com.discode.backend.persistence.query.UserSearchQuery
+import com.discode.backend.models.requests.UpdateUserRequest
+import com.discode.backend.persistence.query.SearchUserQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -14,12 +15,10 @@ class UserController {
 
     @GetMapping("")
     fun getAllUsers(@RequestParam searchParams: Map<String, String>) =
-        userService.getAllUsers(UserSearchQuery(searchParams))
+        userService.getAllUsers(SearchUserQuery(searchParams))
 
     @PostMapping("")
-    fun postUser(
-        @RequestBody(required = true) req: RegistrationRequest
-    ) = userService.postUser(req.credentials, req.profile)
+    fun postUser(@RequestBody(required = true) request: RegisterUserRequest) = userService.postUser(request)
 
     @GetMapping("/{userId}")
     fun getUser(@PathVariable userId: Long) = userService.getUser(userId)
@@ -27,8 +26,8 @@ class UserController {
     @PatchMapping("/{userId}")
     fun patchUser(
         @PathVariable userId: Long,
-        @RequestBody(required = true) patchedValues: MutableMap<String, String>
-    ) = userService.patchUser(userId, patchedValues)
+        @RequestBody(required = true) updateRequest: UpdateUserRequest
+    ) = userService.patchUser(userId, updateRequest)
 
     @DeleteMapping("/{userId}")
     fun deleteUser(@PathVariable userId: Long) = userService.deleteUser(userId)
