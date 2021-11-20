@@ -1,7 +1,7 @@
 package com.discode.backend.models
 
 data class UserCredentials(
-    var username: String,
-    var password: String
+    val username: String,
+    val password: String
 )
 

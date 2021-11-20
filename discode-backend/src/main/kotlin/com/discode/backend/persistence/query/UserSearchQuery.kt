@@ -12,6 +12,7 @@ class UserSearchQuery(queryParams: Map<String, String>) : PagedSearchQuery(query
 
         params["username"] = username
         params["firstName"] = firstName
+        params["lastName"] = lastName
     }
 
     override fun getSql(): String {
