@@ -16,24 +16,22 @@ class ImageStorageService : ImageStorageInterface {
         private const val IMAGE_DIR = "images"
     }
 
+    override fun imagePathFor(userId: Long): String = "profile-$userId.png"
+
     override fun saveImage(userId: Long, imageBytes: ByteArray): String {
         val bufferedImage = getBufferedImage(imageBytes)
 
-        val userDirName = "user-$userId"
-        val userDir = File("$IMAGE_DIR/$userDirName")
-        if (!userDir.exists())
-            userDir.mkdir()
-        val imagePath = "$userDirName/avatar.png"
+        val imagePath = imagePathFor(userId)
         val imageFile = File("$IMAGE_DIR/$imagePath")
         imageFile.createNewFile()
         ImageIO.write(bufferedImage, "png", imageFile)
         return imagePath
     }
 
-    override fun loadImage(imagePath: String): ByteArray? {
+    override fun loadImage(imagePath: String): UrlResource? {
         val urlResource = UrlResource("file:$IMAGE_DIR/$imagePath")
         if (urlResource.exists())
-            return urlResource.file.readBytes()
+            return urlResource
         return null
     }
 

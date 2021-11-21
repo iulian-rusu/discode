@@ -1,11 +1,11 @@
 package com.discode.backend.models.requests
 
 class UpdateUserRequest(
-    val username: String = "",
+    val username: String? = null,
     val password: String? = null,
-    val firstName: String = "",
-    val lastName: String = "",
-    val email: String = "",
-    val description: String = "",
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val email: String? = null,
+    val description: String? = null,
     val image: ByteArray? = null
 )

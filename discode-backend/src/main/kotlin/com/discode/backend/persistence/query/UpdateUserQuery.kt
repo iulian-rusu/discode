@@ -2,13 +2,13 @@ package com.discode.backend.persistence.query
 
 class UpdateUserQuery(
     val userId: Long,
-    val username: String,
-    val passwordHash: String,
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val description: String,
-    val imagePath: String
+    val username: String?,
+    val passwordHash: String?,
+    val firstName: String?,
+    val lastName: String?,
+    val email: String?,
+    val description: String?,
+    val imagePath: String?
 ) : ParametrizedQuery() {
 
     init {
@@ -25,9 +25,9 @@ class UpdateUserQuery(
     override fun getSql(): String {
         val updateConditions = mutableListOf<String>()
         val sqlBuilder = StringBuilder("START TRANSACTION; ")
-        if (username.isNotEmpty())
+        if (username != null)
             updateConditions.add("username = :username")
-        if (passwordHash.isNotEmpty())
+        if (passwordHash != null)
             updateConditions.add("password_hash = :passwordHash")
         if (updateConditions.isNotEmpty()) {
             sqlBuilder.append("UPDATE user_credentials SET ")
@@ -35,16 +35,24 @@ class UpdateUserQuery(
             sqlBuilder.append(" WHERE user_id = :userId; ")
         }
         updateConditions.clear()
-        if (firstName.isNotEmpty())
+        if (firstName != null)
             updateConditions.add("first_name = :firstName")
-        if (lastName.isNotEmpty())
+        if (lastName != null)
             updateConditions.add("last_name = :lastName")
-        if (email.isNotEmpty())
+        if (email != null)
             updateConditions.add("email = :email")
-        if (description.isNotEmpty())
-            updateConditions.add("description = :description")
-        if (imagePath.isNotEmpty())
-            updateConditions.add("image_path = :imagePath")
+        description?.run {
+            if (this.isNotEmpty())
+                updateConditions.add("description = :description")
+            else
+                updateConditions.add("description = NULL")
+        }
+        imagePath?.run {
+            if (this.isNotEmpty())
+                updateConditions.add("image_path = :imagePath")
+            else
+                updateConditions.add("image_path = NULL")
+        }
         if (updateConditions.isNotEmpty()) {
             sqlBuilder.append("UPDATE user_accounts SET ")
             sqlBuilder.append(updateConditions.joinToString(", "))

@@ -1,7 +1,7 @@
 package com.discode.backend.controllers
 
-import com.discode.backend.models.requests.AuthUserRequest
-import com.discode.backend.models.responses.AuthUserResponse
+import com.discode.backend.models.requests.AuthRequest
+import com.discode.backend.models.responses.AuthResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 class AuthController {
     @PostMapping("/auth")
-    fun authenticate(@RequestBody(required = true) request: AuthUserRequest) =
-        ResponseEntity.status(HttpStatus.CONFLICT).build<AuthUserResponse>()
+    fun authenticate(@RequestBody(required = true) request: AuthRequest) =
+        ResponseEntity.status(HttpStatus.CONFLICT).build<AuthResponse>()
 }

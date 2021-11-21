@@ -5,6 +5,7 @@ import com.discode.backend.interfaces.UserInterface
 import com.discode.backend.models.User
 import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.models.requests.UpdateUserRequest
+import com.discode.backend.models.responses.AuthResponse
 import com.discode.backend.persistence.GenericQueryRepository
 import com.discode.backend.persistence.UserRepository
 import com.discode.backend.persistence.mappers.UserRowMapper
@@ -37,10 +38,10 @@ class UserService : UserInterface {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
 
-    override fun postUser(request: RegisterUserRequest): ResponseEntity<User> =
+    override fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse> =
         try {
             val newUser = userRepository.save(request)
-            ResponseEntity.ok(newUser)
+            ResponseEntity.ok(AuthResponse("jwt", newUser))
         } catch (e: Exception) {
             println(e)
             ResponseEntity.status(HttpStatus.CONFLICT).build()
@@ -56,7 +57,7 @@ class UserService : UserInterface {
 
     override fun patchUser(userId: Long, updateRequest: UpdateUserRequest): ResponseEntity<User> =
         try {
-            val query = updateQueryFrom(userId, updateRequest)
+            val query = toUpdateQuery(userId, updateRequest)
             genericQueryRepository.execute(query)
             ResponseEntity.ok(userRepository.findOne(userId))
         } catch (e: Exception) {
@@ -74,14 +75,19 @@ class UserService : UserInterface {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
 
-    private fun updateQueryFrom(userId: Long, updateRequest: UpdateUserRequest): UpdateUserQuery {
+    private fun toUpdateQuery(userId: Long, updateRequest: UpdateUserRequest): UpdateUserQuery {
         val imagePath = updateRequest.image?.let {
-            imageStorage.saveImage(userId, it)
-        } ?: ""
+            if (it.isNotEmpty()) {
+                imageStorage.saveImage(userId, it)
+            } else {
+                imageStorage.deleteImage(imageStorage.imagePathFor(userId))
+                ""
+            }
+        }
 
         val passwordHash = updateRequest.password?.let {
             Encoder.hashString(it)
-        } ?: ""
+        }
 
         return UpdateUserQuery(
             userId = userId,
