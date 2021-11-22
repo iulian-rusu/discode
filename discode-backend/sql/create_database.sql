@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS user_credentials
 (
     user_id       INTEGER      NOT NULL AUTO_INCREMENT,
     username      VARCHAR(64)  NOT NULL,
-    password_hash BINARY(64)   NOT NULL,
+    password_hash VARBINARY(64)   NOT NULL,
     CONSTRAINT pk_user_credentials PRIMARY KEY (user_id),
     CONSTRAINT uk_user_credentials UNIQUE (username)
 );

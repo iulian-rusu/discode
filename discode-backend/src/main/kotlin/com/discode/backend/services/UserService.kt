@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : UserInterface {
+class UserService : AuthorizedService(), UserInterface {
     @Autowired
     private lateinit var genericQueryRepository: GenericQueryRepository
 
@@ -44,13 +44,14 @@ class UserService : UserInterface {
     override fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse> =
         try {
             val newUser = userRepository.save(request)
-            ResponseEntity.ok(AuthResponse("jwt", newUser))
+            val jwt = jwtProvider.createToken(newUser.userId)
+            ResponseEntity.ok(AuthResponse(jwt, newUser))
         } catch (e: Exception) {
             logger.error("postUser(username=${request.username}): $e")
             ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
 
-    override fun getUser(userId: Long): ResponseEntity<User> =
+    override fun getUser(userId: Long, authHeader: String?): ResponseEntity<User> =
         try {
             ResponseEntity.ok(userRepository.findOne(userId))
         } catch (e: Exception) {
@@ -58,25 +59,31 @@ class UserService : UserInterface {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
 
-    override fun patchUser(userId: Long, updateRequest: UpdateUserRequest): ResponseEntity<User> =
-        try {
-            val query = toUpdateQuery(userId, updateRequest)
-            genericQueryRepository.execute(query)
-            ResponseEntity.ok(userRepository.findOne(userId))
+    override fun patchUser(userId: Long, updateRequest: UpdateUserRequest, authHeader: String?): ResponseEntity<User> {
+        return try {
+            ifAuthorized(userId, authHeader) {
+                val query = toUpdateQuery(userId, updateRequest)
+                genericQueryRepository.execute(query)
+                ResponseEntity.ok(userRepository.findOne(userId))
+            }
         } catch (e: Exception) {
             logger.error("patchUser(userId=$userId): $e")
-            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
+    }
 
-    override fun deleteUser(userId: Long): ResponseEntity<User> =
-        try {
-            val toDelete = userRepository.findOne(userId)
-            userRepository.deleteOne(toDelete.userId)
-            ResponseEntity.ok(toDelete)
+    override fun deleteUser(userId: Long, authHeader: String?): ResponseEntity<User> {
+        return try {
+            ifAuthorized(userId, authHeader) {
+                val toDelete = userRepository.findOne(userId)
+                userRepository.deleteOne(toDelete.userId)
+                ResponseEntity.ok(toDelete)
+            }
         } catch (e: Exception) {
             logger.error("deleteUser(userId=$userId): $e")
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
+    }
 
     private fun toUpdateQuery(userId: Long, updateRequest: UpdateUserRequest): UpdateUserQuery {
         val imagePath = updateRequest.image?.let {

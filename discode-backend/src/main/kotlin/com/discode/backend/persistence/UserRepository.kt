@@ -49,4 +49,14 @@ class UserRepository : RepositoryBase() {
     fun deleteOne(userId: Long) {
         jdbcTemplate.update("DELETE FROM user_credentials WHERE user_id = ?", userId)
     }
+
+    fun findPasswordHash(username: String) =
+        jdbcTemplate.queryForObject(
+            "SELECT password_hash FROM user_credentials WHERE username = ?",
+            String::class.java,
+            username
+        )
+
+    fun isAdmin(userId: Long) =
+        jdbcTemplate.queryForObject("SELECT COUNT(*) FROM admins WHERE user_id = ?", Long::class.java, userId) == 1L
 }
