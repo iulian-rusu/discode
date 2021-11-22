@@ -19,16 +19,18 @@ class JwtSecurityConfigurer(private val jwtProvider: JwtProvider) : WebSecurityC
     @Autowired
     private lateinit var userDetailService: UserDetailsService
 
-    override fun configure(http: HttpSecurity) {
+    override fun configure(httpSecurity: HttpSecurity) {
         val jwtFilter = JwtAuthenticationFilter(jwtProvider)
         // We don't need CSRF for this example
-        http.csrf().disable()
-            .authorizeRequests().antMatchers(HttpMethod.POST, "/api/auth").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/users").permitAll().anyRequest().authenticated().and()
-            .exceptionHandling().authenticationEntryPoint(JwtAuthenticationEntryPoint()).and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        httpSecurity.csrf().disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+            .anyRequest().authenticated()
+            .and().exceptionHandling().authenticationEntryPoint(JwtAuthenticationEntryPoint())
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
     @Bean(name = [BeanIds.AUTHENTICATION_MANAGER])

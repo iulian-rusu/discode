@@ -12,6 +12,7 @@ import com.discode.backend.persistence.mappers.UserRowMapper
 import com.discode.backend.persistence.query.SearchUserQuery
 import com.discode.backend.persistence.query.UpdateUserQuery
 import com.discode.backend.security.Encoder
+import com.discode.backend.security.jwt.JwtAuthorized
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -19,7 +20,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : AuthorizedService(), UserInterface {
+class UserService : JwtAuthorized(), UserInterface {
     @Autowired
     private lateinit var genericQueryRepository: GenericQueryRepository
 
