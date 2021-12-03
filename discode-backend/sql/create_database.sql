@@ -97,6 +97,6 @@ ALTER TABLE user_accounts
 ALTER TABLE chats
     ADD CONSTRAINT ck_chats_chat_name CHECK (LENGTH(chat_name) > 0);
 ALTER TABLE chat_members
-    ADD CONSTRAINT ck_chat_members_status CHECK (status REGEXP '^a|l$'); -- active|left
+    ADD CONSTRAINT ck_chat_members_status CHECK (status REGEXP '^o|g|l$'); -- owner|guest|left
 ALTER TABLE message_reports
     ADD CONSTRAINT ck_message_reports_status CHECK (status REGEXP '^p|r$'); -- pending|reviewed

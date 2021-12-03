@@ -12,7 +12,7 @@ class SimpleUserDetailsService: UserDetailsService {
     private lateinit var userRepository: UserRepository
 
     override fun loadUserByUsername(username: String?): UserDetails {
-        val user = username?.let { userRepository.findOne(it) } ?: throw Exception("Username: $username not found")
+        val user = username?.let { userRepository.findOne(it) } ?: throw Exception("Username missing")
         val isAdmin = userRepository.isAdmin(user.userId)
         return SimpleUserDetails(
             userId = user.userId,

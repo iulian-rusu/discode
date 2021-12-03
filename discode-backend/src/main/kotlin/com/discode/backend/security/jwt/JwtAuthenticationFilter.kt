@@ -21,6 +21,7 @@ class JwtAuthenticationFilter(private val jwtProvider: JwtProvider) : GenericFil
                 SecurityContextHolder.getContext().authentication = auth
             }
             filterChain.doFilter(req, res)
+
         } catch (e: Exception) {
             logger.error("JWT filter error: $e")
             res as HttpServletResponse

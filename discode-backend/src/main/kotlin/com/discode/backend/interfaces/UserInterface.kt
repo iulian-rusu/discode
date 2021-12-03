@@ -11,6 +11,6 @@ interface UserInterface {
     fun getAllUsers(query: SearchUserQuery): ResponseEntity<List<User>>
     fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse>
     fun getUser(userId: Long, authHeader: String?): ResponseEntity<User>
-    fun patchUser(userId: Long, updateRequest: UpdateUserRequest, authHeader: String?): ResponseEntity<User>
+    fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): ResponseEntity<User>
     fun deleteUser(userId: Long, authHeader: String?): ResponseEntity<User>
 }

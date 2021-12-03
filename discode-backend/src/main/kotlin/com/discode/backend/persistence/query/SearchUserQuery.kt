@@ -4,11 +4,13 @@ class SearchUserQuery(queryParams: Map<String, String>) : PagedSearchQuery(query
     private val username: String
     private val firstName: String
     private val lastName: String
+    private val exactMatch: Boolean
 
     init {
         username = queryParams["username"] ?: ""
         firstName = queryParams["first_name"] ?: ""
         lastName = queryParams["last_name"] ?: ""
+        exactMatch = queryParams["match"]?.let { it == "exact" } ?: false
 
         params["username"] = username
         params["firstName"] = firstName

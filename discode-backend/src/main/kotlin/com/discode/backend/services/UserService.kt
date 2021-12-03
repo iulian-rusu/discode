@@ -12,7 +12,7 @@ import com.discode.backend.persistence.mappers.UserRowMapper
 import com.discode.backend.persistence.query.SearchUserQuery
 import com.discode.backend.persistence.query.UpdateUserQuery
 import com.discode.backend.security.Encoder
-import com.discode.backend.security.jwt.JwtAuthorized
+import com.discode.backend.security.jwt.JwtAuthorizedService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : JwtAuthorized(), UserInterface {
+class UserService : JwtAuthorizedService(), UserInterface {
     @Autowired
     private lateinit var genericQueryRepository: GenericQueryRepository
 
@@ -60,10 +60,10 @@ class UserService : JwtAuthorized(), UserInterface {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
 
-    override fun patchUser(userId: Long, updateRequest: UpdateUserRequest, authHeader: String?): ResponseEntity<User> {
+    override fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): ResponseEntity<User> {
         return try {
             ifAuthorized(userId, authHeader) {
-                val query = toUpdateQuery(userId, updateRequest)
+                val query = toUpdateQuery(userId, request)
                 genericQueryRepository.execute(query)
                 ResponseEntity.ok(userRepository.findOne(userId))
             }
