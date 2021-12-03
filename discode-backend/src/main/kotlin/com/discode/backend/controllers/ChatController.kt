@@ -20,12 +20,6 @@ class ChatController {
         @RequestHeader("Authorization") authHeader: String?
     ) = chatService.getAllChatsForUser(searchParams, authHeader)
 
-    @GetMapping("/{chatId}")
-    fun getChat(
-        @PathVariable chatId: Long,
-        @RequestHeader("Authorization") authHeader: String?
-    ) = chatService.getChat(chatId, authHeader)
-
     @PostMapping("")
     fun postChat(@RequestBody(required = true) request: CreateChatRequest) = chatService.postChat(request)
 
@@ -36,10 +30,10 @@ class ChatController {
     ) = chatService.deleteChat(chatId, authHeader)
 
     @GetMapping("/{chatId}/members")
-    fun getMembers(
+    fun getAllMembers(
         @PathVariable chatId: Long,
         @RequestHeader("Authorization") authHeader: String?
-    ) = chatService.getMembers(chatId, authHeader)
+    ) = chatService.getAllMembers(chatId, authHeader)
 
     @PostMapping("/{chatId}/members")
     fun postMember(

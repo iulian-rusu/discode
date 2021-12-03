@@ -11,10 +11,9 @@ import org.springframework.http.ResponseEntity
 
 interface ChatInterface {
     fun getAllChatsForUser(searchParams: Map<String, String>, authHeader: String?): ResponseEntity<List<Chat>>
-    fun getChat(chatId: Long, authHeader: String?): ResponseEntity<List<Chat>>
     fun postChat(request: CreateChatRequest): ResponseEntity<Chat>
     fun deleteChat(chatId: Long, authHeader: String?): ResponseEntity<Chat>
-    fun getMembers(chatId: Long, authHeader: String?): ResponseEntity<List<ChatMember>>
+    fun getAllMembers(chatId: Long, authHeader: String?): ResponseEntity<List<ChatMember>>
     fun postMember(chatId: Long, authHeader: String?): ResponseEntity<ChatMember>
     fun patchMember(chatMemberId: Long, request: UpdateChatMemberRequest, authHeader: String?): ResponseEntity<ChatMember>
     fun getAllMessages(query: SearchMessageQuery, authHeader: String?): ResponseEntity<List<Message>>

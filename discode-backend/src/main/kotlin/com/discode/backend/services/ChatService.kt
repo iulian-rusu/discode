@@ -20,10 +20,6 @@ class ChatService : ChatInterface {
         TODO("Not yet implemented")
     }
 
-    override fun getChat(chatId: Long, authHeader: String?): ResponseEntity<List<Chat>> {
-        TODO("Not yet implemented")
-    }
-
     override fun postChat(request: CreateChatRequest): ResponseEntity<Chat> {
         TODO("Not yet implemented")
     }
@@ -32,7 +28,7 @@ class ChatService : ChatInterface {
         TODO("Not yet implemented")
     }
 
-    override fun getMembers(chatId: Long, authHeader: String?): ResponseEntity<List<ChatMember>> {
+    override fun getAllMembers(chatId: Long, authHeader: String?): ResponseEntity<List<ChatMember>> {
         TODO("Not yet implemented")
     }
 

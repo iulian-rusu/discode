@@ -1,4 +1,5 @@
 # Discode Backend
+This is a RESTful API that connects to a MySQL database using SpringBoot and JPA.
 
 ## Running the server
 1. Create a new databse in MySQL and connect to it.
@@ -8,8 +9,8 @@
    2. `DISCODE_DB_USER_NAME=<user-name>` (for the user with read/write privileges only)
    3. `DISCODE_DB_USER_PASSWORD=<user-password>`
     * Don't forget to add `.env` to `.gitignore`
-4. In IntelliJ, go to `Run Configurations` -> `EnvFile` and add the `.env` file.
-5. Run the server.
+4. In IntelliJ, go to `Run Configurations` -> `Enable EnvFile` and add the `.env` file.
+5. Run the server and check `localhost:8008/api`.
 
 ## Reference Documentation
 For further reference, please consider the following sections:
