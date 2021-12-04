@@ -5,6 +5,7 @@ import com.discode.backend.models.requests.CreateChatRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.models.requests.UpdateChatMemberRequest
 import com.discode.backend.persistence.query.SearchMessageQuery
+import com.discode.backend.persistence.query.UpdateChatMemberQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -41,12 +42,13 @@ class ChatController {
         @RequestHeader("Authorization") authHeader: String?
     ) = chatService.postMember(chatId, authHeader)
 
-    @PatchMapping("/members/{chatMemberId}")
+    @PatchMapping("/{chatId}/members/{userId}")
     fun patchMember(
-        @PathVariable chatMemberId: Long,
+        @PathVariable chatId: Long,
+        @PathVariable userId: Long,
         @RequestBody(required = true) request: UpdateChatMemberRequest,
         @RequestHeader("Authorization") authHeader: String?
-    ) = chatService.patchMember(chatMemberId, request, authHeader)
+    ) = chatService.patchMember(UpdateChatMemberQuery(chatId, userId, request), authHeader)
 
     @GetMapping("/{chatId}/messages")
     fun getAllMessages(
@@ -55,9 +57,10 @@ class ChatController {
         @RequestHeader("Authorization") authHeader: String?
     ) = chatService.getAllMessages(SearchMessageQuery(chatId, searchParams), authHeader)
 
-    @PostMapping("/messages")
+    @PostMapping("/{chatId}/messages")
     fun postMessage(
+        @PathVariable chatId: Long,
         @RequestBody(required = true) request: PostMessageRequest,
         @RequestHeader("Authorization") authHeader: String?
-    ) = chatService.postMessage(request, authHeader)
+    ) = chatService.postMessage(chatId, request, authHeader)
 }

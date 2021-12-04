@@ -19,7 +19,7 @@ class SearchUserQuery(queryParams: Map<String, String>) : PagedSearchQuery(query
 
     override fun getSql(): String {
         val sqlBuilder = StringBuilder("SELECT * FROM user_credentials INNER JOIN user_accounts USING (user_id) ")
-        val conditionBuilder = StringBuilder(" WHERE")
+        val conditionBuilder = StringBuilder(" WHERE ")
         val initialLength = conditionBuilder.length
         if (exactMatch) {
             if (username.isNotEmpty())
@@ -29,10 +29,11 @@ class SearchUserQuery(queryParams: Map<String, String>) : PagedSearchQuery(query
             if (lastName.isNotEmpty())
                 conditionBuilder.append(" last_name = :lastName AND")
         } else {
-            conditionBuilder.append(
-                " LOCATE(LOWER(:username), LOWER(username)) AND" +
-                        " LOCATE(LOWER(:firstName), LOWER(first_name)) AND" +
-                        " LOCATE(LOWER(:lastName), LOWER(last_name)) AND"
+            conditionBuilder.append("""
+                LOCATE(LOWER(:username), LOWER(username)) AND 
+                LOCATE(LOWER(:firstName), LOWER(first_name)) AND 
+                LOCATE(LOWER(:lastName), LOWER(last_name)) AND
+            """.trimIndent()
             )
         }
         conditionBuilder.append(" 1 LIMIT :itemsPerPage OFFSET :offset")

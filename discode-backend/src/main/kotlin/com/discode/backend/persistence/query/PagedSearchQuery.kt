@@ -1,6 +1,5 @@
 package com.discode.backend.persistence.query
 
-
 abstract class PagedSearchQuery(queryParams: Map<String, String>) : ParametrizedQuery() {
     companion object {
         const val DEFAULT_PAGE = 1

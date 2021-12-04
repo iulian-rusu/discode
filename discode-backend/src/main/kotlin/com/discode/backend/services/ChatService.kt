@@ -6,18 +6,40 @@ import com.discode.backend.models.ChatMember
 import com.discode.backend.models.Message
 import com.discode.backend.models.requests.CreateChatRequest
 import com.discode.backend.models.requests.PostMessageRequest
-import com.discode.backend.models.requests.UpdateChatMemberRequest
+import com.discode.backend.persistence.GenericQueryRepository
+import com.discode.backend.persistence.mappers.ChatRowMapper
+import com.discode.backend.persistence.query.SearchChatQuery
 import com.discode.backend.persistence.query.SearchMessageQuery
+import com.discode.backend.persistence.query.UpdateChatMemberQuery
+import com.discode.backend.security.jwt.JwtAuthorizedService
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class ChatService : ChatInterface {
+class ChatService : JwtAuthorizedService(), ChatInterface {
+    @Autowired
+    private lateinit var genericQueryRepository: GenericQueryRepository
+
+    private val logger = LoggerFactory.getLogger(UserService::class.java)
+
     override fun getAllChatsForUser(
         searchParams: Map<String, String>,
         authHeader: String?
     ): ResponseEntity<List<Chat>> {
-        TODO("Not yet implemented")
+        return try {
+            val token = jwtProvider.getToken(authHeader)!!
+            val userId = jwtProvider.getUserId(token)
+            val query = SearchChatQuery(userId, searchParams)
+            genericQueryRepository.find(query, ChatRowMapper())
+                .toList()
+                .let { ResponseEntity.ok(it) }
+        } catch (e: Exception) {
+            logger.error("getAllChatsForUser(): $e")
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+        }
     }
 
     override fun postChat(request: CreateChatRequest): ResponseEntity<Chat> {
@@ -36,11 +58,7 @@ class ChatService : ChatInterface {
         TODO("Not yet implemented")
     }
 
-    override fun patchMember(
-        chatMemberId: Long,
-        request: UpdateChatMemberRequest,
-        authHeader: String?
-    ): ResponseEntity<ChatMember> {
+    override fun patchMember(query: UpdateChatMemberQuery, authHeader: String?): ResponseEntity<ChatMember> {
         TODO("Not yet implemented")
     }
 
@@ -48,7 +66,7 @@ class ChatService : ChatInterface {
         TODO("Not yet implemented")
     }
 
-    override fun postMessage(request: PostMessageRequest, authHeader: String?): ResponseEntity<Message> {
+    override fun postMessage(chatId: Long, request: PostMessageRequest, authHeader: String?): ResponseEntity<Message> {
         TODO("Not yet implemented")
     }
 }
