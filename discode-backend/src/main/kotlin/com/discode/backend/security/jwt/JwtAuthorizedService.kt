@@ -14,7 +14,7 @@ abstract class JwtAuthorizedService {
     protected fun <T> ifAuthorized(userId: Long, header: String?, action: () -> ResponseEntity<T>): ResponseEntity<T> {
         val token = jwtProvider.getToken(header) ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         val details = jwtProvider.getUserDetails(token)
-        if (details.userId == userId)
+        if (details.userId == userId || details.isAdmin)
             return action()
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
     }
