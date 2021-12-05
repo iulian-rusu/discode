@@ -1,6 +1,6 @@
 package com.discode.backend.services
 
-import com.discode.backend.interfaces.ImageStorageInterface
+import com.discode.backend.interfaces.ImageServiceInterface
 import org.springframework.core.io.UrlResource
 import org.springframework.stereotype.Service
 import java.awt.Image
@@ -11,7 +11,7 @@ import javax.imageio.ImageIO
 import javax.imageio.ImageReader
 
 @Service
-class ImageStorageService : ImageStorageInterface {
+class ImageService : ImageServiceInterface {
     companion object {
         private const val IMAGE_DIR = "images"
     }

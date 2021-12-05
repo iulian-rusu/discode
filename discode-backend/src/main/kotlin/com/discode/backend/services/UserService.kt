@@ -1,7 +1,7 @@
 package com.discode.backend.services
 
-import com.discode.backend.interfaces.ImageStorageInterface
-import com.discode.backend.interfaces.UserInterface
+import com.discode.backend.interfaces.ImageServiceInterface
+import com.discode.backend.interfaces.UserServiceInterface
 import com.discode.backend.models.User
 import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.models.requests.UpdateUserRequest
@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : JwtAuthorizedService(), UserInterface {
+class UserService : JwtAuthorizedService(), UserServiceInterface {
     @Autowired
     private lateinit var genericQueryRepository: GenericQueryRepository
 
@@ -28,7 +28,7 @@ class UserService : JwtAuthorizedService(), UserInterface {
     private lateinit var userRepository: UserRepository
 
     @Autowired
-    private lateinit var imageStorage: ImageStorageInterface
+    private lateinit var imageStorage: ImageServiceInterface
 
     private val logger = LoggerFactory.getLogger(UserService::class.java)
 

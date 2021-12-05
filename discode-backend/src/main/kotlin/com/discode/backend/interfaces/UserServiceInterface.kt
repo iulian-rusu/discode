@@ -7,7 +7,7 @@ import com.discode.backend.models.responses.AuthResponse
 import com.discode.backend.persistence.query.SearchUserQuery
 import org.springframework.http.ResponseEntity
 
-interface UserInterface {
+interface UserServiceInterface {
     fun getAllUsers(query: SearchUserQuery): ResponseEntity<List<User>>
     fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse>
     fun getUser(userId: Long, authHeader: String?): ResponseEntity<User>

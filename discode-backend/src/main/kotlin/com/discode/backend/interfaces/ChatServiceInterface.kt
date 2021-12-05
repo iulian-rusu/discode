@@ -9,9 +9,9 @@ import com.discode.backend.persistence.query.SearchMessageQuery
 import com.discode.backend.persistence.query.UpdateChatMemberQuery
 import org.springframework.http.ResponseEntity
 
-interface ChatInterface {
+interface ChatServiceInterface {
     fun getAllChatsForUser(searchParams: Map<String, String>, authHeader: String?): ResponseEntity<List<Chat>>
-    fun postChat(request: CreateChatRequest): ResponseEntity<Chat>
+    fun postChat(request: CreateChatRequest, authHeader: String?): ResponseEntity<Chat>
     fun deleteChat(chatId: Long, authHeader: String?): ResponseEntity<Chat>
     fun getAllMembers(chatId: Long, authHeader: String?): ResponseEntity<List<ChatMember>>
     fun postMember(chatId: Long, authHeader: String?): ResponseEntity<ChatMember>

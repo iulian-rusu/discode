@@ -1,6 +1,6 @@
 package com.discode.backend.services
 
-import com.discode.backend.interfaces.AuthInterface
+import com.discode.backend.interfaces.AuthServiceInterface
 import com.discode.backend.models.requests.AuthRequest
 import com.discode.backend.models.responses.AuthResponse
 import com.discode.backend.persistence.UserRepository
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService : JwtAuthorizedService(), AuthInterface {
+class AuthService : JwtAuthorizedService(), AuthServiceInterface {
     @Autowired
     private lateinit var userRepository: UserRepository
 

@@ -1,7 +1,7 @@
 package com.discode.backend.controllers
 
 import com.discode.backend.models.requests.RegisterUserRequest
-import com.discode.backend.interfaces.UserInterface
+import com.discode.backend.interfaces.UserServiceInterface
 import com.discode.backend.models.requests.UpdateUserRequest
 import com.discode.backend.persistence.query.SearchUserQuery
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/users")
 class UserController {
     @Autowired
-    private lateinit var userService: UserInterface
+    private lateinit var userService: UserServiceInterface
 
     @GetMapping("")
     fun getAllUsers(@RequestParam searchParams: Map<String, String>) =

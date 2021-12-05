@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.query
 
-class SearchMessageQuery(chatId: Long, queryParams: Map<String, String>) : PagedSearchQuery(queryParams) {
+class SearchMessageQuery(val chatId: Long, queryParams: Map<String, String>) : PagedSearchQuery(queryParams) {
     init {
         params["chatId"] = chatId
     }

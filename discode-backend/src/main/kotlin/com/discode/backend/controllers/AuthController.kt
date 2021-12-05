@@ -1,6 +1,6 @@
 package com.discode.backend.controllers
 
-import com.discode.backend.interfaces.AuthInterface
+import com.discode.backend.interfaces.AuthServiceInterface
 import com.discode.backend.models.requests.AuthRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 class AuthController {
     @Autowired
-    private lateinit var authService: AuthInterface
+    private lateinit var authService: AuthServiceInterface
 
     @PostMapping("/auth")
     fun authenticate(@RequestBody(required = true) request: AuthRequest) = authService.authenticate(request)

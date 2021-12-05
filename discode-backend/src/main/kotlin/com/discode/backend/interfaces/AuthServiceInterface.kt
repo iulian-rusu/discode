@@ -4,6 +4,6 @@ import com.discode.backend.models.requests.AuthRequest
 import com.discode.backend.models.responses.AuthResponse
 import org.springframework.http.ResponseEntity
 
-interface AuthInterface {
+interface AuthServiceInterface {
     fun authenticate(request: AuthRequest): ResponseEntity<AuthResponse>
 }

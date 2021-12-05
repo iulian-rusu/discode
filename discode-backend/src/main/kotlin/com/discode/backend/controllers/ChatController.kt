@@ -1,6 +1,6 @@
 package com.discode.backend.controllers
 
-import com.discode.backend.interfaces.ChatInterface
+import com.discode.backend.interfaces.ChatServiceInterface
 import com.discode.backend.models.requests.CreateChatRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.models.requests.UpdateChatMemberRequest
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/chats")
 class ChatController {
     @Autowired
-    private lateinit var chatService: ChatInterface
+    private lateinit var chatService: ChatServiceInterface
 
     @GetMapping("")
     fun getAllChatsForUser(
@@ -22,7 +22,10 @@ class ChatController {
     ) = chatService.getAllChatsForUser(searchParams, authHeader)
 
     @PostMapping("")
-    fun postChat(@RequestBody(required = true) request: CreateChatRequest) = chatService.postChat(request)
+    fun postChat(
+        @RequestBody(required = true) request: CreateChatRequest,
+        @RequestHeader("Authorization") authHeader: String?
+    ) = chatService.postChat(request, authHeader)
 
     @DeleteMapping("/{chatId}")
     fun deleteChat(

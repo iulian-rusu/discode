@@ -30,4 +30,12 @@ abstract class JwtAuthorizedService {
             return action()
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
     }
+
+    protected fun <T> withUserId(header: String?, action: (Long) -> ResponseEntity<T>): ResponseEntity<T> {
+        if (header == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        val token = jwtProvider.getToken(header)!!
+        val userId = jwtProvider.getUserId(token)
+        return action(userId)
+    }
 }

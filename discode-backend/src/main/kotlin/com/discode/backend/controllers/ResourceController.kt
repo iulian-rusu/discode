@@ -1,6 +1,6 @@
 package com.discode.backend.controllers
 
-import com.discode.backend.interfaces.ImageStorageInterface
+import com.discode.backend.interfaces.ImageServiceInterface
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/api")
 class ResourceController {
     @Autowired
-    private lateinit var imageStorageService: ImageStorageInterface
+    private lateinit var imageStorageService: ImageServiceInterface
 
     @GetMapping("/images/{imagePath}")
     fun getImage(@PathVariable imagePath: String): ResponseEntity<Any> {
