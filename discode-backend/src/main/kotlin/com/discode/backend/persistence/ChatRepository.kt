@@ -4,6 +4,7 @@ import com.discode.backend.models.Chat
 import com.discode.backend.models.ChatMember
 import com.discode.backend.models.Message
 import com.discode.backend.models.requests.CreateChatRequest
+import com.discode.backend.models.requests.PostChatMemberRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.persistence.mappers.ChatMemberRowMapper
 import com.discode.backend.persistence.mappers.ChatRowMapper
@@ -12,10 +13,10 @@ import java.util.*
 
 @Repository
 class ChatRepository : RepositoryBase() {
-    fun save(request: CreateChatRequest, ownerId: Long): Chat {
+    fun save(request: CreateChatRequest): Chat {
         val params = mapOf(
-            "chatName" to request.chatName,
-            "ownerId" to ownerId
+            "ownerId" to request.ownerId,
+            "chatName" to request.chatName
         )
         namedJdbcTemplate.update(
             """
@@ -62,12 +63,12 @@ class ChatRepository : RepositoryBase() {
         ).first()
     }
 
-    fun addMember(chatId: Long, userId: Long): ChatMember {
+    fun addMember(chatId: Long, reuqest: PostChatMemberRequest): ChatMember {
         jdbcTemplate.update(
             "INSERT INTO chat_members (chat_id, user_id, status) VALUES (?, ?, 'g')",
-            chatId, userId
+            chatId, reuqest.userId
         )
-        return ChatMember(chatId, userId, 'g')
+        return ChatMember(chatId, reuqest.userId, 'g')
     }
 
     fun isMember(chatId: Long, userId: Long): Boolean {
@@ -77,8 +78,8 @@ class ChatRepository : RepositoryBase() {
         )
     }
 
-    fun addMessage(chatId: Long, userId: Long, request: PostMessageRequest): Message {
-        val author = findMember(chatId, userId)
+    fun addMessage(chatId: Long, request: PostMessageRequest): Message {
+        val author = findMember(chatId, request.userId)
         jdbcTemplate.update(
             """
             INSERT INTO messages (chat_member_id, creation_date, content, code_output) 
@@ -86,11 +87,11 @@ class ChatRepository : RepositoryBase() {
                 (SELECT chat_member_id FROM chat_members WHERE chat_id = ? AND user_id = ?),
                 SYSDATE(), ?, NULL
             )
-        """, chatId, userId, request.content
+        """, chatId, request.userId, request.content
         )
         return Message(
             author = author,
-            creationData = Date(),
+            creationDate = Date(),
             content = request.content,
             codeOutput = null
         )

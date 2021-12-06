@@ -2,6 +2,7 @@ package com.discode.backend.controllers
 
 import com.discode.backend.interfaces.ChatServiceInterface
 import com.discode.backend.models.requests.CreateChatRequest
+import com.discode.backend.models.requests.PostChatMemberRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.models.requests.UpdateChatMemberRequest
 import com.discode.backend.persistence.query.SearchMessageQuery
@@ -14,12 +15,6 @@ import org.springframework.web.bind.annotation.*
 class ChatController {
     @Autowired
     private lateinit var chatService: ChatServiceInterface
-
-    @GetMapping("")
-    fun getAllChatsForUser(
-        @RequestParam searchParams: Map<String, String>,
-        @RequestHeader("Authorization") authHeader: String?
-    ) = chatService.getAllChatsForUser(searchParams, authHeader)
 
     @PostMapping("")
     fun postChat(
@@ -42,8 +37,9 @@ class ChatController {
     @PostMapping("/{chatId}/members")
     fun postMember(
         @PathVariable chatId: Long,
+        @RequestBody request: PostChatMemberRequest,
         @RequestHeader("Authorization") authHeader: String?
-    ) = chatService.postMember(chatId, authHeader)
+    ) = chatService.postMember(chatId, request, authHeader)
 
     @PatchMapping("/{chatId}/members/{userId}")
     fun patchMember(

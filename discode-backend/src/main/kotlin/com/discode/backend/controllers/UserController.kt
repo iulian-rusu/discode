@@ -34,4 +34,11 @@ class UserController {
     @DeleteMapping("/{userId}")
     fun deleteUser(@PathVariable userId: Long, @RequestHeader("Authorization") authHeader: String?) =
         userService.deleteUser(userId, authHeader)
+
+    @GetMapping("/{userId}/chats")
+    fun getUserChats(
+        @PathVariable userId: Long,
+        @RequestParam searchParams: Map<String, String>,
+        @RequestHeader("Authorization") authHeader: String?
+    ) = userService.getUserChats(userId, searchParams, authHeader)
 }

@@ -5,12 +5,11 @@ import com.discode.backend.models.Chat
 import com.discode.backend.models.ChatMember
 import com.discode.backend.models.Message
 import com.discode.backend.models.requests.CreateChatRequest
+import com.discode.backend.models.requests.PostChatMemberRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.persistence.ChatRepository
 import com.discode.backend.persistence.GenericQueryRepository
-import com.discode.backend.persistence.mappers.ChatRowMapper
 import com.discode.backend.persistence.mappers.MessageRowMapper
-import com.discode.backend.persistence.query.SearchChatQuery
 import com.discode.backend.persistence.query.SearchMessageQuery
 import com.discode.backend.persistence.query.UpdateChatMemberQuery
 import com.discode.backend.security.jwt.JwtAuthorizedService
@@ -30,30 +29,13 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
 
     private val logger = LoggerFactory.getLogger(UserService::class.java)
 
-    override fun getAllChatsForUser(
-        searchParams: Map<String, String>,
-        authHeader: String?
-    ): ResponseEntity<List<Chat>> {
-        return try {
-            withUserId(authHeader) { userId ->
-                val query = SearchChatQuery(userId, searchParams)
-                genericQueryRepository.find(query, ChatRowMapper())
-                    .toList()
-                    .let { ResponseEntity.ok(it) }
-            }
-        } catch (e: Exception) {
-            logger.error("getAllChatsForUser(): $e")
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
-        }
-    }
-
     override fun postChat(request: CreateChatRequest, authHeader: String?): ResponseEntity<Chat> {
         return try {
-            withUserId(authHeader) { userId ->
-                chatRepository.save(request, userId).let { ResponseEntity.ok(it) }
+            ifAuthorizedOn(request.ownerId, authHeader) {
+                chatRepository.save(request).let { ResponseEntity.ok(it) }
             }
         } catch (e: Exception) {
-            logger.error("postChat(): $e")
+            logger.error("postChat(ownerId=${request.ownerId}): $e")
             ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build()
         }
     }
@@ -61,7 +43,7 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
     override fun deleteChat(chatId: Long, authHeader: String?): ResponseEntity<Chat> {
         return try {
             val ownerId = chatRepository.findOwnerId(chatId)
-            ifAuthorized(ownerId, authHeader) {
+            ifAuthorizedOn(ownerId, authHeader) {
                 val toDelete = chatRepository.findOne(chatId)
                 chatRepository.deleteOne(toDelete.chatId)
                 ResponseEntity.ok(toDelete)
@@ -77,7 +59,7 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
             ifAuthorized(
                 header = authHeader,
                 authorizer = { details ->
-                    chatRepository.isMember(chatId, details.userId)
+                    chatRepository.isMember(chatId, details.userId) || details.isAdmin
                 },
                 action = {
                     ResponseEntity.ok(chatRepository.findAllMembers(chatId))
@@ -89,10 +71,14 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
         }
     }
 
-    override fun postMember(chatId: Long, authHeader: String?): ResponseEntity<ChatMember> {
+    override fun postMember(
+        chatId: Long,
+        request: PostChatMemberRequest,
+        authHeader: String?
+    ): ResponseEntity<ChatMember> {
         return try {
-            withUserId(authHeader) { userId ->
-                ResponseEntity.ok(chatRepository.addMember(chatId, userId))
+            ifAuthorizedOn(request.userId, authHeader) {
+                ResponseEntity.ok(chatRepository.addMember(chatId, request))
             }
         } catch (e: Exception) {
             logger.error("postMember(chatId=$chatId): $e")
@@ -102,16 +88,10 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
 
     override fun patchMember(query: UpdateChatMemberQuery, authHeader: String?): ResponseEntity<ChatMember> {
         return try {
-            ifAuthorized(
-                header = authHeader,
-                authorizer = { details ->
-                    details.userId == query.userId
-                },
-                action = {
-                    genericQueryRepository.execute(query)
-                    ResponseEntity.ok(chatRepository.findMember(query.chatId, query.userId))
-                }
-            )
+            ifAuthorizedOn(query.userId, authHeader) {
+                genericQueryRepository.execute(query)
+                ResponseEntity.ok(chatRepository.findMember(query.chatId, query.userId))
+            }
         } catch (e: Exception) {
             logger.error("patchMember(): $e")
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
@@ -137,14 +117,17 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
 
     override fun postMessage(chatId: Long, request: PostMessageRequest, authHeader: String?): ResponseEntity<Message> {
         return try {
-            withUserId(authHeader) { userId ->
-                if (!chatRepository.isMember(chatId, userId))
-                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-                else
-                    ResponseEntity.ok(chatRepository.addMessage(chatId, userId, request))
-            }
+            ifAuthorized(
+                header = authHeader,
+                authorizer = { details ->
+                    chatRepository.isMember(chatId, request.userId) && details.userId == request.userId
+                },
+                action = {
+                    ResponseEntity.ok(chatRepository.addMessage(chatId, request))
+                }
+            )
         } catch (e: Exception) {
-            logger.error("postMessage(chatId=$chatId): $e")
+            logger.error("postMessage(chatId=$chatId, userId=${request.userId}): $e")
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
     }

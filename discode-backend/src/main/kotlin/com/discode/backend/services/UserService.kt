@@ -2,13 +2,16 @@ package com.discode.backend.services
 
 import com.discode.backend.interfaces.ImageServiceInterface
 import com.discode.backend.interfaces.UserServiceInterface
+import com.discode.backend.models.Chat
 import com.discode.backend.models.User
 import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.models.requests.UpdateUserRequest
 import com.discode.backend.models.responses.AuthResponse
 import com.discode.backend.persistence.GenericQueryRepository
 import com.discode.backend.persistence.UserRepository
+import com.discode.backend.persistence.mappers.ChatRowMapper
 import com.discode.backend.persistence.mappers.UserRowMapper
+import com.discode.backend.persistence.query.SearchChatQuery
 import com.discode.backend.persistence.query.SearchUserQuery
 import com.discode.backend.persistence.query.UpdateUserQuery
 import com.discode.backend.security.Encoder
@@ -62,7 +65,7 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
 
     override fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): ResponseEntity<User> {
         return try {
-            ifAuthorized(userId, authHeader) {
+            ifAuthorizedOn(userId, authHeader) {
                 val query = toUpdateQuery(userId, request)
                 genericQueryRepository.execute(query)
                 ResponseEntity.ok(userRepository.findOne(userId))
@@ -75,7 +78,7 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
 
     override fun deleteUser(userId: Long, authHeader: String?): ResponseEntity<User> {
         return try {
-            ifAuthorized(userId, authHeader) {
+            ifAuthorizedOn(userId, authHeader) {
                 val toDelete = userRepository.findOne(userId)
                 userRepository.deleteOne(toDelete.userId)
                 ResponseEntity.ok(toDelete)
@@ -83,6 +86,24 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
         } catch (e: Exception) {
             logger.error("deleteUser(userId=$userId): $e")
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
+
+    override fun getUserChats(
+        userId: Long,
+        searchParams: Map<String, String>,
+        authHeader: String?
+    ): ResponseEntity<List<Chat>> {
+        return try {
+            ifAuthorizedOn(userId, authHeader) {
+                val query = SearchChatQuery(userId, searchParams)
+                genericQueryRepository.find(query, ChatRowMapper())
+                    .toList()
+                    .let { ResponseEntity.ok(it) }
+            }
+        } catch (e: Exception) {
+            logger.error("getUserChats(userId=$userId): $e")
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
     }
 
