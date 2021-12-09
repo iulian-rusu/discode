@@ -58,5 +58,5 @@ class UserRepository : RepositoryBase() {
         )
 
     fun isAdmin(userId: Long) =
-        jdbcTemplate.queryForObject("SELECT COUNT(*) FROM admins WHERE user_id = ?", Long::class.java, userId) == 1L
+        jdbcTemplate.queryForObject("SELECT EXISTS (SELECT * FROM admins WHERE user_id = ?)", Long::class.java, userId) == 1L
 }
