@@ -8,8 +8,11 @@ import com.discode.backend.models.requests.PostChatMemberRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.persistence.mappers.ChatMemberRowMapper
 import com.discode.backend.persistence.mappers.ChatRowMapper
+import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.sql.Statement
 import java.util.*
+
 
 @Repository
 class ChatRepository : RepositoryBase() {
@@ -80,16 +83,24 @@ class ChatRepository : RepositoryBase() {
 
     fun addMessage(chatId: Long, request: PostMessageRequest): Message {
         val author = findMember(chatId, request.userId)
-        jdbcTemplate.update(
-            """
+        val keyHolder = GeneratedKeyHolder()
+        val sql = """
             INSERT INTO messages (chat_member_id, creation_date, content, code_output) 
             VALUES (
                 (SELECT chat_member_id FROM chat_members WHERE chat_id = ? AND user_id = ?),
                 SYSDATE(), ?, NULL
             )
-        """, chatId, request.userId, request.content
-        )
+        """
+        jdbcTemplate.update({ connection ->
+            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+                .apply {
+                    setLong(1, chatId)
+                    setLong(2, request.userId)
+                    setString(3, request.content)
+                }
+        }, keyHolder)
         return Message(
+            messageId = keyHolder.key?.toLong() ?: -1,
             author = author,
             creationDate = Date(),
             content = request.content,
