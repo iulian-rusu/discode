@@ -1,16 +1,16 @@
-<form class="form-discode-blue">
+<form class="form-discode-blue" [formGroup]="formGroup">
      <!-- 2 column grid layout with text inputs for the first and last names -->
      <div class="row mb-4">
         <div class="col">
             <div class="border-primary">
-                <label class="form-label" for="updateFirstName">First name</label>
-                <input type="text" id="updateFirstName" class="form-control" placeholder="First name" aria-label="First name"/>
+                <label class="form-label" for="firstName">First name</label>
+                <input type="text" id="updateFirstName" class="form-control" placeholder="First name" aria-label="First name" formControlName="firstName"/>
             </div>
         </div>
         <div class="col">
             <div class="border-primary">
                 <label class="form-label" for="updateLastName">Last name</label>
-                <input type="text" id="updateLastName" class="form-control" placeholder="Last name" aria-label="Last name"/>
+                <input type="text" id="updateLastName" class="form-control" placeholder="Last name" aria-label="Last name" formControlName="lastName"/>
             </div>
         </div>
     </div>
@@ -18,19 +18,19 @@
     <!-- Username input -->
     <div class="mb-4 border-primary">
         <label class="form-label" for="registerUsername">Username</label>
-        <input type="email" id="registerUsername" placeholder="Username" class="form-control" />
+        <input type="email" id="registerUsername" placeholder="Username" class="form-control" formControlName="username" />
     </div>
 
     <!-- Email input -->
     <div class="mb-4 border-primary">
         <label class="form-label" for="registerEmail">Email address</label>
-        <input type="email" id="registerEmail" placeholder="Email" class="form-control" />
+        <input type="email" id="registerEmail" placeholder="Email" class="form-control" formControlName="email" />
     </div>
 
     <!-- Password input -->
     <div class="mb-4 border-primary">
         <label class="form-label" for="registerPassword">Password</label>
-        <input type="password" id="registerPassword" placeholder="Password" class="form-control" />
+        <input type="password" id="registerPassword" placeholder="Password" class="form-control" formControlName="password"/>
     </div>
 
     <!-- Confirm Password input -->
@@ -40,5 +40,5 @@
     </div>
 
     <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+    <button type="submit" class="btn btn-primary btn-block mb-4" (click)="register()">Register</button>
 </form>
