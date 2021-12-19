@@ -1,6 +1,8 @@
-package com.discode.backend.security.jwt
+package com.discode.backend.config
 
-import com.discode.backend.security.WebCorsFilter
+import com.discode.backend.security.jwt.JwtAuthenticationEntryPoint
+import com.discode.backend.security.jwt.JwtAuthenticationFilter
+import com.discode.backend.security.jwt.JwtProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,18 +15,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 @Configuration
-class JwtSecurityConfigurer(private val jwtProvider: JwtProvider) : WebSecurityConfigurerAdapter() {
+class SecurityConfiguration(private val jwtProvider: JwtProvider) : WebSecurityConfigurerAdapter() {
     @Autowired
     private lateinit var userDetailService: UserDetailsService
 
     override fun configure(httpSecurity: HttpSecurity) {
         val jwtFilter = JwtAuthenticationFilter(jwtProvider)
 
-        httpSecurity.cors().configurationSource(WebCorsFilter.configurationSource())
-        httpSecurity.csrf().disable()
+        httpSecurity.cors().and()
+            .csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
             .antMatchers(HttpMethod.POST, "/api/users").permitAll()
@@ -36,13 +41,18 @@ class JwtSecurityConfigurer(private val jwtProvider: JwtProvider) : WebSecurityC
     }
 
     @Bean(name = [BeanIds.AUTHENTICATION_MANAGER])
-    @Throws(Exception::class)
     override fun authenticationManagerBean(): AuthenticationManager? {
         return super.authenticationManagerBean()
     }
 
-    @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailService)
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource? {
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
+        return source
     }
 }
