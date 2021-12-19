@@ -49,7 +49,7 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
         try {
             val newUser = userRepository.save(request)
             val jwt = jwtProvider.createToken(newUser.userId)
-            ResponseEntity.ok(AuthResponse(jwt, newUser))
+            ResponseEntity.status(HttpStatus.CREATED).body(AuthResponse(jwt, newUser))
         } catch (e: Exception) {
             logger.error("postUser(username=${request.username}): $e")
             ResponseEntity.status(HttpStatus.CONFLICT).build()

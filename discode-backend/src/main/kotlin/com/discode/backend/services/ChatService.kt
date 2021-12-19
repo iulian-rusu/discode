@@ -32,7 +32,7 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
     override fun postChat(request: CreateChatRequest, authHeader: String?): ResponseEntity<Chat> {
         return try {
             ifAuthorizedOn(request.ownerId, authHeader) {
-                chatRepository.save(request).let { ResponseEntity.ok(it) }
+                chatRepository.save(request).let { ResponseEntity.status(HttpStatus.CREATED).body(it) }
             }
         } catch (e: Exception) {
             logger.error("postChat(ownerId=${request.ownerId}): $e")
@@ -78,7 +78,7 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
     ): ResponseEntity<ChatMember> {
         return try {
             ifAuthorizedOn(request.userId, authHeader) {
-                ResponseEntity.ok(chatRepository.addMember(chatId, request))
+                ResponseEntity.status(HttpStatus.CREATED).body(chatRepository.addMember(chatId, request))
             }
         } catch (e: Exception) {
             logger.error("postMember(chatId=$chatId): $e")
@@ -123,7 +123,7 @@ class ChatService : JwtAuthorizedService(), ChatServiceInterface {
                     chatRepository.isMember(chatId, request.userId) && details.userId == request.userId
                 },
                 action = {
-                    ResponseEntity.ok(chatRepository.addMessage(chatId, request))
+                    ResponseEntity.status(HttpStatus.CREATED).body(chatRepository.addMessage(chatId, request))
                 }
             )
         } catch (e: Exception) {

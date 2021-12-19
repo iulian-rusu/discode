@@ -1,5 +1,6 @@
 package com.discode.backend.security.jwt
 
+import com.discode.backend.security.WebCorsFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -21,7 +22,8 @@ class JwtSecurityConfigurer(private val jwtProvider: JwtProvider) : WebSecurityC
 
     override fun configure(httpSecurity: HttpSecurity) {
         val jwtFilter = JwtAuthenticationFilter(jwtProvider)
-        // We don't need CSRF for this example
+
+        httpSecurity.cors().configurationSource(WebCorsFilter.configurationSource())
         httpSecurity.csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
