@@ -17,19 +17,26 @@ class UserRepository : RepositoryBase() {
             "lastName" to request.lastName,
             "email" to request.email
         )
+
         namedJdbcTemplate.update(
-            """
-                START TRANSACTION;
-                INSERT INTO user_credentials (username, password_hash) VALUES (:username, BINARY :passwordHash);
+            "INSERT INTO user_credentials (username, password_hash) VALUES (:username, BINARY :passwordHash)",
+            params
+        )
+        try {
+            namedJdbcTemplate.update(
+                """
                 INSERT INTO user_accounts (user_id, first_name, last_name, email) 
                 VALUES (
                     (SELECT user_id FROM user_credentials WHERE username = :username),
                     :firstName, :lastName, :email
-                );
-                COMMIT;
+                )
             """,
-            params
-        )
+                params
+            )
+        } catch (e: Exception) {
+            jdbcTemplate.update("DELETE FROM user_credentials WHERE username = ?", request.username)
+            throw e
+        }
 
         return findOne(request.username)
     }
@@ -58,5 +65,9 @@ class UserRepository : RepositoryBase() {
         )
 
     fun isAdmin(userId: Long) =
-        jdbcTemplate.queryForObject("SELECT EXISTS (SELECT * FROM admins WHERE user_id = ?)", Long::class.java, userId) == 1L
+        jdbcTemplate.queryForObject(
+            "SELECT EXISTS (SELECT * FROM admins WHERE user_id = ?)",
+            Long::class.java,
+            userId
+        ) == 1L
 }
