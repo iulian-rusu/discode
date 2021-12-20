@@ -35,8 +35,8 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
 
     private val logger = LoggerFactory.getLogger(UserService::class.java)
 
-    override fun getAllUsers(query: SearchUserQuery): ResponseEntity<List<User>> =
-        try {
+    override fun getAllUsers(query: SearchUserQuery): ResponseEntity<List<User>> {
+        return try {
             genericQueryRepository.find(query, UserRowMapper())
                 .toList()
                 .let { ResponseEntity.ok(it) }
@@ -44,9 +44,15 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
             logger.error("getAllUsers(): $e")
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
+    }
 
-    override fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse> =
-        try {
+    override fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse> {
+        if (!isValid(request)) {
+            logger.error("postUser(username=${request.username}): invalid request data")
+            return ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
+
+        return try {
             val newUser = userRepository.save(request)
             val jwt = jwtProvider.createToken(newUser.userId)
             ResponseEntity.status(HttpStatus.CREATED).body(AuthResponse(jwt, newUser))
@@ -54,14 +60,16 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
             logger.error("postUser(username=${request.username}): $e")
             ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
+    }
 
-    override fun getUser(userId: Long, authHeader: String?): ResponseEntity<User> =
-        try {
+    override fun getUser(userId: Long, authHeader: String?): ResponseEntity<User> {
+        return try {
             ResponseEntity.ok(userRepository.findOne(userId))
         } catch (e: Exception) {
             logger.error("getUser(userId=$userId): $e")
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
+    }
 
     override fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): ResponseEntity<User> {
         return try {
@@ -131,5 +139,10 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
             description = updateRequest.description,
             imagePath = imagePath
         )
+    }
+
+    private fun isValid(request: RegisterUserRequest): Boolean {
+        return request.password.length >= 8 && request.username.length >= 3
+                && request.firstName.length >= 2 && request.lastName.length >= 2
     }
 }
