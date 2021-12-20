@@ -15,15 +15,14 @@ import com.discode.backend.persistence.query.SearchChatQuery
 import com.discode.backend.persistence.query.SearchUserQuery
 import com.discode.backend.persistence.query.UpdateUserQuery
 import com.discode.backend.security.Encoder
-import com.discode.backend.security.jwt.JwtAuthorizedService
-import org.slf4j.LoggerFactory
+import com.discode.backend.security.jwt.JwtAuthorized
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
-class UserService : JwtAuthorizedService(), UserServiceInterface {
+class UserService : JwtAuthorized(), UserServiceInterface {
     @Autowired
     private lateinit var genericQueryRepository: GenericQueryRepository
 
@@ -33,85 +32,49 @@ class UserService : JwtAuthorizedService(), UserServiceInterface {
     @Autowired
     private lateinit var imageStorage: ImageServiceInterface
 
-    private val logger = LoggerFactory.getLogger(UserService::class.java)
-
-    override fun getAllUsers(query: SearchUserQuery): ResponseEntity<List<User>> {
-        return try {
-            genericQueryRepository.find(query, UserRowMapper())
-                .toList()
-                .let { ResponseEntity.ok(it) }
-        } catch (e: Exception) {
-            logger.error("getAllUsers(): $e")
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
-        }
+    override fun getAllUsers(query: SearchUserQuery): List<User> {
+        return genericQueryRepository.find(query, UserRowMapper()).toList()
     }
 
-    override fun postUser(request: RegisterUserRequest): ResponseEntity<AuthResponse> {
+    override fun postUser(request: RegisterUserRequest): AuthResponse {
         if (!isValid(request)) {
-            logger.error("postUser(username=${request.username}): invalid request data")
-            return ResponseEntity.status(HttpStatus.CONFLICT).build()
+            throw ResponseStatusException(HttpStatus.CONFLICT, "Invalid request data")
         }
 
-        return try {
-            val newUser = userRepository.save(request)
-            val jwt = jwtProvider.createToken(newUser.userId)
-            ResponseEntity.status(HttpStatus.CREATED).body(AuthResponse(jwt, newUser))
-        } catch (e: Exception) {
-            logger.error("postUser(username=${request.username}): $e")
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        val newUser = userRepository.save(request)
+        val jwt = jwtProvider.createToken(newUser.userId)
+        return AuthResponse(jwt, newUser)
     }
 
-    override fun getUser(userId: Long, authHeader: String?): ResponseEntity<User> {
-        return try {
-            ResponseEntity.ok(userRepository.findOne(userId))
-        } catch (e: Exception) {
-            logger.error("getUser(userId=$userId): $e")
-            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        }
+    override fun getUser(userId: Long, authHeader: String?): User {
+        return userRepository.findOne(userId)
     }
 
-    override fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): ResponseEntity<User> {
-        return try {
-            ifAuthorizedOn(userId, authHeader) {
-                val query = toUpdateQuery(userId, request)
-                genericQueryRepository.execute(query)
-                ResponseEntity.ok(userRepository.findOne(userId))
+    override fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): User {
+        return ifAuthorizedOn(userId, authHeader) {
+            val query = toUpdateQuery(userId, request)
+            genericQueryRepository.execute(query)
+            try {
+                userRepository.findOne(userId)
+            } catch (e: Exception) {
+                throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
             }
-        } catch (e: Exception) {
-            logger.error("patchUser(userId=$userId): $e")
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
     }
 
-    override fun deleteUser(userId: Long, authHeader: String?): ResponseEntity<User> {
-        return try {
-            ifAuthorizedOn(userId, authHeader) {
-                val toDelete = userRepository.findOne(userId)
-                userRepository.deleteOne(toDelete.userId)
-                ResponseEntity.ok(toDelete)
-            }
-        } catch (e: Exception) {
-            logger.error("deleteUser(userId=$userId): $e")
-            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+    override fun deleteUser(userId: Long, authHeader: String?): User {
+        return ifAuthorizedOn(userId, authHeader) {
+            val toDelete = userRepository.findOne(userId)
+            userRepository.deleteOne(toDelete.userId)
+            toDelete
         }
     }
 
-    override fun getUserChats(
-        userId: Long,
-        searchParams: Map<String, String>,
-        authHeader: String?
-    ): ResponseEntity<List<Chat>> {
-        return try {
-            ifAuthorizedOn(userId, authHeader) {
-                val query = SearchChatQuery(userId, searchParams)
-                genericQueryRepository.find(query, ChatRowMapper())
-                    .toList()
-                    .let { ResponseEntity.ok(it) }
-            }
-        } catch (e: Exception) {
-            logger.error("getUserChats(userId=$userId): $e")
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+    override fun getUserChats(userId: Long, searchParams: Map<String, String>, authHeader: String?): List<Chat> {
+        return ifAuthorizedOn(userId, authHeader) {
+            val query = SearchChatQuery(userId, searchParams)
+            genericQueryRepository.find(query, ChatRowMapper())
+                .toList()
         }
     }
 

@@ -8,14 +8,13 @@ import com.discode.backend.models.requests.PostChatMemberRequest
 import com.discode.backend.models.requests.PostMessageRequest
 import com.discode.backend.persistence.query.SearchMessageQuery
 import com.discode.backend.persistence.query.UpdateChatMemberQuery
-import org.springframework.http.ResponseEntity
 
 interface ChatServiceInterface {
-    fun postChat(request: CreateChatRequest, authHeader: String?): ResponseEntity<Chat>
-    fun deleteChat(chatId: Long, authHeader: String?): ResponseEntity<Chat>
-    fun getAllMembers(chatId: Long, authHeader: String?): ResponseEntity<List<ChatMember>>
-    fun postMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ResponseEntity<ChatMember>
-    fun patchMember(query: UpdateChatMemberQuery, authHeader: String?): ResponseEntity<ChatMember>
-    fun getAllMessages(query: SearchMessageQuery, authHeader: String?): ResponseEntity<List<Message>>
-    fun postMessage(chatId: Long, request: PostMessageRequest, authHeader: String?): ResponseEntity<Message>
+    fun postChat(request: CreateChatRequest, authHeader: String?): Chat
+    fun deleteChat(chatId: Long, authHeader: String?): Chat
+    fun getAllMembers(chatId: Long, authHeader: String?): List<ChatMember>
+    fun postMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember
+    fun patchMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember
+    fun getAllMessages(query: SearchMessageQuery, authHeader: String?): List<Message>
+    fun postMessage(chatId: Long, request: PostMessageRequest, authHeader: String?): Message
 }
