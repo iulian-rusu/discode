@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
-class UserController : ScopeGuarded() {
+class UserController : ScopeGuarded(UserController::class) {
     @Autowired
     private lateinit var userService: UserServiceInterface
 

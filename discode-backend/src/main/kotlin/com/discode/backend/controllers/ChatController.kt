@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/chats")
-class ChatController : ScopeGuarded() {
+class ChatController : ScopeGuarded(ChatController::class) {
     @Autowired
     private lateinit var chatService: ChatServiceInterface
 

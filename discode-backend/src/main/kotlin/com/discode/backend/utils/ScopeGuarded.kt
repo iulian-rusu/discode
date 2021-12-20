@@ -1,12 +1,12 @@
 package com.discode.backend.utils
 
-import com.discode.backend.controllers.ChatController
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
+import kotlin.reflect.KClass
 
-abstract class ScopeGuarded {
-    private val logger = LoggerFactory.getLogger(ChatController::class.java)
+abstract class  ScopeGuarded(guardedType: KClass<*>) {
+    private val logger = LoggerFactory.getLogger(guardedType.java)
 
     protected fun <T> guardedWith(status: HttpStatus, message: String, action: () -> T): T {
         return try {

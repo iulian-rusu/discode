@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api")
-class AuthController : ScopeGuarded() {
+class AuthController : ScopeGuarded(AuthController::class) {
     @Autowired
     private lateinit var authService: AuthServiceInterface
 
