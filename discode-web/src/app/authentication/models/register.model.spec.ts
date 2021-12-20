@@ -1,7 +1,7 @@
-import { Register } from './register.model';
+import { RegisterModel } from './register.model';
 
 describe('Register', () => {
   it('should create an instance', () => {
-    expect(new Register()).toBeTruthy();
+    expect(new RegisterModel()).toBeTruthy();
   });
 });

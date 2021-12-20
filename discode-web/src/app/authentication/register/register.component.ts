@@ -1,8 +1,11 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -24,58 +27,99 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly registerService: RegisterService,
     private readonly formBuilder: FormBuilder
   ) {
-    this.formGroup = this.formBuilder.group({
-      firstName: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(50),
-          Validators.minLength(2),
+    this.formGroup = this.formBuilder.group(
+      {
+        firstName: [
+          '',
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.minLength(2),
+            Validators.pattern('^[A-Z]([- ]?[a-zA-Z]+)+$'),
+          ],
         ],
-      ],
-      lastName: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(150),
-          Validators.minLength(2),
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.maxLength(150),
+            Validators.minLength(2),
+            Validators.pattern('^[A-Z]([- ]?[a-zA-Z]+)+$'),
+          ],
         ],
-      ],
-      username: '',
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(50),
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('^[_a-zA-Z]\\w{2,}$'),
+          ],
         ],
-      ],
-    });
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(50),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: this.checkPasswords }
+    );
 
     this.subs = new Array<Subscription>();
   }
 
   ngOnInit(): void {}
 
+  checkPasswords: ValidatorFn = (
+    group: AbstractControl
+  ): ValidationErrors | null => {
+    let pass = group.get('password')!!.value;
+    let confirmPass = group.get('confirmPassword')!!.value;
+    return pass == confirmPass ? null : { notSame: true };
+  };
+
   public register(): void {
-    console.log(this.formGroup.getRawValue());
     const data: RegisterModel = this.formGroup.getRawValue();
+    this.cleanErrors();
     this.subs.push(
       this.registerService
         .register(data)
         .subscribe((data: HttpResponse<any>) => {
-          console.log("hjsdjd");
-          if (data.status == 200) {
+          if (data.status == 201) {
+            sessionStorage.setItem('token', data.body['token']);
+            sessionStorage.setItem('user', JSON.stringify(data.body['user']));
             this.router.navigate(['/home']);
           }
-        })
+        }, this.handleError)
     );
   }
 
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {
       sub.unsubscribe();
+    });
+  }
+
+  public isInvalid(form: AbstractControl): boolean {
+    return form.invalid && form.dirty;
+  }
+
+  handleError(responseError: HttpErrorResponse): void {
+    let errorElement = document.createElement('div');
+    errorElement.className = 'alert alert-danger';
+
+    errorElement.innerHTML = 'Something went wrong! Please try again.';
+    document.getElementById('errors')?.appendChild(errorElement);
+  }
+
+  cleanErrors(): void {
+    let errorList = document.getElementById('errors')?.childNodes;
+    errorList?.forEach((child) => {
+      document.getElementById('errors')?.removeChild(child);
     });
   }
 }
