@@ -1,4 +1,4 @@
-package com.discode.backend.controllers.util
+package com.discode.backend.utils
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
