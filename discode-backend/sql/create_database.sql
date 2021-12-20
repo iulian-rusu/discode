@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS user_accounts
     description TEXT,
     image_path  VARCHAR(256),
     CONSTRAINT pk_user_accounts PRIMARY KEY (user_id),
-    CONSTRAINT fk_user_accounts_user_id FOREIGN KEY (user_id) REFERENCES user_credentials (user_id) ON DELETE CASCADE
+    CONSTRAINT fk_user_accounts_user_id FOREIGN KEY (user_id) REFERENCES user_credentials (user_id) ON DELETE CASCADE,
+    CONSTRAINT uk_user_accounts_email UNIQUE (email)
 );
 
 CREATE TABLE IF NOT EXISTS user_bans

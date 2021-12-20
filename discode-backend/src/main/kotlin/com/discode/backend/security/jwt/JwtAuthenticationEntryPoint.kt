@@ -12,6 +12,6 @@ class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
         response: HttpServletResponse,
         authException: AuthenticationException
     ) {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Failed JWT authentication")
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing JWT Authorization")
     }
 }
