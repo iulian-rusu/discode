@@ -26,7 +26,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     @Autowired
     private lateinit var genericQueryRepository: GenericQueryRepository
 
-    override fun postChat(request: CreateChatRequest, authHeader: String?): Chat {
+    override fun createChat(request: CreateChatRequest, authHeader: String?): Chat {
         return ifAuthorizedOn(request.ownerId, authHeader) {
             chatRepository.save(request)
         }
@@ -58,13 +58,13 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
         )
     }
 
-    override fun postMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember {
+    override fun addMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember {
         return ifAuthorizedOn(request.userId, authHeader) {
             chatRepository.addMember(chatId, request)
         }
     }
 
-    override fun patchMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
+    override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
         return ifAuthorizedOn(query.userId, authHeader) {
             genericQueryRepository.execute(query)
             chatRepository.findMember(query.chatId, query.userId)

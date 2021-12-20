@@ -8,7 +8,6 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 class JwtAuthenticationFilter(private val jwtProvider: JwtProvider) : GenericFilterBean() {
     override fun doFilter(req: ServletRequest, res: ServletResponse, filterChain: FilterChain) {
         try {

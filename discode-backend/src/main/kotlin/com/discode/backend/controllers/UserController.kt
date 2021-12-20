@@ -1,10 +1,10 @@
 package com.discode.backend.controllers
 
 import com.discode.backend.controllers.util.HttpResponse
-import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.interfaces.UserServiceInterface
 import com.discode.backend.models.Chat
 import com.discode.backend.models.User
+import com.discode.backend.models.requests.RegisterUserRequest
 import com.discode.backend.models.requests.UpdateUserRequest
 import com.discode.backend.models.responses.AuthResponse
 import com.discode.backend.persistence.query.SearchUserQuery
@@ -40,7 +40,7 @@ class UserController: JwtAuthorized() {
     fun postUser(@RequestBody(required = true) request: RegisterUserRequest): ResponseEntity<AuthResponse> {
         return try {
             authorizedScope {
-                HttpResponse.created(userService.postUser(request))
+                HttpResponse.created(userService.registerUser(request))
             }
         } catch (e: Exception) {
             logger.error("POST /api/users: $e")
@@ -68,7 +68,7 @@ class UserController: JwtAuthorized() {
     ): ResponseEntity<User> {
         return try {
             authorizedScope {
-                ResponseEntity.ok(userService.patchUser(userId, request, authHeader))
+                ResponseEntity.ok(userService.updateUser(userId, request, authHeader))
             }
         } catch (e: Exception) {
             logger.error("PATCH /api/users/$userId: $e")

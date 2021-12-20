@@ -36,7 +36,7 @@ class UserService : JwtAuthorized(), UserServiceInterface {
         return genericQueryRepository.find(query, UserRowMapper()).toList()
     }
 
-    override fun postUser(request: RegisterUserRequest): AuthResponse {
+    override fun registerUser(request: RegisterUserRequest): AuthResponse {
         if (!isValid(request)) {
             throw ResponseStatusException(HttpStatus.CONFLICT, "Invalid request data")
         }
@@ -50,7 +50,7 @@ class UserService : JwtAuthorized(), UserServiceInterface {
         return userRepository.findOne(userId)
     }
 
-    override fun patchUser(userId: Long, request: UpdateUserRequest, authHeader: String?): User {
+    override fun updateUser(userId: Long, request: UpdateUserRequest, authHeader: String?): User {
         return ifAuthorizedOn(userId, authHeader) {
             val query = toUpdateQuery(userId, request)
             genericQueryRepository.execute(query)

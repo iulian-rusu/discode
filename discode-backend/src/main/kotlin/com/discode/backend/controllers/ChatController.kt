@@ -34,7 +34,7 @@ class ChatController: JwtAuthorized() {
     ): ResponseEntity<Chat> {
         return try {
             authorizedScope {
-                HttpResponse.created(chatService.postChat(request, authHeader))
+                HttpResponse.created(chatService.createChat(request, authHeader))
             }
         } catch (e: Exception) {
             logger.error("POST /api/chats [ownerId=${request.ownerId}]: $e")
@@ -80,7 +80,7 @@ class ChatController: JwtAuthorized() {
     ): ResponseEntity<ChatMember> {
         return try {
             authorizedScope {
-                ResponseEntity.ok(chatService.postMember(chatId, request, authHeader))
+                ResponseEntity.ok(chatService.addMember(chatId, request, authHeader))
             }
         } catch (e: Exception) {
             logger.error("POST /api/chats/$chatId/members: $e")
@@ -98,7 +98,7 @@ class ChatController: JwtAuthorized() {
         return try {
             authorizedScope {
                 val query = UpdateChatMemberQuery(chatId, userId, request)
-                ResponseEntity.ok(chatService.patchMember(query, authHeader))
+                ResponseEntity.ok(chatService.updateMember(query, authHeader))
             }
         } catch (e: Exception) {
             logger.error("POST /api/chats/$chatId/members/$userId: $e")

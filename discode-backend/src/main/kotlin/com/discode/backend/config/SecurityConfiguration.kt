@@ -26,8 +26,6 @@ class SecurityConfiguration(private val jwtProvider: JwtProvider) : WebSecurityC
     private lateinit var userDetailService: UserDetailsService
 
     override fun configure(httpSecurity: HttpSecurity) {
-        val jwtFilter = JwtAuthenticationFilter(jwtProvider)
-
         httpSecurity.cors().and()
             .csrf().disable()
             .authorizeRequests()
@@ -37,6 +35,7 @@ class SecurityConfiguration(private val jwtProvider: JwtProvider) : WebSecurityC
             .and().exceptionHandling().authenticationEntryPoint(JwtAuthenticationEntryPoint())
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+        val jwtFilter = JwtAuthenticationFilter(jwtProvider)
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
