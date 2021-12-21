@@ -15,6 +15,7 @@ interface ChatServiceInterface {
     fun getAllMembers(chatId: Long, authHeader: String?): List<ChatMember>
     fun addMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember
     fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember
+    fun deleteMember(chatId: Long, userId: Long, authHeader: String?): ChatMember
     fun getAllMessages(query: SearchMessageQuery, authHeader: String?): List<Message>
     fun postMessage(chatId: Long, request: PostMessageRequest, authHeader: String?): Message
 }

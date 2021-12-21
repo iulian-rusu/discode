@@ -25,7 +25,7 @@ class ChatController : ScopeGuarded(ChatController::class) {
 
     @PostMapping("")
     fun postChat(
-        @RequestBody(required = true) request: CreateChatRequest,
+        @RequestBody request: CreateChatRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Chat> {
         return guardedWith(HttpStatus.NOT_ACCEPTABLE, "Invalid chat data") {
@@ -68,12 +68,23 @@ class ChatController : ScopeGuarded(ChatController::class) {
     fun patchMember(
         @PathVariable chatId: Long,
         @PathVariable userId: Long,
-        @RequestBody(required = true) request: UpdateChatMemberRequest,
+        @RequestBody request: UpdateChatMemberRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<ChatMember> {
         return guardedWith(HttpStatus.NOT_FOUND, "Chat member not found") {
             val query = UpdateChatMemberQuery(chatId, userId, request)
             ResponseEntity.ok(chatService.updateMember(query, authHeader))
+        }
+    }
+
+    @DeleteMapping("/{chatId}/members/{userId}")
+    fun deleteMember(
+        @PathVariable chatId: Long,
+        @PathVariable userId: Long,
+        @RequestHeader("Authorization") authHeader: String?
+    ): ResponseEntity<ChatMember> {
+        return guardedWith(HttpStatus.NOT_FOUND, "Chat member not found") {
+            ResponseEntity.ok(chatService.deleteMember(chatId, userId, authHeader))
         }
     }
 
@@ -92,7 +103,7 @@ class ChatController : ScopeGuarded(ChatController::class) {
     @PostMapping("/{chatId}/messages")
     fun postMessage(
         @PathVariable chatId: Long,
-        @RequestBody(required = true) request: PostMessageRequest,
+        @RequestBody request: PostMessageRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Message> {
         return guardedWith(HttpStatus.NOT_FOUND, "Chat not found") {

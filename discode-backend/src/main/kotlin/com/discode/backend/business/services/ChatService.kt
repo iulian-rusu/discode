@@ -59,9 +59,14 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     }
 
     override fun addMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember {
-        return ifAuthorizedAs(request.userId, authHeader) {
-            chatRepository.addMember(chatId, request)
-        }
+        return ifAuthorized(authHeader,
+            authorizer = { details ->
+                details.isAdmin || chatRepository.isOwner(chatId, details.userId)
+            },
+            action = {
+                chatRepository.addMember(chatId, request)
+            }
+        )
     }
 
     override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
@@ -69,6 +74,19 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
             genericQueryRepository.execute(query)
             chatRepository.findMember(query.chatId, query.userId)
         }
+    }
+
+    override fun deleteMember(chatId: Long, userId: Long, authHeader: String?): ChatMember {
+        return ifAuthorized(authHeader,
+            authorizer = { details ->
+                if (details.userId == userId)
+                    throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot remove self from chat")
+                details.isAdmin || chatRepository.isOwner(chatId, details.userId)
+            },
+            action = {
+                chatRepository.deleteMember(chatId, userId)
+            }
+        )
     }
 
     override fun getAllMessages(query: SearchMessageQuery, authHeader: String?): List<Message> {

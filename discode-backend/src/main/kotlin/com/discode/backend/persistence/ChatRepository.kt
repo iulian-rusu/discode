@@ -62,7 +62,8 @@ class ChatRepository : RepositoryBase() {
 
     fun findMember(chatId: Long, userId: Long): ChatMember {
         return jdbcTemplate.query(
-            "SELECT * FROM chat_members WHERE chat_id = ? LIMIT 1", ChatMemberRowMapper(), chatId
+            "SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? LIMIT 1",
+            ChatMemberRowMapper(), chatId, userId
         ).first()
     }
 
@@ -74,9 +75,25 @@ class ChatRepository : RepositoryBase() {
         return ChatMember(chatId, reuqest.userId, 'g')
     }
 
+    fun deleteMember(chatId: Long, userId: Long): ChatMember {
+        val member = findMember(chatId, userId)
+        jdbcTemplate.update(
+            "DELETE FROM chat_members WHERE chat_id = ? AND user_id = ?",
+            chatId, userId
+        )
+        return member
+    }
+
     fun isMember(chatId: Long, userId: Long): Boolean {
         return jdbcTemplate.queryForObject(
             "SELECT EXISTS (SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ?)",
+            Boolean::class.java, chatId, userId
+        )
+    }
+
+    fun isOwner(chatId: Long, userId: Long): Boolean {
+        return jdbcTemplate.queryForObject(
+            "SELECT EXISTS (SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? AND status = 'o')",
             Boolean::class.java, chatId, userId
         )
     }
