@@ -27,14 +27,14 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     private lateinit var genericQueryRepository: GenericQueryRepository
 
     override fun createChat(request: CreateChatRequest, authHeader: String?): Chat {
-        return ifAuthorizedOn(request.ownerId, authHeader) {
+        return ifAuthorizedAs(request.ownerId, authHeader) {
             chatRepository.save(request)
         }
     }
 
     override fun deleteChat(chatId: Long, authHeader: String?): Chat {
         val ownerId = chatRepository.findOwnerId(chatId)
-        return ifAuthorizedOn(ownerId, authHeader) {
+        return ifAuthorizedAs(ownerId, authHeader) {
             val toDelete = chatRepository.findOne(chatId)
             chatRepository.deleteOne(toDelete.chatId)
             toDelete
@@ -59,13 +59,13 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     }
 
     override fun addMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember {
-        return ifAuthorizedOn(request.userId, authHeader) {
+        return ifAuthorizedAs(request.userId, authHeader) {
             chatRepository.addMember(chatId, request)
         }
     }
 
     override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
-        return ifAuthorizedOn(query.userId, authHeader) {
+        return ifAuthorizedAs(query.userId, authHeader) {
             genericQueryRepository.execute(query)
             chatRepository.findMember(query.chatId, query.userId)
         }

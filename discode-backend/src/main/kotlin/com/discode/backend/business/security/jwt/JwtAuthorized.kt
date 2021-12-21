@@ -9,29 +9,29 @@ import org.springframework.web.server.ResponseStatusException
 @Component
 abstract class JwtAuthorized {
     companion object {
-        private fun unauthorized(): Nothing =
+        private fun throwUnauthorized(): Nothing =
             throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing JWT")
 
-        private fun forbidden(): Nothing =
+        private fun throwForbidden(): Nothing =
             throw ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions")
     }
 
     @Autowired
     protected lateinit var jwtProvider: JwtProvider
 
-    protected fun <T> ifAuthorizedOn(userId: Long, header: String?, action: () -> T): T {
-        val token = jwtProvider.getToken(header) ?: unauthorized()
+    protected fun <T> ifAuthorizedAs(userId: Long, header: String?, action: () -> T): T {
+        val token = jwtProvider.getToken(header) ?: throwUnauthorized()
         val details = jwtProvider.getUserDetails(token)
-        if (details.userId == userId || details.isAdmin)
+        if (details.userId == userId)
             return action()
-        forbidden()
+        throwForbidden()
     }
 
     protected fun <T> ifAuthorized(header: String?, authorizer: (SimpleUserDetails) -> Boolean, action: () -> T): T {
-        val token = jwtProvider.getToken(header) ?: unauthorized()
+        val token = jwtProvider.getToken(header) ?: throwUnauthorized()
         val details = jwtProvider.getUserDetails(token)
         if (authorizer(details))
             return action()
-        forbidden()
+        throwForbidden()
     }
 }

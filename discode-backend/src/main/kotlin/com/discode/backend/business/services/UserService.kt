@@ -51,7 +51,7 @@ class UserService : JwtAuthorized(), UserServiceInterface {
     }
 
     override fun updateUser(userId: Long, request: UpdateUserRequest, authHeader: String?): User {
-        return ifAuthorizedOn(userId, authHeader) {
+        return ifAuthorizedAs(userId, authHeader) {
             val query = toUpdateQuery(userId, request)
             genericQueryRepository.execute(query)
             try {
@@ -63,7 +63,7 @@ class UserService : JwtAuthorized(), UserServiceInterface {
     }
 
     override fun deleteUser(userId: Long, authHeader: String?): User {
-        return ifAuthorizedOn(userId, authHeader) {
+        return ifAuthorizedAs(userId, authHeader) {
             val toDelete = userRepository.findOne(userId)
             userRepository.deleteOne(toDelete.userId)
             toDelete
@@ -71,7 +71,7 @@ class UserService : JwtAuthorized(), UserServiceInterface {
     }
 
     override fun getUserChats(userId: Long, searchParams: Map<String, String>, authHeader: String?): List<Chat> {
-        return ifAuthorizedOn(userId, authHeader) {
+        return ifAuthorizedAs(userId, authHeader) {
             val query = SearchChatQuery(userId, searchParams)
             genericQueryRepository.find(query, ChatRowMapper())
                 .toList()
