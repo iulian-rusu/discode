@@ -8,6 +8,7 @@ import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.ChatMember
 import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.Message
+import com.discode.backend.business.security.SimpleUserDetails
 import com.discode.backend.business.security.jwt.JwtAuthorized
 import com.discode.backend.persistence.ChatRepository
 import com.discode.backend.persistence.GenericQueryRepository
@@ -65,6 +66,8 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
                 details.isAdmin || chatRepository.isOwner(chatId, details.userId)
             },
             action = {
+                if (chatRepository.isMember(chatId, request.userId))
+                    throw ResponseStatusException(HttpStatus.CONFLICT, "User is already in that chat")
                 chatRepository.addMember(chatId, request)
             }
         )
@@ -79,10 +82,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
         return ifAuthorized(
             header = authHeader,
             authorizer = { details ->
-                val isOwner = chatRepository.isOwner(query.chatId, details.userId)
-                val updatingSelf = query.userId == details.userId
-                val isLeaving = query.status == ChatMemberStatus.LEFT.code
-                details.isAdmin || if (isLeaving) (updatingSelf xor isOwner) else isOwner
+                authorizeMemberUpdate(details, query)
             },
             action = {
                 genericQueryRepository.execute(query)
@@ -125,5 +125,21 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
                 chatRepository.addMessage(chatMember, request)
             }
         )
+    }
+
+    private fun authorizeMemberUpdate(details: SimpleUserDetails, query: UpdateChatMemberQuery): Boolean {
+        if (details.isAdmin)
+            return true
+
+        val isInvite = query.status == ChatMemberStatus.GUEST.code
+        val isOwner = chatRepository.isOwner(query.chatId, details.userId)
+
+        if (isInvite)
+            return isOwner
+
+        if (query.userId == details.userId && isOwner)
+            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Owners cannot leave from their chats")
+
+        return true
     }
 }

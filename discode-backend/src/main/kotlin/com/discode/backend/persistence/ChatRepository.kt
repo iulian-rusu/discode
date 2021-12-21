@@ -51,7 +51,7 @@ class ChatRepository : RepositoryBase() {
     fun findOwnerId(chatId: Long): Long {
         return jdbcTemplate.queryForObject(
             "SELECT user_id FROM chat_members WHERE chat_id = ? AND status = ?",
-            Long::class.java, chatId, ChatMemberStatus.OWNER
+            Long::class.java, chatId, ChatMemberStatus.OWNER.code
         )
     }
 
@@ -76,7 +76,7 @@ class ChatRepository : RepositoryBase() {
                 .apply {
                     setLong(1, chatId)
                     setLong(2, request.userId)
-                    setString(3, ChatMemberStatus.GUEST.toString())
+                    setString(3, ChatMemberStatus.GUEST.code)
                 }
         }, keyHolder)
         return ChatMember(
@@ -106,7 +106,7 @@ class ChatRepository : RepositoryBase() {
     fun isOwner(chatId: Long, userId: Long): Boolean {
         return jdbcTemplate.queryForObject(
             "SELECT EXISTS (SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? AND status = ?)",
-            Boolean::class.java, chatId, userId, ChatMemberStatus.OWNER
+            Boolean::class.java, chatId, userId, ChatMemberStatus.OWNER.code
         )
     }
 
