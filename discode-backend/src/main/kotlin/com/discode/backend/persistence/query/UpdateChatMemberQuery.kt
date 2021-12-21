@@ -5,7 +5,7 @@ import com.discode.backend.api.requests.UpdateChatMemberRequest
 class UpdateChatMemberQuery(
     val chatId: Long,
     val userId: Long,
-    status: Char
+    val status: String
 ) : ParametrizedQuery() {
     constructor(chatId: Long, userId: Long, request: UpdateChatMemberRequest) : this(chatId, userId, request.status)
 

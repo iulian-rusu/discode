@@ -27,6 +27,16 @@ abstract class JwtAuthorized {
         throwForbidden()
     }
 
+    protected fun <T> ifAdmin(header: String?, action: () -> T): T {
+        return ifAuthorized(
+            header = header,
+            authorizer = { details ->
+                details.isAdmin
+            },
+            action = action
+        )
+    }
+
     protected fun <T> ifAuthorized(header: String?, authorizer: (SimpleUserDetails) -> Boolean, action: () -> T): T {
         val token = jwtProvider.getToken(header) ?: throwUnauthorized()
         val details = jwtProvider.getUserDetails(token)

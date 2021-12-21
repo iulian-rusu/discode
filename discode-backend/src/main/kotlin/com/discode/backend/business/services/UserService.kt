@@ -71,11 +71,17 @@ class UserService : JwtAuthorized(), UserServiceInterface {
     }
 
     override fun getUserChats(userId: Long, searchParams: Map<String, String>, authHeader: String?): List<Chat> {
-        return ifAuthorizedAs(userId, authHeader) {
-            val query = SearchChatQuery(userId, searchParams)
-            genericQueryRepository.find(query, ChatRowMapper())
-                .toList()
-        }
+        return ifAuthorized(
+            header = authHeader,
+            authorizer = { details ->
+                details.userId == userId || details.isAdmin
+            },
+            action = {
+                val query = SearchChatQuery(userId, searchParams)
+                genericQueryRepository.find(query, ChatRowMapper())
+                    .toList()
+            }
+        )
     }
 
     private fun toUpdateQuery(userId: Long, updateRequest: UpdateUserRequest): UpdateUserQuery {

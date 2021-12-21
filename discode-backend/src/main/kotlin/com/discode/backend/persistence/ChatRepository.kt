@@ -5,6 +5,7 @@ import com.discode.backend.api.requests.PostChatMemberRequest
 import com.discode.backend.api.requests.PostMessageRequest
 import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.ChatMember
+import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.Message
 import com.discode.backend.persistence.mappers.ChatMemberRowMapper
 import com.discode.backend.persistence.mappers.ChatRowMapper
@@ -49,8 +50,8 @@ class ChatRepository : RepositoryBase() {
 
     fun findOwnerId(chatId: Long): Long {
         return jdbcTemplate.queryForObject(
-            "SELECT user_id FROM chat_members WHERE chat_id = ? AND status = 'o'",
-            Long::class.java, chatId
+            "SELECT user_id FROM chat_members WHERE chat_id = ? AND status = ?",
+            Long::class.java, chatId, ChatMemberStatus.OWNER
         )
     }
 
@@ -67,12 +68,23 @@ class ChatRepository : RepositoryBase() {
         ).first()
     }
 
-    fun addMember(chatId: Long, reuqest: PostChatMemberRequest): ChatMember {
-        jdbcTemplate.update(
-            "INSERT INTO chat_members (chat_id, user_id, status) VALUES (?, ?, 'g')",
-            chatId, reuqest.userId
+    fun addMember(chatId: Long, request: PostChatMemberRequest): ChatMember {
+        val keyHolder = GeneratedKeyHolder()
+        val sql = "INSERT INTO chat_members (chat_id, user_id, status) VALUES (?, ?, ?)"
+        jdbcTemplate.update({ connection ->
+            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+                .apply {
+                    setLong(1, chatId)
+                    setLong(2, request.userId)
+                    setString(3, ChatMemberStatus.GUEST.toString())
+                }
+        }, keyHolder)
+        return ChatMember(
+            chatMemberId = keyHolder.key?.toLong() ?: -1,
+            chatId = chatId,
+            userId = request.userId,
+            status = ChatMemberStatus.GUEST.code
         )
-        return ChatMember(chatId, reuqest.userId, 'g')
     }
 
     fun deleteMember(chatId: Long, userId: Long): ChatMember {
@@ -93,27 +105,22 @@ class ChatRepository : RepositoryBase() {
 
     fun isOwner(chatId: Long, userId: Long): Boolean {
         return jdbcTemplate.queryForObject(
-            "SELECT EXISTS (SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? AND status = 'o')",
-            Boolean::class.java, chatId, userId
+            "SELECT EXISTS (SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? AND status = ?)",
+            Boolean::class.java, chatId, userId, ChatMemberStatus.OWNER
         )
     }
 
-    fun addMessage(chatId: Long, request: PostMessageRequest): Message {
-        val author = findMember(chatId, request.userId)
+    fun addMessage(author: ChatMember, request: PostMessageRequest): Message {
         val keyHolder = GeneratedKeyHolder()
         val sql = """
             INSERT INTO messages (chat_member_id, creation_date, content, code_output) 
-            VALUES (
-                (SELECT chat_member_id FROM chat_members WHERE chat_id = ? AND user_id = ?),
-                SYSDATE(), ?, NULL
-            )
+            VALUES (?, SYSDATE(), ?, NULL)
         """
         jdbcTemplate.update({ connection ->
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
                 .apply {
-                    setLong(1, chatId)
-                    setLong(2, request.userId)
-                    setString(3, request.content)
+                    setLong(1, author.chatMemberId)
+                    setString(2, request.content)
                 }
         }, keyHolder)
         return Message(

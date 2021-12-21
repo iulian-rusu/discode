@@ -106,7 +106,7 @@ class ChatController : ScopeGuarded(ChatController::class) {
         @RequestBody request: PostMessageRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Message> {
-        return guardedWith(HttpStatus.NOT_FOUND, "Chat not found") {
+        return guardedWith(HttpStatus.NOT_FOUND, "Chat member not found") {
             HttpResponse.created(chatService.postMessage(chatId, request, authHeader))
         }
     }

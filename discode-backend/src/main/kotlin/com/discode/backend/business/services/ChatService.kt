@@ -6,6 +6,7 @@ import com.discode.backend.api.requests.PostMessageRequest
 import com.discode.backend.business.interfaces.ChatServiceInterface
 import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.ChatMember
+import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.Message
 import com.discode.backend.business.security.jwt.JwtAuthorized
 import com.discode.backend.persistence.ChatRepository
@@ -70,23 +71,30 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     }
 
     override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
-        return ifAuthorizedAs(query.userId, authHeader) {
-            genericQueryRepository.execute(query)
-            chatRepository.findMember(query.chatId, query.userId)
-        }
+        if (!ChatMemberStatus.contains(query.status))
+            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid chat member status: '${query.status}'")
+        if (query.status == ChatMemberStatus.OWNER.code)
+            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot assign another user as chat owner")
+
+        return ifAuthorized(
+            header = authHeader,
+            authorizer = { details ->
+                val isOwner = chatRepository.isOwner(query.chatId, details.userId)
+                val updatingSelf = query.userId == details.userId
+                val isLeaving = query.status == ChatMemberStatus.LEFT.code
+                details.isAdmin || if (isLeaving) (updatingSelf xor isOwner) else isOwner
+            },
+            action = {
+                genericQueryRepository.execute(query)
+                chatRepository.findMember(query.chatId, query.userId)
+            }
+        )
     }
 
     override fun deleteMember(chatId: Long, userId: Long, authHeader: String?): ChatMember {
-        return ifAuthorized(authHeader,
-            authorizer = { details ->
-                if (details.userId == userId)
-                    throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot remove self from chat")
-                details.isAdmin || chatRepository.isOwner(chatId, details.userId)
-            },
-            action = {
-                chatRepository.deleteMember(chatId, userId)
-            }
-        )
+        return ifAdmin(authHeader) {
+            chatRepository.deleteMember(chatId, userId)
+        }
     }
 
     override fun getAllMessages(query: SearchMessageQuery, authHeader: String?): List<Message> {
@@ -108,7 +116,13 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
                 chatRepository.isMember(chatId, request.userId) && details.userId == request.userId
             },
             action = {
-                chatRepository.addMessage(chatId, request)
+                val chatMember = chatRepository.findMember(chatId, request.userId)
+                if (chatMember.status == ChatMemberStatus.LEFT.code)
+                    throw ResponseStatusException(
+                        HttpStatus.NOT_ACCEPTABLE,
+                        "User has left the chat and cannot post messages"
+                    )
+                chatRepository.addMessage(chatMember, request)
             }
         )
     }
