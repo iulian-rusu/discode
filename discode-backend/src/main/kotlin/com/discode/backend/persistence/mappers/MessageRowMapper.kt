@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.mappers
 
-import com.discode.backend.models.Message
+import com.discode.backend.business.models.Message
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 

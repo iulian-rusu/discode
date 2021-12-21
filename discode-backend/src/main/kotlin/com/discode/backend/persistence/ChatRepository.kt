@@ -1,11 +1,11 @@
 package com.discode.backend.persistence
 
-import com.discode.backend.models.Chat
-import com.discode.backend.models.ChatMember
-import com.discode.backend.models.Message
-import com.discode.backend.models.requests.CreateChatRequest
-import com.discode.backend.models.requests.PostChatMemberRequest
-import com.discode.backend.models.requests.PostMessageRequest
+import com.discode.backend.api.requests.CreateChatRequest
+import com.discode.backend.api.requests.PostChatMemberRequest
+import com.discode.backend.api.requests.PostMessageRequest
+import com.discode.backend.business.models.Chat
+import com.discode.backend.business.models.ChatMember
+import com.discode.backend.business.models.Message
 import com.discode.backend.persistence.mappers.ChatMemberRowMapper
 import com.discode.backend.persistence.mappers.ChatRowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
