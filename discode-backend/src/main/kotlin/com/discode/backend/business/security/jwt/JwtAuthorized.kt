@@ -20,11 +20,13 @@ abstract class JwtAuthorized {
     protected lateinit var jwtProvider: JwtProvider
 
     protected fun <T> ifAuthorizedAs(userId: Long, header: String?, action: () -> T): T {
-        val token = jwtProvider.getToken(header) ?: throwUnauthorized()
-        val details = jwtProvider.getUserDetails(token)
-        if (details.userId == userId)
-            return action()
-        throwForbidden()
+        return ifAuthorized(
+            header = header,
+            authorizer = { details ->
+                details.userId == userId
+            },
+            action = action
+        )
     }
 
     protected fun <T> ifAdmin(header: String?, action: () -> T): T {
