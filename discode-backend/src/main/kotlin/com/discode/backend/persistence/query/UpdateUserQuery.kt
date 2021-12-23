@@ -2,7 +2,6 @@ package com.discode.backend.persistence.query
 
 class UpdateUserQuery(
     val userId: Long,
-    val username: String?,
     val passwordHash: String?,
     val firstName: String?,
     val lastName: String?,
@@ -13,7 +12,6 @@ class UpdateUserQuery(
 
     init {
         params["userId"] = userId
-        params["username"] = username
         params["passwordHash"] = passwordHash
         params["firstName"] = firstName
         params["lastName"] = lastName
@@ -23,18 +21,11 @@ class UpdateUserQuery(
     }
 
     override fun getSql(): String {
-        val updateConditions = mutableListOf<String>()
         val sqlBuilder = StringBuilder("START TRANSACTION; ")
-        if (username != null)
-            updateConditions.add("username = :username")
         if (passwordHash != null)
-            updateConditions.add("password_hash = :passwordHash")
-        if (updateConditions.isNotEmpty()) {
-            sqlBuilder.append("UPDATE user_credentials SET ")
-            sqlBuilder.append(updateConditions.joinToString(", "))
-            sqlBuilder.append(" WHERE user_id = :userId; ")
-        }
-        updateConditions.clear()
+            sqlBuilder.append("UPDATE user_credentials SET password_hash = :passwordHash WHERE user_id = :userId; ")
+
+        val updateConditions = mutableListOf<String>()
         if (firstName != null)
             updateConditions.add("first_name = :firstName")
         if (lastName != null)

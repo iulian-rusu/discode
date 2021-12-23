@@ -1,0 +1,145 @@
+package com.discode.backend.business.services
+
+import com.discode.backend.api.requests.CreateChatRequest
+import com.discode.backend.api.requests.PostChatMemberRequest
+import com.discode.backend.api.requests.PostMessageRequest
+import com.discode.backend.business.interfaces.ChatServiceInterface
+import com.discode.backend.business.models.Chat
+import com.discode.backend.business.models.ChatMember
+import com.discode.backend.business.models.ChatMemberStatus
+import com.discode.backend.business.models.Message
+import com.discode.backend.business.security.SimpleUserDetails
+import com.discode.backend.business.security.jwt.JwtAuthorized
+import com.discode.backend.persistence.ChatRepository
+import com.discode.backend.persistence.GenericQueryRepository
+import com.discode.backend.persistence.mappers.MessageRowMapper
+import com.discode.backend.persistence.query.SearchMessageQuery
+import com.discode.backend.persistence.query.UpdateChatMemberQuery
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
+
+@Service
+class ChatService : JwtAuthorized(), ChatServiceInterface {
+    @Autowired
+    private lateinit var chatRepository: ChatRepository
+
+    @Autowired
+    private lateinit var genericQueryRepository: GenericQueryRepository
+
+    override fun createChat(request: CreateChatRequest, authHeader: String?): Chat {
+        return ifAuthorizedAs(request.ownerId, authHeader) {
+            chatRepository.save(request)
+        }
+    }
+
+    override fun deleteChat(chatId: Long, authHeader: String?): Chat {
+        val ownerId = chatRepository.findOwnerId(chatId)
+        return ifAuthorizedAs(ownerId, authHeader) {
+            val toDelete = chatRepository.findOne(chatId)
+            chatRepository.deleteOne(toDelete.chatId)
+            toDelete
+        }
+    }
+
+    override fun getAllMembers(chatId: Long, authHeader: String?): List<ChatMember> {
+        return ifAuthorized(
+            header = authHeader,
+            authorizer = { details ->
+                try {
+                    chatRepository.findOne(chatId)
+                } catch (e: Exception) {
+                    throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find chat")
+                }
+                chatRepository.isMember(chatId, details.userId) || details.isAdmin
+            },
+            action = {
+                chatRepository.findAllMembers(chatId)
+            }
+        )
+    }
+
+    override fun addMember(chatId: Long, request: PostChatMemberRequest, authHeader: String?): ChatMember {
+        return ifAuthorized(authHeader,
+            authorizer = { details ->
+                details.isAdmin || chatRepository.isOwner(chatId, details.userId)
+            },
+            action = {
+                if (chatRepository.isMember(chatId, request.userId))
+                    throw ResponseStatusException(HttpStatus.CONFLICT, "User is already in that chat")
+                chatRepository.addMember(chatId, request)
+            }
+        )
+    }
+
+    override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
+        if (!ChatMemberStatus.contains(query.status))
+            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid chat member status: '${query.status}'")
+        if (query.status == ChatMemberStatus.OWNER.code)
+            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot assign another user as chat owner")
+
+        return ifAuthorized(
+            header = authHeader,
+            authorizer = { details ->
+                authorizeMemberUpdate(details, query)
+            },
+            action = {
+                genericQueryRepository.execute(query)
+                chatRepository.findMember(query.chatId, query.userId)
+            }
+        )
+    }
+
+    override fun deleteMember(chatId: Long, userId: Long, authHeader: String?): ChatMember {
+        return ifAdmin(authHeader) {
+            chatRepository.deleteMember(chatId, userId)
+        }
+    }
+
+    override fun getAllMessages(query: SearchMessageQuery, authHeader: String?): List<Message> {
+        return ifAuthorized(
+            header = authHeader,
+            authorizer = { details ->
+                chatRepository.isMember(query.chatId, details.userId)
+            },
+            action = {
+                genericQueryRepository.find(query, MessageRowMapper())
+            }
+        )
+    }
+
+    override fun postMessage(chatId: Long, request: PostMessageRequest, authHeader: String?): Message {
+        return ifAuthorized(
+            header = authHeader,
+            authorizer = { details ->
+                chatRepository.isMember(chatId, request.userId) && details.userId == request.userId
+            },
+            action = {
+                val chatMember = chatRepository.findMember(chatId, request.userId)
+                if (chatMember.status == ChatMemberStatus.LEFT.code)
+                    throw ResponseStatusException(
+                        HttpStatus.NOT_ACCEPTABLE,
+                        "User has left the chat and cannot post messages"
+                    )
+                chatRepository.addMessage(chatMember, request)
+            }
+        )
+    }
+
+    private fun authorizeMemberUpdate(details: SimpleUserDetails, query: UpdateChatMemberQuery): Boolean {
+        if (details.isAdmin)
+            return true
+
+        val isInvite = query.status == ChatMemberStatus.GUEST.code
+        val isOwner = chatRepository.isOwner(query.chatId, details.userId)
+
+        if (isInvite)
+            return isOwner
+
+        if (query.userId == details.userId && isOwner)
+            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Owners cannot leave from their chats")
+
+        return true
+    }
+}

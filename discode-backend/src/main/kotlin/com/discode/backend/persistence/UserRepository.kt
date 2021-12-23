@@ -1,9 +1,9 @@
 package com.discode.backend.persistence
 
-import com.discode.backend.models.User
-import com.discode.backend.models.requests.RegisterUserRequest
+import com.discode.backend.api.requests.RegisterUserRequest
+import com.discode.backend.business.models.User
+import com.discode.backend.business.security.Encoder
 import com.discode.backend.persistence.mappers.UserRowMapper
-import com.discode.backend.security.Encoder
 import org.springframework.stereotype.Repository
 
 @Repository

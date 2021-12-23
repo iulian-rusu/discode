@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.mappers
 
-import com.discode.backend.models.User
+import com.discode.backend.business.models.User
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
