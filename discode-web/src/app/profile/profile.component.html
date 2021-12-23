@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-center p-5 mt-5">
-    <form class="form-discode-blue" id="profileForm">
+    <form class="form-discode-blue" id="imageForm" [formGroup]="imageFormGroup">
         <!-- Image input -->
         <div class="row mb-4">
             <div class="col">
@@ -14,24 +14,34 @@
             </div>
             <div class="col">
                 <label class="form-label" for="updateImage">Profile picture</label>
-                <input type="file" class="form-control mb-4" id="customFile" />
+                <input type="file" class="form-control mb-4" id="customFile" formControlName="image" />
+                <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.imageFormGroup.invalid" (click)="updateImage()">Update
+                    image</button>
             </div>
         </div>
+    </form>
 
+    <form class="form-discode-blue" id="profileForm" [formGroup]="profileFormGroup">
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <div class="row mb-4">
             <div class="col">
                 <div class="border-primary">
                     <label class="form-label" for="updateFirstName">First name</label>
                     <input type="text" id="updateFirstName" class="form-control" placeholder="First name"
-                        aria-label="First name" />
+                        aria-label="First name" formControlName="firstName" />
+                    <div class="text-danger" *ngIf="isInvalid(profileFormGroup.get('firstName')!)">
+                        <small>Please choose a valid name.</small>
+                    </div>
                 </div>
             </div>
             <div class="col">
                 <div class="border-primary">
                     <label class="form-label" for="updateLastName">Last name</label>
                     <input type="text" id="updateLastName" class="form-control" placeholder="Last name"
-                        aria-label="Last name" />
+                        aria-label="Last name" formControlName="lastName" />
+                    <div class="text-danger" *ngIf="isInvalid(profileFormGroup.get('lastName')!)">
+                        <small>Please choose a valid name.</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,29 +49,50 @@
         <!-- Email input -->
         <div class="mb-4 border-primary">
             <label class="form-label" for="updateEmail">Email address</label>
-            <input type="email" id="updateEmail" placeholder="Email" class="form-control" />
+            <input type="email" id="updateEmail" placeholder="Email" class="form-control" formControlName="email" />
+            <div class="text-danger" *ngIf="isInvalid(profileFormGroup.get('email')!)">
+                <small>Please choose a valid email.</small>
+            </div>
         </div>
 
         <!-- Bio input -->
         <div class="mb-4 border-primary">
             <label class="form-label" for="updateBio">Bio</label>
             <textarea rows="4" cols="60" name="bio" form="profileForm" class="form-control"
-                placeholder="Enter something about you" style="resize: none;"></textarea>
+                placeholder="Enter something about you" style="resize: none;" formControlName="description">
+            </textarea>
         </div>
 
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.profileFormGroup.invalid" (click)="updateProfile()">Update profile</button>
+    </form>
+
+    <div id="errors-profile"></div>
+
+    <form class="form-discode-blue" id="passwordProfileForm" [formGroup]="passwordFormGroup">
         <!-- Password input -->
         <div class="mb-4 border-primary">
             <label class="form-label" for="updatePassword">New password</label>
-            <input type="password" id="updatePassword" placeholder="Password" class="form-control" />
+            <input type="password" id="updatePassword" placeholder="Password" class="form-control password-form-control"
+                formControlName="password" />
+            <div class="text-danger" *ngIf="isInvalid(passwordFormGroup.get('password')!)">
+                <small>Password must be at least 8 characters.</small> 
+            </div>
         </div>
 
         <!-- Confirm Password input -->
         <div class="mb-4 border-primary">
             <label class="form-label" for="updateConfirmPassword">Confirm password</label>
-            <input type="password" id="updateConfirmPassword" placeholder="Password" class="form-control" />
+            <input type="password" id="updateConfirmPassword" placeholder="Password" class="form-control"
+                formControlName="confirmPassword" />
+            <div class="text-danger" *ngIf="passwordFormGroup.hasError('notSame')">
+                <small>Passwords do not match.</small> 
+            </div>
         </div>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">Update</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.passwordFormGroup.invalid" (click)="updatePassword()">Update password</button>
     </form>
+
+    <div id="errors-password"></div>
 </div>
