@@ -51,7 +51,19 @@ class SecurityConfiguration(private val jwtProvider: JwtProvider) : WebSecurityC
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource? {
         val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
+        source.registerCorsConfiguration(
+            "/api/**",
+            CorsConfiguration().apply {
+                maxAge = 3600
+                addAllowedOrigin("*")
+                addAllowedHeader("*")
+                addAllowedMethod(HttpMethod.GET)
+                addAllowedMethod(HttpMethod.POST)
+                addAllowedMethod(HttpMethod.PUT)
+                addAllowedMethod(HttpMethod.PATCH)
+                addAllowedMethod(HttpMethod.DELETE)
+            }
+        )
         return source
     }
 }
