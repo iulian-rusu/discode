@@ -5,9 +5,9 @@ import com.discode.backend.api.requests.UpdateUserRequest
 import com.discode.backend.api.responses.AuthResponse
 import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
-import com.discode.backend.business.interfaces.UserServiceInterface
 import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.User
+import com.discode.backend.business.services.interfaces.UserServiceInterface
 import com.discode.backend.persistence.query.SearchUserQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

@@ -1,6 +1,6 @@
 package com.discode.backend.business.services
 
-import com.discode.backend.business.interfaces.ImageServiceInterface
+import com.discode.backend.business.services.interfaces.ImageServiceInterface
 import org.springframework.core.io.UrlResource
 import org.springframework.stereotype.Service
 import java.awt.Image

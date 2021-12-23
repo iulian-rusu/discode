@@ -2,9 +2,9 @@ package com.discode.backend.business.services
 
 import com.discode.backend.api.requests.AuthRequest
 import com.discode.backend.api.responses.AuthResponse
-import com.discode.backend.business.interfaces.AuthServiceInterface
 import com.discode.backend.business.security.Encoder
 import com.discode.backend.business.security.jwt.JwtAuthorized
+import com.discode.backend.business.services.interfaces.AuthServiceInterface
 import com.discode.backend.persistence.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

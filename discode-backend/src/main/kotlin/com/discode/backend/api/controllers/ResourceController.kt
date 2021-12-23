@@ -1,6 +1,6 @@
 package com.discode.backend.api.controllers
 
-import com.discode.backend.business.interfaces.ImageServiceInterface
+import com.discode.backend.business.services.interfaces.ImageServiceInterface
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

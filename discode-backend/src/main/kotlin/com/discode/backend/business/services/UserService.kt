@@ -3,12 +3,12 @@ package com.discode.backend.business.services
 import com.discode.backend.api.requests.RegisterUserRequest
 import com.discode.backend.api.requests.UpdateUserRequest
 import com.discode.backend.api.responses.AuthResponse
-import com.discode.backend.business.interfaces.ImageServiceInterface
-import com.discode.backend.business.interfaces.UserServiceInterface
 import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.User
 import com.discode.backend.business.security.Encoder
 import com.discode.backend.business.security.jwt.JwtAuthorized
+import com.discode.backend.business.services.interfaces.ImageServiceInterface
+import com.discode.backend.business.services.interfaces.UserServiceInterface
 import com.discode.backend.persistence.GenericQueryRepository
 import com.discode.backend.persistence.UserRepository
 import com.discode.backend.persistence.mappers.ChatRowMapper

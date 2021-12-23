@@ -1,4 +1,4 @@
-package com.discode.backend.business.interfaces
+package com.discode.backend.business.services.interfaces
 
 import org.springframework.core.io.UrlResource
 
