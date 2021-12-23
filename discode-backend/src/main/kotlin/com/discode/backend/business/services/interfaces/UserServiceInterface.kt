@@ -1,4 +1,4 @@
-package com.discode.backend.business.interfaces
+package com.discode.backend.business.services.interfaces
 
 import com.discode.backend.api.requests.RegisterUserRequest
 import com.discode.backend.api.requests.UpdateUserRequest

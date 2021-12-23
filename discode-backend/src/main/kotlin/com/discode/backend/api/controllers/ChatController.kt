@@ -6,10 +6,10 @@ import com.discode.backend.api.requests.PostMessageRequest
 import com.discode.backend.api.requests.UpdateChatMemberRequest
 import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
-import com.discode.backend.business.interfaces.ChatServiceInterface
 import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.ChatMember
 import com.discode.backend.business.models.Message
+import com.discode.backend.business.services.interfaces.ChatServiceInterface
 import com.discode.backend.persistence.query.SearchMessageQuery
 import com.discode.backend.persistence.query.UpdateChatMemberQuery
 import org.springframework.beans.factory.annotation.Autowired

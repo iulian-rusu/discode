@@ -3,13 +3,13 @@ package com.discode.backend.business.services
 import com.discode.backend.api.requests.CreateChatRequest
 import com.discode.backend.api.requests.PostChatMemberRequest
 import com.discode.backend.api.requests.PostMessageRequest
-import com.discode.backend.business.interfaces.ChatServiceInterface
 import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.ChatMember
 import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.Message
 import com.discode.backend.business.security.SimpleUserDetails
 import com.discode.backend.business.security.jwt.JwtAuthorized
+import com.discode.backend.business.services.interfaces.ChatServiceInterface
 import com.discode.backend.persistence.ChatRepository
 import com.discode.backend.persistence.GenericQueryRepository
 import com.discode.backend.persistence.mappers.MessageRowMapper
@@ -137,9 +137,12 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
         if (isInvite)
             return isOwner
 
-        if (query.userId == details.userId && isOwner)
-            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Owners cannot leave from their chats")
-
-        return true
+        if (query.userId == details.userId) {
+            if (isOwner)
+                throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Owners cannot leave from their chats")
+            else
+                return true
+        }
+        return isOwner
     }
 }

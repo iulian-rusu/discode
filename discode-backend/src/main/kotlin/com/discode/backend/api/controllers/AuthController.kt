@@ -3,7 +3,7 @@ package com.discode.backend.api.controllers
 import com.discode.backend.api.requests.AuthRequest
 import com.discode.backend.api.responses.AuthResponse
 import com.discode.backend.api.utils.ScopeGuarded
-import com.discode.backend.business.interfaces.AuthServiceInterface
+import com.discode.backend.business.services.interfaces.AuthServiceInterface
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

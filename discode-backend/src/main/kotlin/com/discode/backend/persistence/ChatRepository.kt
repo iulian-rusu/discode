@@ -20,7 +20,8 @@ class ChatRepository : RepositoryBase() {
     fun save(request: CreateChatRequest): Chat {
         val params = mapOf(
             "ownerId" to request.ownerId,
-            "chatName" to request.chatName
+            "chatName" to request.chatName,
+            "ownerStatus" to ChatMemberStatus.OWNER.code
         )
         namedJdbcTemplate.update(
             """
@@ -28,7 +29,7 @@ class ChatRepository : RepositoryBase() {
                 INSERT INTO chats (chat_name) VALUES (:chatName);
                 INSERT INTO chat_members (chat_id, user_id, status) VALUES (
                     (SELECT chat_id FROM chats WHERE chat_name = :chatName),
-                    :ownerId, 'o'
+                    :ownerId, :ownerStatus
                 );
                 COMMIT;
             """, params

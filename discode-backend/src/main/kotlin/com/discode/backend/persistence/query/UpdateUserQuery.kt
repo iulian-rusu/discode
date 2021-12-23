@@ -38,8 +38,8 @@ class UpdateUserQuery(
             else
                 updateConditions.add("description = NULL")
         }
-        imagePath?.run {
-            if (this.isNotEmpty())
+        imagePath?.let {
+            if (it.isNotEmpty())
                 updateConditions.add("image_path = :imagePath")
             else
                 updateConditions.add("image_path = NULL")
