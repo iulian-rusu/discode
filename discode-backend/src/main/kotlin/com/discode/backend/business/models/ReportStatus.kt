@@ -5,6 +5,6 @@ enum class ReportStatus(val code: String) {
     REVIEWED("r");
 
     companion object {
-        fun contains(element: String) = ChatMemberStatus.values().any { it.code == element }
+        fun contains(element: String) = values().any { it.code == element }
     }
 }
