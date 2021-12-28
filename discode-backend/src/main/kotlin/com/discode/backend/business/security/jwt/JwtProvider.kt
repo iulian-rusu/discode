@@ -1,6 +1,7 @@
 package com.discode.backend.business.security.jwt
 
 import com.discode.backend.business.security.SimpleUserDetails
+import com.discode.backend.persistence.UserBanRepository
 import com.discode.backend.persistence.UserRepository
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -23,6 +24,9 @@ class JwtProvider {
     private lateinit var userRepository: UserRepository
 
     @Autowired
+    private lateinit var userBanRepository: UserBanRepository
+
+    @Autowired
     private lateinit var userDetailsService: UserDetailsService
 
     fun createToken(userId: Long): String {
@@ -39,6 +43,8 @@ class JwtProvider {
 
     fun getUserDetails(token: String): SimpleUserDetails {
         val user = userRepository.findOne(getUserId(token))
+        if (userBanRepository.isBanned(user.userId))
+            throw ResponseStatusException(HttpStatus.FORBIDDEN, "This user has been banned")
         return userDetailsService.loadUserByUsername(user.username) as SimpleUserDetails
     }
     fun getAuthentication(token: String): Authentication {

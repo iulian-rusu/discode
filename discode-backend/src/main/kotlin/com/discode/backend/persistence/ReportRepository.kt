@@ -18,14 +18,14 @@ class ReportRepository : RepositoryBase() {
             """
             INSERT INTO message_reports(message_id, reporter_id, report_date, report_reason, status)
             VALUES (?, ?, SYSDATE(), ?, ?)
-        """, request.messageId, request.reporterId, request.reportReason, ReportStatus.PENDING.code
+        """, request.messageId, request.reporterId, request.reportReason, ReportStatus.PENDING.toString()
         )
         return Report(
             messageId = request.messageId,
             reporterId = request.reporterId,
             reportDate = Date(),
             reportReason = request.reportReason,
-            status = ReportStatus.PENDING.code
+            status = ReportStatus.PENDING.toString()
         )
     }
 

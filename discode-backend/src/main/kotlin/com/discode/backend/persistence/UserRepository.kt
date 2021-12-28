@@ -41,33 +41,37 @@ class UserRepository : RepositoryBase() {
         return findOne(request.username)
     }
 
-    fun findOne(username: String): User =
-        jdbcTemplate.query(
+    fun findOne(username: String): User {
+        return jdbcTemplate.query(
             "SELECT * FROM user_credentials INNER JOIN user_accounts USING(user_id) WHERE username = ?",
             UserRowMapper(), username
         ).first()
+    }
 
-    fun findOne(userId: Long): User =
-        jdbcTemplate.query(
+    fun findOne(userId: Long): User {
+        return jdbcTemplate.query(
             "SELECT * FROM user_credentials INNER JOIN user_accounts USING(user_id) WHERE user_id = ?",
             UserRowMapper(), userId
         ).first()
+    }
 
     fun deleteOne(userId: Long) {
         jdbcTemplate.update("DELETE FROM user_credentials WHERE user_id = ?", userId)
     }
 
-    fun findPasswordHash(username: String) =
-        jdbcTemplate.queryForObject(
+    fun findPasswordHash(username: String): String {
+        return jdbcTemplate.queryForObject(
             "SELECT password_hash FROM user_credentials WHERE username = ?",
             String::class.java,
             username
         )
+    }
 
-    fun isAdmin(userId: Long) =
-        jdbcTemplate.queryForObject(
+    fun isAdmin(userId: Long): Boolean {
+        return jdbcTemplate.queryForObject(
             "SELECT EXISTS (SELECT * FROM admins WHERE user_id = ?)",
             Long::class.java,
             userId
         ) == 1L
+    }
 }

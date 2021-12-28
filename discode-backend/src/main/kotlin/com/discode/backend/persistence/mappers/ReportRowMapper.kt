@@ -9,7 +9,7 @@ class ReportRowMapper : RowMapper<Report> {
         Report(
             messageId = rs.getLong("message_id"),
             reporterId = rs.getLong("reporter_id"),
-            reportDate = rs.getDate("report_date"),
+            reportDate = rs.getTimestamp("report_date"),
             reportReason = rs.getString("report_reason"),
             status = rs.getString("status")
         )

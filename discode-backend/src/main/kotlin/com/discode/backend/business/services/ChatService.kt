@@ -74,9 +74,9 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     }
 
     override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
-        if (!ChatMemberStatus.contains(query.status))
+        if (query.status !in ChatMemberStatus.values().map { it.toString() })
             throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid chat member status: '${query.status}'")
-        if (query.status == ChatMemberStatus.OWNER.code)
+        if (query.status == ChatMemberStatus.OWNER.toString())
             throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot assign another user as chat owner")
 
         return ifAuthorized(
@@ -117,7 +117,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
             },
             action = {
                 val chatMember = chatRepository.findMember(chatId, request.userId)
-                if (chatMember.status == ChatMemberStatus.LEFT.code)
+                if (chatMember.status == ChatMemberStatus.LEFT.toString())
                     throw ResponseStatusException(
                         HttpStatus.NOT_ACCEPTABLE,
                         "User has left the chat and cannot post messages"
@@ -131,7 +131,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
         if (details.isAdmin)
             return true
 
-        val isInvite = query.status == ChatMemberStatus.GUEST.code
+        val isInvite = query.status == ChatMemberStatus.GUEST.toString()
         val isOwner = chatRepository.isOwner(query.chatId, details.userId)
 
         if (isInvite)

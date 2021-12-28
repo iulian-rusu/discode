@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 @Service
-class ReportService: JwtAuthorized(), ReportServiceInterface {
+class ReportService : JwtAuthorized(), ReportServiceInterface {
     @Autowired
     private lateinit var reportRepository: ReportRepository
 
@@ -36,7 +36,7 @@ class ReportService: JwtAuthorized(), ReportServiceInterface {
     }
 
     override fun updateReports(request: UpdateReportsRequest, authHeader: String?): List<Report> {
-        if (!ReportStatus.contains(request.status))
+        if (request.status !in ReportStatus.values().map { it.toString() })
             throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid report status: '${request.status}'")
         return ifAdmin(authHeader) {
             reportRepository.update(request)

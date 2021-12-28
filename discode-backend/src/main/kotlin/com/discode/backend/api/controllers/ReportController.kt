@@ -23,7 +23,7 @@ class ReportController : ScopeGuarded(ReportController::class) {
         @RequestParam searchParams: Map<String, String>,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<List<Report>> {
-        return guardedWith(HttpStatus.NOT_FOUND, "Cannot find reports") {
+        return guardedWith(HttpStatus.BAD_REQUEST, "Cannot process request") {
             ResponseEntity.ok(reportService.getAllReports(SearchReportQuery(searchParams), authHeader))
         }
     }
