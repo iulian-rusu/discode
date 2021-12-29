@@ -17,15 +17,13 @@ class JwtAuthenticationFilter(private val jwtProvider: JwtProvider) : GenericFil
                 SecurityContextHolder.getContext().authentication = auth
             }
             filterChain.doFilter(req, res)
-
         } catch (e: Exception) {
-            logger.error("JWT filter error: $e")
+            logger.error("JWT filter error: ${e.message}")
             res as HttpServletResponse
-            val text = "Invalid JWT"
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, text)
+            val text = "Invalid JWT: ${e.message}"
             res.characterEncoding = "UTF-8"
-            res.writer.print(text)
-            res.writer.close()
+            res.status = 403
+            res.writer.write(text)
         }
     }
 }

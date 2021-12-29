@@ -7,5 +7,5 @@ data class Message(
     val author: ChatMember,
     val creationDate: Date,
     val content: String,
-    val codeOutput: String?
+    var codeOutput: String?
 )

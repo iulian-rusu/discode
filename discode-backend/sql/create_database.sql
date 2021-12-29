@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS user_credentials
 (
-    user_id       INTEGER      NOT NULL AUTO_INCREMENT,
-    username      VARCHAR(64)  NOT NULL,
-    password_hash VARBINARY(64)   NOT NULL,
+    user_id       INTEGER       NOT NULL AUTO_INCREMENT,
+    username      VARCHAR(64)   NOT NULL,
+    password_hash VARBINARY(64) NOT NULL,
     CONSTRAINT pk_user_credentials PRIMARY KEY (user_id),
     CONSTRAINT uk_user_credentials UNIQUE (username)
 );
@@ -28,11 +28,11 @@ CREATE TABLE IF NOT EXISTS user_accounts
 
 CREATE TABLE IF NOT EXISTS user_bans
 (
-    ban_id     INT  NOT NULL AUTO_INCREMENT,
-    user_id    INT  NOT NULL,
-    start_date DATE NOT NULL,
-    end_date   DATE NOT NULL,
-    ban_reason TEXT NOT NULL,
+    ban_id     INT      NOT NULL AUTO_INCREMENT,
+    user_id    INT      NOT NULL,
+    start_date DATETIME NOT NULL,
+    end_date   DATETIME NOT NULL,
+    ban_reason TEXT     NOT NULL,
     CONSTRAINT pk_user_bans PRIMARY KEY (ban_id),
     CONSTRAINT fk_user_bans_user_id FOREIGN KEY (user_id) REFERENCES user_credentials (user_id) ON DELETE CASCADE
 );
@@ -46,10 +46,10 @@ CREATE TABLE IF NOT EXISTS chats
 
 CREATE TABLE IF NOT EXISTS chat_members
 (
-    chat_member_id INT  NOT NULL AUTO_INCREMENT,
-    chat_id        INT  NOT NULL,
-    user_id        INT  NOT NULL,
-    status         CHAR NOT NULL,
+    chat_member_id INT         NOT NULL AUTO_INCREMENT,
+    chat_id        INT         NOT NULL,
+    user_id        INT         NOT NULL,
+    status         VARCHAR(16) NOT NULL,
     CONSTRAINT pk_chat_members PRIMARY KEY (chat_member_id),
     CONSTRAINT fk_chat_members_chat_id FOREIGN KEY (chat_id) REFERENCES chats (chat_id) ON DELETE CASCADE,
     CONSTRAINT fk_chat_members_user_id FOREIGN KEY (user_id) REFERENCES user_credentials (user_id) ON DELETE CASCADE,
@@ -58,10 +58,10 @@ CREATE TABLE IF NOT EXISTS chat_members
 
 CREATE TABLE IF NOT EXISTS messages
 (
-    message_id     INT  NOT NULL AUTO_INCREMENT,
-    chat_member_id INT  NOT NULL,
-    creation_date  DATE NOT NULL,
-    content        TEXT NOT NULL,
+    message_id     INT      NOT NULL AUTO_INCREMENT,
+    chat_member_id INT      NOT NULL,
+    creation_date  DATETIME NOT NULL,
+    content        TEXT     NOT NULL,
     code_output    TEXT,
     CONSTRAINT pk_messages PRIMARY KEY (message_id),
     CONSTRAINT fk_messages_chat_member_id FOREIGN KEY (chat_member_id) REFERENCES chat_members (chat_member_id) ON DELETE CASCADE
@@ -69,11 +69,11 @@ CREATE TABLE IF NOT EXISTS messages
 
 CREATE TABLE IF NOT EXISTS message_reports
 (
-    message_id    INT  NOT NULL,
-    reporter_id   INT  NOT NULL,
-    report_date   DATE NOT NULL,
+    message_id    INT         NOT NULL,
+    reporter_id   INT         NOT NULL,
+    report_date   DATETIME    NOT NULL,
     report_reason TEXT,
-    status        CHAR NOT NULL,
+    status        VARCHAR(16) NOT NULL,
     CONSTRAINT pk_message_reports PRIMARY KEY (message_id, reporter_id),
     CONSTRAINT fk_message_reports_message_id FOREIGN KEY (message_id) REFERENCES messages (message_id) ON DELETE CASCADE,
     CONSTRAINT fk_message_reports_reporter_id FOREIGN KEY (reporter_id) REFERENCES user_credentials (user_id) ON DELETE CASCADE
@@ -97,7 +97,3 @@ ALTER TABLE user_accounts
     ADD CONSTRAINT ck_user_accounts_email CHECK (email REGEXP '^\\w+(?:[-.]\\w+)*@\\w+(?:[-.]\\w+)+$');
 ALTER TABLE chats
     ADD CONSTRAINT ck_chats_chat_name CHECK (LENGTH(chat_name) > 0);
-ALTER TABLE chat_members
-    ADD CONSTRAINT ck_chat_members_status CHECK (status REGEXP '^o|g|l$'); -- owner|guest|left
-ALTER TABLE message_reports
-    ADD CONSTRAINT ck_message_reports_status CHECK (status REGEXP '^p|r$'); -- pending|reviewed

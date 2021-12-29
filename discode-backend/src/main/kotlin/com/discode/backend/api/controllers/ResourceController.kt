@@ -24,6 +24,6 @@ class ResourceController {
             ResponseEntity.ok()
                 .contentType(MediaTypeFactory.getMediaType(it).orElse(MediaType.APPLICATION_OCTET_STREAM))
                 .body(it)
-        } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find resource")
+        } ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot process request")
     }
 }

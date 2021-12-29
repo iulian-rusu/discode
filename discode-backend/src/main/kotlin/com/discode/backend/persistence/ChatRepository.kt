@@ -9,6 +9,7 @@ import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.Message
 import com.discode.backend.persistence.mappers.ChatMemberRowMapper
 import com.discode.backend.persistence.mappers.ChatRowMapper
+import com.discode.backend.persistence.mappers.MessageRowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.sql.Statement
@@ -21,7 +22,7 @@ class ChatRepository : RepositoryBase() {
         val params = mapOf(
             "ownerId" to request.ownerId,
             "chatName" to request.chatName,
-            "ownerStatus" to ChatMemberStatus.OWNER.code
+            "ownerStatus" to ChatMemberStatus.OWNER.toString()
         )
         namedJdbcTemplate.update(
             """
@@ -52,7 +53,7 @@ class ChatRepository : RepositoryBase() {
     fun findOwnerId(chatId: Long): Long {
         return jdbcTemplate.queryForObject(
             "SELECT user_id FROM chat_members WHERE chat_id = ? AND status = ?",
-            Long::class.java, chatId, ChatMemberStatus.OWNER.code
+            Long::class.java, chatId, ChatMemberStatus.OWNER.toString()
         )
     }
 
@@ -77,14 +78,14 @@ class ChatRepository : RepositoryBase() {
                 .apply {
                     setLong(1, chatId)
                     setLong(2, request.userId)
-                    setString(3, ChatMemberStatus.GUEST.code)
+                    setString(3, ChatMemberStatus.GUEST.toString())
                 }
         }, keyHolder)
         return ChatMember(
             chatMemberId = keyHolder.key?.toLong() ?: -1,
             chatId = chatId,
             userId = request.userId,
-            status = ChatMemberStatus.GUEST.code
+            status = ChatMemberStatus.GUEST.toString()
         )
     }
 
@@ -107,7 +108,7 @@ class ChatRepository : RepositoryBase() {
     fun isOwner(chatId: Long, userId: Long): Boolean {
         return jdbcTemplate.queryForObject(
             "SELECT EXISTS (SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? AND status = ?)",
-            Boolean::class.java, chatId, userId, ChatMemberStatus.OWNER.code
+            Boolean::class.java, chatId, userId, ChatMemberStatus.OWNER.toString()
         )
     }
 
@@ -131,5 +132,22 @@ class ChatRepository : RepositoryBase() {
             content = request.content,
             codeOutput = null
         )
+    }
+
+    fun findMessage(messageId: Long): Message {
+        return jdbcTemplate.query(
+            "SELECT * FROM messages m INNER JOIN chat_members cm USING (chat_member_id) WHERE message_id = ?",
+            MessageRowMapper(), messageId
+        ).first()
+    }
+
+    fun updateCodeOutput(message: Message): Message {
+        return message.also {
+            jdbcTemplate.update(
+                "UPDATE messages SET code_output = ? WHERE message_id = ?",
+                it.codeOutput,
+                it.messageId
+            )
+        }
     }
 }
