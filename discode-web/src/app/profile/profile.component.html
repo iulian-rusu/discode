@@ -1,25 +1,29 @@
 <div class="d-flex align-items-center justify-content-center p-5 mt-5">
-    <form class="form-discode-blue" id="imageForm" [formGroup]="imageFormGroup">
+    <form class="form-discode-blue" id="imageForm">
         <!-- Image input -->
         <div class="row mb-4">
             <div class="col">
                 <div class="mb-4 border-primary text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100" fill="currentColor"
-                        class="bi bi-person-bounding-box m-4" viewBox="0 0 16 16">
+                        class="bi bi-person-bounding-box m-4" viewBox="0 0 16 16" *ngIf="!image">
                         <path
                             d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                     </svg>
+
+                    <img [src]=image *ngIf="image" width="100">
                 </div>
             </div>
             <div class="col">
                 <label class="form-label" for="updateImage">Profile picture</label>
-                <input type="file" class="form-control mb-4" id="customFile" formControlName="image" />
-                <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.imageFormGroup.invalid" (click)="updateImage()">Update
+                <input type="file" #fileInput [multiple]="false" class="form-control mb-4" id="customFile" />
+                <button type="submit" class="btn btn-primary btn-block mb-4" (click)="updateImage(fileInput)">Update
                     image</button>
             </div>
         </div>
     </form>
+
+    <div id="message-image"></div>
 
     <form class="form-discode-blue" id="profileForm" [formGroup]="profileFormGroup">
         <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -64,10 +68,11 @@
         </div>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.profileFormGroup.invalid" (click)="updateProfile()">Update profile</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.profileFormGroup.invalid"
+            (click)="updateProfile()">Update profile</button>
     </form>
 
-    <div id="errors-profile"></div>
+    <div id="message-profile"></div>
 
     <form class="form-discode-blue" id="passwordProfileForm" [formGroup]="passwordFormGroup">
         <!-- Password input -->
@@ -76,7 +81,7 @@
             <input type="password" id="updatePassword" placeholder="Password" class="form-control password-form-control"
                 formControlName="password" />
             <div class="text-danger" *ngIf="isInvalid(passwordFormGroup.get('password')!)">
-                <small>Password must be at least 8 characters.</small> 
+                <small>Password must be at least 8 characters.</small>
             </div>
         </div>
 
@@ -86,13 +91,14 @@
             <input type="password" id="updateConfirmPassword" placeholder="Password" class="form-control"
                 formControlName="confirmPassword" />
             <div class="text-danger" *ngIf="passwordFormGroup.hasError('notSame')">
-                <small>Passwords do not match.</small> 
+                <small>Passwords do not match.</small>
             </div>
         </div>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.passwordFormGroup.invalid" (click)="updatePassword()">Update password</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="this.passwordFormGroup.invalid"
+            (click)="updatePassword()">Update password</button>
     </form>
 
-    <div id="errors-password"></div>
+    <div id="message-password"></div>
 </div>

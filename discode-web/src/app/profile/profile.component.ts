@@ -8,6 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from '../shared/models/user.model';
@@ -23,12 +24,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private userId: string;
   public profileFormGroup: FormGroup;
   public passwordFormGroup: FormGroup;
-  public imageFormGroup: FormGroup;
+  base64textString: string | undefined;
+  imagePath: any;
+  image: any;
 
   constructor(
     private readonly userService: UserService,
     private readonly router: Router,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer
   ) {
     this.profileFormGroup = this.formBuilder.group({
       firstName: [
@@ -68,10 +72,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       { validators: this.checkPasswords }
     );
 
-    this.imageFormGroup = this.formBuilder.group({
-      image: ['', Validators.required],
-    });
-
     this.subs = new Array<Subscription>();
     this.userId = JSON.parse(sessionStorage.getItem('user')!)['userId'];
   }
@@ -83,48 +83,122 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    //this.userId = JSON.parse(sessionStorage.getItem('user')!)['id'];
     this.subs.push(
-      this.userService.getUser(this.userId).subscribe((data: HttpResponse<any>) => {
-        if (data.status == 200) {
-          console.log(data.body);
-          this.profileFormGroup.get("firstName")?.setValue(data.body["firstName"]);
-          this.profileFormGroup.get("lastName")?.setValue(data.body["lastName"]);
-          this.profileFormGroup.get("email")?.setValue(data.body["email"]);
-          this.profileFormGroup.get("description")?.setValue(data.body["description"]);
-        }
-      })
+      this.userService
+        .getUser(this.userId)
+        .subscribe((data: HttpResponse<any>) => {
+          if (data.status == 200) {
+            this.profileFormGroup
+              .get('firstName')
+              ?.setValue(data.body['firstName']);
+
+            this.profileFormGroup
+              .get('lastName')
+              ?.setValue(data.body['lastName']);
+
+            this.profileFormGroup.get('email')?.setValue(data.body['email']);
+
+            this.profileFormGroup
+              .get('description')
+              ?.setValue(data.body['description']);
+
+            this.imagePath = data.body['imagePath'];
+
+            if (this.imagePath) {
+              this.subs.push(
+                this.userService
+                  .getProfileImage(this.imagePath)
+                  .subscribe((data: any) => {
+                    let unsafeImageUrl = URL.createObjectURL(data);
+                    this.image =
+                      this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+                  })
+              );
+            }
+          }
+        })
     );
-    
   }
 
-  updateImage(): void {}
+  reloadComponent() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([this.router.url]);
+  }
 
   updateProfile(): void {
     const data: User = this.profileFormGroup.getRawValue();
-    this.cleanErrors("errors-profile");
+    this.cleanErrors('message-profile');
     this.subs.push(
-      this.userService
-        .updateUser(this.userId, data)
-        .subscribe((data: HttpResponse<any>) => {
+      this.userService.updateUser(this.userId, data).subscribe(
+        (data: HttpResponse<any>) => {
           if (data.status == 200) {
-            this.router.navigate([this.router.url]);
+            alert('Profile updated successfully!');
+            this.reloadComponent();
+          } else {
+            this.handleError('message-profile');
           }
-        }, this.handleErrorUpdateProfile)
+        },
+        (err) => {
+          this.handleError('message-profile');
+        }
+      )
     );
   }
 
   updatePassword(): void {
     const data: User = this.passwordFormGroup.getRawValue();
-    this.cleanErrors("errors-password");
+    this.cleanErrors('message-password');
     this.subs.push(
-      this.userService
-        .updateUser(this.userId, data)
-        .subscribe((data: HttpResponse<any>) => {
+      this.userService.updateUser(this.userId, data).subscribe(
+        (data: HttpResponse<any>) => {
           if (data.status == 200) {
-            this.router.navigate([this.router.url]);
+            alert('Password changed!');
+            this.reloadComponent();
+          } else {
+            this.handleError('message-password');
           }
-        }, this.handleErrorUpdatePassword)
+        },
+        (err) => {
+          this.handleError('message-password');
+        }
+      )
+    );
+  }
+
+  updateImage(fileInput: any): void {
+    let files: File[] = fileInput.files;
+    var file = files[0];
+    this.cleanErrors('message-image');
+
+    if (files.length < 1) {
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = this.handleReaderLoaded.bind(this);
+    reader.readAsBinaryString(file);
+  }
+
+  handleReaderLoaded(readerEvt: any) {
+    var binaryString = readerEvt.target.result;
+    const data: User = new User();
+    data.image = btoa(binaryString);
+
+    this.subs.push(
+      this.userService.updateUser(this.userId, data).subscribe(
+        (data: HttpResponse<any>) => {
+          if (data.status == 200) {
+            alert('Profile picture changed!');
+            this.reloadComponent();
+          } else {
+            this.handleError('message-image');
+          }
+        },
+        (err) => {
+          this.handleError('message-image');
+        }
+      )
     );
   }
 
@@ -140,20 +214,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return form.invalid && form.dirty;
   }
 
-  handleErrorUpdateProfile(responseError: HttpErrorResponse): void {
+  handleError(
+    elementId: string,
+    message: string = 'Something went wrong! Please try again.'
+  ) {
     let errorElement = document.createElement('div');
     errorElement.className = 'alert alert-danger';
-
-    errorElement.innerHTML = 'Something went wrong! Please try again.';
-    document.getElementById('errors')?.appendChild(errorElement);
-  }
-
-  handleErrorUpdatePassword(responseError: HttpErrorResponse): void {
-    let errorElement = document.createElement('div');
-    errorElement.className = 'alert alert-danger';
-
-    errorElement.innerHTML = 'Something went wrong! Please try again.';
-    document.getElementById('errors')?.appendChild(errorElement);
+    errorElement.innerHTML = message;
+    document.getElementById(elementId)?.appendChild(errorElement);
   }
 
   cleanErrors(errors: string): void {

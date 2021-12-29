@@ -5,5 +5,5 @@ export class User {
     email: string | undefined;
     password: string | undefined;
     description: string | undefined;
-    image: Blob | undefined;
+    image: string | undefined;
 }
