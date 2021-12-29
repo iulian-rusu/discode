@@ -1,6 +1,6 @@
 package com.discode.backend.business.services
 
-import com.discode.backend.api.requests.PostUserBanRequest
+import com.discode.backend.api.requests.BanUserRequest
 import com.discode.backend.business.models.UserBan
 import com.discode.backend.business.security.jwt.JwtAuthorized
 import com.discode.backend.business.services.interfaces.UserBanServiceInterface
@@ -31,7 +31,7 @@ class UserBanService: JwtAuthorized(), UserBanServiceInterface {
         }
     }
 
-    override fun createBan(request: PostUserBanRequest, authHeader: String?): UserBan {
+    override fun createBan(request: BanUserRequest, authHeader: String?): UserBan {
         return ifAdmin(authHeader) {
             if (userRepository.isAdmin(request.userId)) {
                 throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot ban admin user")

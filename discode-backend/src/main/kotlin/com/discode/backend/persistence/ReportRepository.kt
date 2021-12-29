@@ -1,6 +1,6 @@
 package com.discode.backend.persistence
 
-import com.discode.backend.api.requests.PostReportRequest
+import com.discode.backend.api.requests.ReportMessageRequest
 import com.discode.backend.api.requests.UpdateReportsRequest
 import com.discode.backend.business.models.Report
 import com.discode.backend.business.models.ReportStatus
@@ -13,7 +13,7 @@ class ReportRepository : RepositoryBase() {
     fun findReportsForMessage(messageId: Long): List<Report> =
         jdbcTemplate.query("SELECT * FROM message_reports WHERE message_id = ?", ReportRowMapper(), messageId)
 
-    fun save(request: PostReportRequest): Report {
+    fun save(request: ReportMessageRequest): Report {
         jdbcTemplate.update(
             """
             INSERT INTO message_reports(message_id, reporter_id, report_date, report_reason, status)

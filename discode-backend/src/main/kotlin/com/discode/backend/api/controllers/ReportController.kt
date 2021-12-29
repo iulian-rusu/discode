@@ -1,6 +1,6 @@
 package com.discode.backend.api.controllers
 
-import com.discode.backend.api.requests.PostReportRequest
+import com.discode.backend.api.requests.ReportMessageRequest
 import com.discode.backend.api.requests.UpdateReportsRequest
 import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
@@ -30,7 +30,7 @@ class ReportController : ScopeGuarded(ReportController::class) {
 
     @PostMapping("")
     fun postReport(
-        @RequestBody request: PostReportRequest,
+        @RequestBody request: ReportMessageRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Report> {
         return guardedWith(HttpStatus.NOT_ACCEPTABLE, "Cannot create report - possible duplicate") {

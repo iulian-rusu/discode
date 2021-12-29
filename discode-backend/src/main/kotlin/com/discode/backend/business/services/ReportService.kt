@@ -1,6 +1,6 @@
 package com.discode.backend.business.services
 
-import com.discode.backend.api.requests.PostReportRequest
+import com.discode.backend.api.requests.ReportMessageRequest
 import com.discode.backend.api.requests.UpdateReportsRequest
 import com.discode.backend.business.models.Report
 import com.discode.backend.business.models.ReportStatus
@@ -29,7 +29,7 @@ class ReportService : JwtAuthorized(), ReportServiceInterface {
         }
     }
 
-    override fun createReport(request: PostReportRequest, authHeader: String?): Report {
+    override fun createReport(request: ReportMessageRequest, authHeader: String?): Report {
         return ifAuthorizedAs(request.reporterId, authHeader) {
             reportRepository.save(request)
         }

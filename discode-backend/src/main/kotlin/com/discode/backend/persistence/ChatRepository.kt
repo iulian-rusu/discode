@@ -9,6 +9,7 @@ import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.Message
 import com.discode.backend.persistence.mappers.ChatMemberRowMapper
 import com.discode.backend.persistence.mappers.ChatRowMapper
+import com.discode.backend.persistence.mappers.MessageRowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.sql.Statement
@@ -131,5 +132,22 @@ class ChatRepository : RepositoryBase() {
             content = request.content,
             codeOutput = null
         )
+    }
+
+    fun findMessage(messageId: Long): Message {
+        return jdbcTemplate.query(
+            "SELECT * FROM messages m INNER JOIN chat_members cm USING (chat_member_id) WHERE message_id = ?",
+            MessageRowMapper(), messageId
+        ).first()
+    }
+
+    fun updateCodeOutput(message: Message): Message {
+        return message.also {
+            jdbcTemplate.update(
+                "UPDATE messages SET code_output = ? WHERE message_id = ?",
+                it.codeOutput,
+                it.messageId
+            )
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.discode.backend.api.requests
 
-data class PostReportRequest(
+data class ReportMessageRequest(
     val messageId: Long,
     val reporterId: Long,
     val reportReason: String?

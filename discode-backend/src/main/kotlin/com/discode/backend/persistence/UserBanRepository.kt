@@ -1,6 +1,6 @@
 package com.discode.backend.persistence
 
-import com.discode.backend.api.requests.PostUserBanRequest
+import com.discode.backend.api.requests.BanUserRequest
 import com.discode.backend.business.models.UserBan
 import com.discode.backend.persistence.mappers.UserBanRowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
@@ -9,7 +9,7 @@ import java.sql.Statement
 
 @Repository
 class UserBanRepository : RepositoryBase() {
-    fun save(request: PostUserBanRequest): UserBan {
+    fun save(request: BanUserRequest): UserBan {
         val keyHolder = GeneratedKeyHolder()
         val sql = """ 
             INSERT INTO user_bans(user_id, start_date, end_date, ban_reason)

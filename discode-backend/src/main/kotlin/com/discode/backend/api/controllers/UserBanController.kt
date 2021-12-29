@@ -1,6 +1,6 @@
 package com.discode.backend.api.controllers
 
-import com.discode.backend.api.requests.PostUserBanRequest
+import com.discode.backend.api.requests.BanUserRequest
 import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
 import com.discode.backend.business.models.UserBan
@@ -29,7 +29,7 @@ class UserBanController : ScopeGuarded(UserBanController::class) {
 
     @PostMapping("")
     fun postBan(
-        @RequestBody request: PostUserBanRequest,
+        @RequestBody request: BanUserRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<UserBan> {
         return guardedWith(HttpStatus.CONFLICT, "Cannot create requested ban entry") {
