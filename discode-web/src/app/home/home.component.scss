@@ -1,0 +1,36 @@
+.side-nav{
+    width: 35%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 10px 10px 0px 10px;
+}
+
+.chats{
+    align-items: center;    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 20px;
+    overflow: auto;
+}
+
+.chat{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 90%;
+}
+
+.create-chat{
+    border: none;
+    border-radius: 100%;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 10px;
+    cursor: pointer;
+}
