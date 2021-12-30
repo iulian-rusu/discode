@@ -7,12 +7,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private readonly router: Router) {}
+  public isAuthenticated: boolean | undefined;
 
-  ngOnInit(): void {}
+  constructor(private readonly router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.isAuthenticated = (JSON.parse(sessionStorage.getItem('user')!) !== null);
+    console.log(JSON.parse(sessionStorage.getItem('user')!) !== null);
+  }
 
   public logout(): void {
     sessionStorage.clear();
+    this.ngOnInit();
     this.router.navigate(['auth']);
   }
 }
