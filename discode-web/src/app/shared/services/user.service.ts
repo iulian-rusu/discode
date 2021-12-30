@@ -35,9 +35,21 @@ export class UserService {
       }
     );
   }
-  
+
   public getProfileImage(imagePath: string): Observable<any> {
-    let httpHeaders = new HttpHeaders().set('Accept', "image/webp,*/*");
-    return this.httpClient.get<Blob>(this.url + "images/" + imagePath, { headers: httpHeaders, responseType: 'blob' as 'json' });
+    let httpHeaders = new HttpHeaders().set('Accept', 'image/webp,*/*');
+    return this.httpClient.get<Blob>(this.url + 'images/' + imagePath, {
+      headers: httpHeaders,
+      responseType: 'blob' as 'json',
+    });
+  }
+
+  public getChats(userId: string): Observable<HttpResponse<any>> {
+    return this.httpClient.get<HttpResponse<any>>(
+      this.url + 'users/' + userId + '/chats',
+      {
+        observe: 'response',
+      }
+    );
   }
 }
