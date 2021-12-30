@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository
 import java.sql.Statement
 import java.util.*
 
-
 @Repository
 class ChatRepository : RepositoryBase() {
     fun save(request: CreateChatRequest): Chat {
@@ -29,8 +28,7 @@ class ChatRepository : RepositoryBase() {
                 START TRANSACTION;
                 INSERT INTO chats (chat_name) VALUES (:chatName);
                 INSERT INTO chat_members (chat_id, user_id, status) VALUES (
-                    (SELECT chat_id FROM chats WHERE chat_name = :chatName),
-                    :ownerId, :ownerStatus
+                    LAST_INSERT_ID(), :ownerId, :ownerStatus
                 );
                 COMMIT;
             """, params
