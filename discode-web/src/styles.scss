@@ -1,12 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~mdb-ui-kit/css/mdb.dark.min.css';
+@import "~mdb-ui-kit/css/mdb.dark.min.css";
 
-$discode-darkest: #23272A;
-$discode-dark: #2C2F33;
+$discode-darkest: #23272a;
+$discode-dark: #2c2f33;
 $discode-darker: darken($discode-dark, 2%);
 $discode-grey: lighten($discode-dark, 5%);
-$discode-light:#97A9B4;
-$discode-blue: #7289DA;
+$discode-light: #97a9b4;
+$discode-blue: #7289da;
 $discode-dark-blue: darken($discode-blue, 10%);
 $discode-green: rgb(59, 165, 93);
 $discode-light-green: lighten($discode-green, 10%);
@@ -29,9 +29,18 @@ a:hover {
     color: $discode-green !important;
 }
 
-.d-flex{
+.d-flex {
     display: flex;
     flex-direction: column;
+}
+
+.d-flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.btn-rounded {
+    border-radius: 4px !important;
 }
 
 .form-discode-blue button {
@@ -46,7 +55,7 @@ a:hover {
     border-color: $discode-blue !important;
 }
 
-.form-discode-blue input:focus+label {
+.form-discode-blue input:focus + label {
     color: $discode-blue !important;
 }
 
@@ -54,7 +63,8 @@ a:hover {
     background-color: $discode-green !important;
 }
 
-.btn-discode-green:hover,.btn-discode-green:focus {
+.btn-discode-green:hover,
+.btn-discode-green:focus {
     background-color: $discode-dark-green !important;
 }
 
@@ -63,7 +73,8 @@ a:hover {
     font-weight: bold;
 }
 
-.btn-discode-dark:hover,.btn-discode-dark:focus {
+.btn-discode-dark:hover,
+.btn-discode-dark:focus {
     background-color: $discode-dark !important;
 }
 
