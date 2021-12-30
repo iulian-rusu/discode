@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.mappers
 
-import com.discode.backend.models.Chat
+import com.discode.backend.business.models.Chat
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 

@@ -1,0 +1,30 @@
+.chat-room-div {
+    height: 100%;
+    padding-right: 10px;
+}
+
+.chat-room-div > div, .chat-room-top-div > div {
+    border-radius: 4px;
+}
+
+.chat-room-top-div {
+    min-width: 100%;
+    min-height: 80%;
+    margin-bottom: 10px;
+}
+
+.chat-room-messages {
+    min-height: 50%;
+    min-width: 90%;
+    flex-direction: column-reverse;
+}
+
+.chat-room-members {
+    min-width: 10%;
+}
+
+.chat-room-input-box {
+    min-width: 100%;
+    min-height: 20%;
+    text-align: center;
+}

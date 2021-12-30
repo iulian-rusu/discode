@@ -1,6 +1,6 @@
 package com.discode.backend.persistence.mappers
 
-import com.discode.backend.models.Message
+import com.discode.backend.business.models.Message
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
@@ -9,7 +9,7 @@ class MessageRowMapper : RowMapper<Message> {
         Message(
             messageId = rs.getLong("message_id"),
             author = ChatMemberRowMapper().mapRow(rs, rowNum),
-            creationDate = rs.getDate("creation_date"),
+            creationDate = rs.getTimestamp("creation_date"),
             content = rs.getString("content"),
             codeOutput = rs.getString("code_output")
         )

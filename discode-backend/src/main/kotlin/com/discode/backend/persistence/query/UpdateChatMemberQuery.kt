@@ -1,11 +1,11 @@
 package com.discode.backend.persistence.query
 
-import com.discode.backend.models.requests.UpdateChatMemberRequest
+import com.discode.backend.api.requests.UpdateChatMemberRequest
 
 class UpdateChatMemberQuery(
     val chatId: Long,
     val userId: Long,
-    val status: Char
+    val status: String
 ) : ParametrizedQuery() {
     constructor(chatId: Long, userId: Long, request: UpdateChatMemberRequest) : this(chatId, userId, request.status)
 
