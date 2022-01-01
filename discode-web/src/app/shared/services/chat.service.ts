@@ -19,4 +19,13 @@ export class ChatService {
       }
     );
   }
+  public createChat(ownerId: string, chatName: string): Observable<HttpResponse<any>> {
+    const data = {ownerId: ownerId, chatName: chatName};
+    return this.httpClient.post<HttpResponse<any>>(
+      this.url, data,
+      {
+        observe: 'response',
+      }
+    );
+  }
 }

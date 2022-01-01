@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,6 +15,8 @@ import { ChatRoomComponent } from './chat-room/chat-room.component';
   imports: [
     CommonModule,
     HomeRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class HomeModule { }

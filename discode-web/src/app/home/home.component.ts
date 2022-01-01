@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../shared/services/chat.service';
 import { UserService } from '../shared/services/user.service';
@@ -13,6 +14,7 @@ import { Member } from './models/member.model';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
+  public createChatFormGroup: FormGroup;
   private userId: string;
   public chatList: Chat[] | undefined;
 
@@ -20,13 +22,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   public selectedChat: string | undefined;
   public chatMembers: Member[] | undefined;
   public chatId: BigInteger | undefined;
+  display = 'none';
 
   constructor(
     private readonly userService: UserService,
-    private readonly chatService: ChatService
+    private readonly chatService: ChatService,
+    private readonly formBuilder: FormBuilder
   ) {
     this.subs = new Array<Subscription>();
     this.userId = JSON.parse(sessionStorage.getItem('user')!)['userId'];
+
+    this.createChatFormGroup = this.formBuilder.group({
+      chatName: ['', [Validators.required, Validators.minLength(2)]],
+    });
   }
 
   ngOnInit(): void {
@@ -64,6 +72,30 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe((data: HttpResponse<any>) => {
           if (data.status == 200) {
             this.chatMembers = data.body;
+          }
+        })
+    );
+  }
+
+  openModal() {
+    this.display = 'block';
+  }
+  onCloseHandled() {
+    this.display = 'none';
+    //this.createChatFormGroup.get("chatName")?.setValue("");
+  }
+
+  createChat(): void {
+    this.subs.push(
+      this.chatService
+        .createChat(
+          this.userId,
+          this.createChatFormGroup.get('chatName')?.value
+        )
+        .subscribe((data: HttpResponse<any>) => {
+          if (data.status == 201) {
+            this.onCloseHandled();
+            location.reload();
           }
         })
     );
