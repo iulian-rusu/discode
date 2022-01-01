@@ -14,12 +14,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = (JSON.parse(sessionStorage.getItem('user')!) !== null);
-    console.log(JSON.parse(sessionStorage.getItem('user')!) !== null);
   }
 
   public logout(): void {
     sessionStorage.clear();
-    this.ngOnInit();
     this.router.navigate(['auth']);
+    location.reload();
   }
 }
