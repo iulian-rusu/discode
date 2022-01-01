@@ -57,13 +57,23 @@ class ChatRepository : RepositoryBase() {
 
     fun findAllMembers(chatId: Long): List<ChatMember> {
         return jdbcTemplate.query(
-            "SELECT * FROM chat_members WHERE chat_id = ?", ChatMemberRowMapper(), chatId
+            """
+            SELECT * FROM chat_members
+            INNER JOIN user_credentials USING(user_id)
+            INNER JOIN user_accounts USING(user_id)
+            WHERE chat_id = ?
+            """, ChatMemberRowMapper(), chatId
         ).toList()
     }
 
     fun findMember(chatId: Long, userId: Long): ChatMember {
         return jdbcTemplate.query(
-            "SELECT * FROM chat_members WHERE chat_id = ? AND user_id = ? LIMIT 1",
+            """
+            SELECT * FROM chat_members
+            INNER JOIN user_credentials USING(user_id)
+            INNER JOIN user_accounts USING(user_id)
+            WHERE chat_id = ? AND user_id = ? LIMIT 1
+            """,
             ChatMemberRowMapper(), chatId, userId
         ).first()
     }
@@ -79,12 +89,7 @@ class ChatRepository : RepositoryBase() {
                     setString(3, ChatMemberStatus.GUEST.toString())
                 }
         }, keyHolder)
-        return ChatMember(
-            chatMemberId = keyHolder.key?.toLong() ?: -1,
-            chatId = chatId,
-            userId = request.userId,
-            status = ChatMemberStatus.GUEST.toString()
-        )
+        return findMember(chatId, request.userId)
     }
 
     fun deleteMember(chatId: Long, userId: Long): ChatMember {

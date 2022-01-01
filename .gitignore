@@ -300,3 +300,5 @@ build
 cmake-build-debug
 
 #####
+sql
+package-lock.json

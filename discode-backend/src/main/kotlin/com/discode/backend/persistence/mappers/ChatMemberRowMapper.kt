@@ -10,6 +10,10 @@ class ChatMemberRowMapper : RowMapper<ChatMember> {
             chatMemberId = rs.getLong("chat_member_id"),
             chatId = rs.getLong("chat_id"),
             userId = rs.getLong("user_id"),
+            username = rs.getString("username"),
+            firstName = rs.getString("first_name"),
+            lastName = rs.getString("last_name"),
+            imagePath = rs.getString("image_path"),
             status = rs.getString("status")
         )
 }
