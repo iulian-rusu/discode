@@ -10,10 +10,13 @@
         </button>
         <div class="chats btn-group-vertical bg-discode-darkest" data-bs-spy="scroll">
             <button type="button" class="chat-btn btn btn-primary btn-discode-green btn-rounded"
-                *ngFor="let chat of chatList">{{chat.chatName}}</button>
+                *ngFor="let chat of chatList" (click)="chatClick(chat.chatId, chat.chatName)">{{chat.chatName}} </button>
         </div>
     </div>
     <div class="col">
-        <app-chat-room></app-chat-room>
+        <app-chat-room *ngIf="isChatSelected" chatName="{{selectedChat}}" [chatMembers]="chatMembers"></app-chat-room>
+        <div *ngIf="!isChatSelected" class="center">
+            <img src="assets/welcome_cats.svg" alt="welcome" >    
+        </div>
     </div>
 </div>
