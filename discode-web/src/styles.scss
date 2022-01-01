@@ -78,6 +78,21 @@ a:hover {
     background-color: $discode-dark !important;
 }
 
+.btn-discode-darker {
+    background-color: $discode-dark !important;
+    color: $discode-blue;
+    box-shadow: none;
+    border: none;
+}
+
+.btn-discode-darker:hover,
+.btn-discode-darker:focus {
+    background-color: $discode-darker !important;
+    box-shadow: none;
+    border: none;
+    color: $discode-blue;
+}
+
 .bg-discode-darkest {
     background-color: $discode-darkest !important;
 }
