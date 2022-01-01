@@ -9,7 +9,7 @@
 
 .chat-room-top-div {
     min-width: 100%;
-    min-height: 80%;
+    min-height: 75%;
     margin-bottom: 10px;
 }
 
@@ -21,10 +21,28 @@
 
 .chat-room-members {
     min-width: 10%;
+    height: 80%;
 }
 
 .chat-room-input-box {
     min-width: 100%;
-    min-height: 20%;
+    height: 0px;
     text-align: center;
+}
+
+.chat-title{
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+hr.solid {
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    margin-top: 0px;
+}
+
+.menu-list{
+    cursor: pointer;
 }

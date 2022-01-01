@@ -38,7 +38,7 @@
       </div>
 
     <div class="col">
-        <app-chat-room *ngIf="isChatSelected" chatName="{{selectedChat}}" [chatMembers]="chatMembers"></app-chat-room>
+        <app-chat-room *ngIf="isChatSelected" [chatId]="chatId" [chatName]="selectedChat" [chatMembers]="chatMembers"></app-chat-room>
         <div *ngIf="!isChatSelected" class="center">
             <img src="assets/welcome_cats.svg" alt="welcome">  
         </div>

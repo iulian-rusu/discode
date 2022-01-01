@@ -13,19 +13,25 @@ export class ChatService {
 
   public getChatMembers(chatId: BigInteger): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(
-      this.url + "/" + chatId + "/members",
+      this.url + '/' + chatId + '/members',
       {
         observe: 'response',
       }
     );
   }
-  public createChat(ownerId: string, chatName: string): Observable<HttpResponse<any>> {
-    const data = {ownerId: ownerId, chatName: chatName};
-    return this.httpClient.post<HttpResponse<any>>(
-      this.url, data,
-      {
-        observe: 'response',
-      }
-    );
+  public createChat(
+    ownerId: string,
+    chatName: string
+  ): Observable<HttpResponse<any>> {
+    const data = { ownerId: ownerId, chatName: chatName };
+    return this.httpClient.post<HttpResponse<any>>(this.url, data, {
+      observe: 'response',
+    });
+  }
+
+  public deleteChat(chatId: BigInteger): Observable<HttpResponse<any>> {
+    return this.httpClient.delete<HttpResponse<any>>(this.url + '/' + chatId, {
+      observe: 'response',
+    });
   }
 }
