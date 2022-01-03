@@ -41,8 +41,8 @@ export class ChatService {
     });
   }
 
-  public removeMemberFromChat(chatId: BigInteger, userId: BigInteger): Observable<HttpResponse<any>> {
-    return this.httpClient.patch<HttpResponse<any>>(this.url + '/' + chatId + "/members/" + userId, {status: "LEFT"}, {
+  public changeStatus(chatId: BigInteger, userId: BigInteger, status: string): Observable<HttpResponse<any>> {
+    return this.httpClient.patch<HttpResponse<any>>(this.url + '/' + chatId + "/members/" + userId, {status: status}, {
       observe: 'response',
     });
   }
