@@ -22,7 +22,7 @@ class UserController : ScopeGuarded(UserController::class) {
 
     @GetMapping("")
     fun getAllUsers(@RequestParam searchParams: Map<String, String>): ResponseEntity<List<User>> {
-        return guardedWith(HttpStatus.BAD_REQUEST, "Cannot process request") {
+        return guardedWith(HttpStatus.BAD_REQUEST, HttpResponse.GENERIC_ERROR_MESSAGE) {
             ResponseEntity.ok(userService.getAllUsers(SearchUserQuery(searchParams)))
         }
     }

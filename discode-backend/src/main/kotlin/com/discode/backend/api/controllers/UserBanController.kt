@@ -22,7 +22,7 @@ class UserBanController : ScopeGuarded(UserBanController::class) {
         @RequestParam searchParams: Map<String, String>,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<List<UserBan>> {
-        return guardedWith(HttpStatus.BAD_REQUEST, "Cannot process request") {
+        return guardedWith(HttpStatus.BAD_REQUEST, HttpResponse.GENERIC_ERROR_MESSAGE) {
             ResponseEntity.ok(userBanService.getAllBans(SearchUserBanQuery(searchParams), authHeader))
         }
     }

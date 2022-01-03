@@ -10,7 +10,9 @@ import com.discode.backend.persistence.ReportRepository
 import com.discode.backend.persistence.mappers.ReportRowMapper
 import com.discode.backend.persistence.query.SearchReportQuery
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class ReportService : JwtAuthorized(), ReportServiceInterface {
@@ -34,7 +36,10 @@ class ReportService : JwtAuthorized(), ReportServiceInterface {
 
     override fun updateReports(request: UpdateReportsRequest, authHeader: String?): List<Report> {
         return ifAdmin(authHeader) {
-            reportRepository.update(request)
+            val updatedReports = reportRepository.update(request)
+            if (updatedReports.isEmpty())
+                throw ResponseStatusException(HttpStatus.NOT_FOUND, "No reports found for this message")
+            updatedReports
         }
     }
 }

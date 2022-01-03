@@ -1,6 +1,7 @@
 package com.discode.backend.api.controllers
 
 import com.discode.backend.api.requests.CodeExecutionRequest
+import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
 import com.discode.backend.business.models.Language
 import com.discode.backend.business.models.Message
@@ -26,7 +27,7 @@ class CodeExecutionController : ScopeGuarded(CodeExecutionController::class) {
         @RequestBody request: CodeExecutionRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Message> {
-        return guardedWith(HttpStatus.NOT_FOUND, "Cannot find the requested message") {
+        return guardedWith(HttpStatus.NOT_ACCEPTABLE, HttpResponse.GENERIC_ERROR_MESSAGE) {
             ResponseEntity.ok(codeExecutionService.execute(request, authHeader))
         }
     }
