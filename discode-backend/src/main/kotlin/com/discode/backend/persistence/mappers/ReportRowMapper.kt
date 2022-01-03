@@ -1,6 +1,7 @@
 package com.discode.backend.persistence.mappers
 
 import com.discode.backend.business.models.Report
+import com.discode.backend.business.models.ReportStatus
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
@@ -11,6 +12,6 @@ class ReportRowMapper : RowMapper<Report> {
             reporterId = rs.getLong("reporter_id"),
             reportDate = rs.getTimestamp("report_date"),
             reportReason = rs.getString("report_reason"),
-            status = rs.getString("status")
+            status = ReportStatus.valueOf(rs.getString("status"))
         )
 }

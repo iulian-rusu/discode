@@ -25,14 +25,14 @@ class ReportRepository : RepositoryBase() {
             reporterId = request.reporterId,
             reportDate = Date(),
             reportReason = request.reportReason,
-            status = ReportStatus.PENDING.toString()
+            status = ReportStatus.PENDING
         )
     }
 
     fun update(request: UpdateReportsRequest): List<Report> {
         jdbcTemplate.update(
             "UPDATE message_reports SET status = ? WHERE message_id = ?",
-            request.status,
+            request.status.toString(),
             request.messageId
         )
         return findReportsForMessage(request.messageId)

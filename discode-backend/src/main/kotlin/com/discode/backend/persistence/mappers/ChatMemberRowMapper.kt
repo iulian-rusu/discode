@@ -1,6 +1,7 @@
 package com.discode.backend.persistence.mappers
 
 import com.discode.backend.business.models.ChatMember
+import com.discode.backend.business.models.ChatMemberStatus
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
@@ -14,6 +15,6 @@ class ChatMemberRowMapper : RowMapper<ChatMember> {
             firstName = rs.getString("first_name"),
             lastName = rs.getString("last_name"),
             imagePath = rs.getString("image_path"),
-            status = rs.getString("status")
+            status = ChatMemberStatus.valueOf(rs.getString("status"))
         )
 }

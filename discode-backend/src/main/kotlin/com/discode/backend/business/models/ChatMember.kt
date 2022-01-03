@@ -8,5 +8,5 @@ data class ChatMember(
     val firstName: String,
     val lastName: String,
     val imagePath: String?,
-    val status: String
+    val status: ChatMemberStatus
 )

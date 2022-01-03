@@ -74,11 +74,6 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
     }
 
     override fun updateMember(query: UpdateChatMemberQuery, authHeader: String?): ChatMember {
-        if (query.status !in ChatMemberStatus.values().map { it.toString() })
-            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid chat member status: '${query.status}'")
-        if (query.status == ChatMemberStatus.OWNER.toString())
-            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Cannot assign another user as chat owner")
-
         return ifAuthorized(
             header = authHeader,
             authorizer = { details ->
@@ -117,7 +112,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
             },
             action = {
                 val chatMember = chatRepository.findMember(chatId, request.userId)
-                if (chatMember.status == ChatMemberStatus.LEFT.toString())
+                if (chatMember.status == ChatMemberStatus.LEFT)
                     throw ResponseStatusException(
                         HttpStatus.NOT_ACCEPTABLE,
                         "User has left the chat and cannot post messages"
@@ -131,18 +126,27 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
         if (details.isAdmin)
             return true
 
-        val isInvite = query.status == ChatMemberStatus.GUEST.toString()
         val isOwner = chatRepository.isOwner(query.chatId, details.userId)
-
-        if (isInvite)
-            return isOwner
-
-        if (query.userId == details.userId) {
-            if (isOwner)
-                throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Owners cannot leave from their chats")
-            else
+        when (query.status) {
+            ChatMemberStatus.OWNER -> throw ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot grant 'owner' status")
+            ChatMemberStatus.GUEST -> {
+                if (!isOwner)
+                    throw ResponseStatusException(HttpStatus.FORBIDDEN, "Guests cannot invite other users")
+                if (query.userId == details.userId)
+                    throw ResponseStatusException(HttpStatus.CONFLICT, "Chat owner cannot self-assign as 'guest'")
                 return true
+            }
+            ChatMemberStatus.LEFT -> {
+                return if (!isOwner) {
+                    if (query.userId != details.userId)
+                        throw ResponseStatusException(HttpStatus.FORBIDDEN, "Guests cannot kick other users")
+                    true
+                } else {
+                    if (query.userId == details.userId)
+                        throw ResponseStatusException(HttpStatus.FORBIDDEN, "Owners cannot leave from their chats")
+                    true
+                }
+            }
         }
-        return isOwner
     }
 }

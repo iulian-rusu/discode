@@ -7,5 +7,5 @@ data class Report(
     val reporterId: Long,
     val reportDate: Date,
     val reportReason: String?,
-    val status: String
+    val status: ReportStatus
 )
