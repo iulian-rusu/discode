@@ -46,3 +46,33 @@ hr.solid {
 .menu-list{
     cursor: pointer;
 }
+
+.member-list{
+    display: flex;
+    margin: 5px;
+
+    p{
+        width: 50%;
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    .btn-discode-green{
+        padding: 5px;
+        height: 35px;
+    }
+}
+
+.send-message-form{
+    display: flex;
+
+    .message-box{
+        width: 90%;
+    }
+
+    .send-message{
+        height: 40px;
+        width: 90px;
+        margin: 15px;
+    }
+}

@@ -1,40 +1,102 @@
 <div ngbDropdown class="dropdown chat-title">
-    <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1"
-        aria-expanded="false" style="font-size: 16px;">
-        {{chatName}}
-    </button>
-    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker">
-        <li><a class="menu-list" ngbDropdownItem (click)="addMember()">Add member</a></li>
-        <li><a class="menu-list" ngbDropdownItem (click)="removeMember()">Remove member</a></li>
-        <li><a class="menu-list" ngbDropdownItem (click)="deleteChat()">Delete chat</a></li>
-    </ul>
+  <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1" aria-expanded="false"
+    style="font-size: 16px;">
+    {{chatName}}
+  </button>
+  <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker">
+    <li><a class="menu-list" ngbDropdownItem (click)="openAddMemberModal()">Add member</a></li>
+    <li><a class="menu-list" ngbDropdownItem (click)="openDeleteMemberModal()">Remove member</a></li>
+    <li><a class="menu-list" ngbDropdownItem (click)="deleteChat()">Delete chat</a></li>
+  </ul>
 </div>
 
 <hr class="solid">
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':deleteMemberModalDisplay}">
+  <div class=" modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Remove member form chat</h5>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let member of chatMembers" class="member-list">
+          <p *ngIf="member.status !== 'LEFT'">@{{member.username}}</p>
+          <button *ngIf="!(member.status === 'LEFT' || member.status === 'OWNER')"
+            class="btn btn-secondary btn-discode-green"
+            (click)="removeFromChat(member.userId!!, member.username!!)">Remove</button>
+          <p *ngIf=" member.status === 'OWNER'" style="font-style: italic;">owner</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
+          (click)="onDeleteMemberModalCloseHandled()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':addMemberModalDisplay}">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add member in chat</h5>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center">
+          <form class="form-discode-blue" role="search">
+            <div class="mb-4 border-primary">
+              <label class="form-label">Search by username</label>
+              <input name="search" type="text" [(ngModel)]="searchText" (ngModelChange)="getUsers()" id="chatName"
+                placeholder="username" class="form-control" />
+            </div>
+          </form>
+
+          <div *ngFor="let user of search" class="member-list">
+            <p>@{{user.username}}</p>
+            <button *ngIf="isAlreadyMember(user.userId!!) !== 'OWNER' && isAlreadyMember(user.userId!!) !== 'GUEST'" class="btn btn-secondary btn-discode-green"
+              (click)="addInChat(user.userId!!, user.username!!)">Add</button>
+          </div>
+
+          <div class="spinner-border" role="status" [ngStyle]="{'display':spinnerDisplay}">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
+          (click)="onAddMemberModalCloseHandled()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="d-flex align-items-center chat-room-div">
 
-    <div class="d-flex-row chat-room-top-div">
+  <div class="d-flex-row chat-room-top-div">
 
-        <div class="d-flex chat-room-messages">
-            <ul class='d-flex chat-room-message-list'>
-                <li>Message 1</li>
-                <li>Message 2</li>
-            </ul>
-        </div>
-        <div class="d-flex chat-room-members bg-discode-darker">
-            <ul class='d-flex chat-room-members-list'>
-                <li *ngFor="let member of chatMembers">{{member.firstName + " " + member.lastName}}</li>
-            </ul>
-        </div>
+    <div class="d-flex chat-room-messages">
+      <ul class='d-flex chat-room-message-list'>
+        <li>Message 1</li>
+        <li>Message 2</li>
+      </ul>
     </div>
-
-    <div class="d-flex chat-room-input-box bg-discode-darkest">
-        <form class="form-discode-blue">
-            <div class="mb-4 border-primary">
-                <textarea rows="3" cols="60" name="message" class="form-control" placeholder="..." style="resize: none;"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block mb-4">Send</button>
-        </form>
+    <div class="d-flex chat-room-members bg-discode-darker">
+      <ul class='d-flex chat-room-members-list'>
+        <div *ngFor="let member of chatMembers">
+          <li *ngIf="member.status !== 'LEFT'">{{member.firstName + " " + member.lastName}}</li>
+        </div>
+      </ul>
     </div>
+  </div>
+
+  <div class="d-flex chat-room-input-box bg-discode-darkest">
+    <form class="form-discode-blue send-message-form">
+      <div class="mb-4 border-primary message-box">
+        <textarea rows="3" cols="60" name="message" class="form-control" placeholder="..."
+          style="resize: none;"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block mb-4 send-message">Send</button>
+    </form>
+  </div>
 </div>
