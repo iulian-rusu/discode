@@ -28,7 +28,7 @@ class ChatController : ScopeGuarded(ChatController::class) {
         @RequestBody request: CreateChatRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Chat> {
-        return guardedWith(HttpStatus.NOT_ACCEPTABLE, "Invalid chat data") {
+        return guardedWith(HttpStatus.NOT_ACCEPTABLE, errorMessage) {
             HttpResponse.created(chatService.createChat(request, authHeader))
         }
     }
@@ -59,7 +59,7 @@ class ChatController : ScopeGuarded(ChatController::class) {
         @RequestBody request: PostChatMemberRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<ChatMember> {
-        return guardedWith(HttpStatus.NOT_FOUND, "Resource not found") {
+        return guardedWith(HttpStatus.NOT_ACCEPTABLE, errorMessage) {
             ResponseEntity.ok(chatService.addMember(chatId, request, authHeader))
         }
     }
@@ -71,7 +71,7 @@ class ChatController : ScopeGuarded(ChatController::class) {
         @RequestBody request: UpdateChatMemberRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<ChatMember> {
-        return guardedWith(HttpStatus.NOT_FOUND, "Chat member not found") {
+        return guardedWith(HttpStatus.NOT_ACCEPTABLE, errorMessage) {
             val query = UpdateChatMemberQuery(chatId, userId, request)
             ResponseEntity.ok(chatService.updateMember(query, authHeader))
         }
@@ -106,8 +106,14 @@ class ChatController : ScopeGuarded(ChatController::class) {
         @RequestBody request: PostMessageRequest,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<Message> {
-        return guardedWith(HttpStatus.NOT_FOUND, "Chat member not found") {
+        return guardedWith(HttpStatus.NOT_ACCEPTABLE, errorMessage) {
             HttpResponse.created(chatService.postMessage(chatId, request, authHeader))
         }
     }
+
+    private val errorMessage = "Congratulations, you broke the server with your api request 😡. " +
+            "It is (most likely) because I forgot to check some corner case on the server side. " +
+            "It might also happen if you are sending request at 3:00 in the morning while being sleep deprived" +
+            " and having enough caffeine in your body to supply a starbucks store. " +
+            "Either way I have no idea what you are trying to do so I'm giving you this useless message as an error report."
 }

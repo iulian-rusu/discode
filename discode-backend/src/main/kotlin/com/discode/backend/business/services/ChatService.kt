@@ -133,7 +133,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
                 if (!isOwner)
                     throw ResponseStatusException(HttpStatus.FORBIDDEN, "Guests cannot invite other users")
                 if (query.userId == details.userId)
-                    throw ResponseStatusException(HttpStatus.CONFLICT, "Chat owner cannot self-assign as 'guest'")
+                    throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Chat owner cannot self-assign as 'guest'")
                 return true
             }
             ChatMemberStatus.LEFT -> {
@@ -143,7 +143,7 @@ class ChatService : JwtAuthorized(), ChatServiceInterface {
                     true
                 } else {
                     if (query.userId == details.userId)
-                        throw ResponseStatusException(HttpStatus.FORBIDDEN, "Owners cannot leave from their chats")
+                        throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Owners cannot leave from their chats")
                     true
                 }
             }
