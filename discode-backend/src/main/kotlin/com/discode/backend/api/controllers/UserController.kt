@@ -22,7 +22,7 @@ class UserController : ScopeGuarded(UserController::class) {
 
     @GetMapping("")
     fun getAllUsers(@RequestParam searchParams: Map<String, String>): ResponseEntity<List<User>> {
-        return guardedWith(HttpStatus.BAD_REQUEST, "Cannot process request") {
+        return guardedWith(HttpStatus.BAD_REQUEST, HttpResponse.GENERIC_ERROR_MESSAGE) {
             ResponseEntity.ok(userService.getAllUsers(SearchUserQuery(searchParams)))
         }
     }
@@ -65,11 +65,10 @@ class UserController : ScopeGuarded(UserController::class) {
     @GetMapping("/{userId}/chats")
     fun getUserChats(
         @PathVariable userId: Long,
-        @RequestParam searchParams: Map<String, String>,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<List<Chat>> {
         return guardedWith(HttpStatus.NOT_FOUND, "Cannot find resource") {
-            ResponseEntity.ok(userService.getUserChats(userId, searchParams, authHeader))
+            ResponseEntity.ok(userService.getUserChats(userId, authHeader))
         }
     }
 }

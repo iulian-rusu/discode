@@ -13,5 +13,5 @@ interface UserServiceInterface {
     fun getUser(userId: Long, authHeader: String?): User
     fun updateUser(userId: Long, request: UpdateUserRequest, authHeader: String?): User
     fun deleteUser(userId: Long, authHeader: String?): User
-    fun getUserChats(userId: Long, searchParams: Map<String, String>, authHeader: String?): List<Chat>
+    fun getUserChats(userId: Long, authHeader: String?): List<Chat>
 }

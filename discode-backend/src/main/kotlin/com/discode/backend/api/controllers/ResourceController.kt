@@ -1,5 +1,6 @@
 package com.discode.backend.api.controllers
 
+import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.business.services.interfaces.ImageServiceInterface
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -24,6 +25,6 @@ class ResourceController {
             ResponseEntity.ok()
                 .contentType(MediaTypeFactory.getMediaType(it).orElse(MediaType.APPLICATION_OCTET_STREAM))
                 .body(it)
-        } ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot process request")
+        } ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, HttpResponse.GENERIC_ERROR_MESSAGE)
     }
 }
