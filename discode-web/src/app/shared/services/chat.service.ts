@@ -34,4 +34,16 @@ export class ChatService {
       observe: 'response',
     });
   }
+
+  public addMemberToChat(chatId: BigInteger, userId: BigInteger): Observable<HttpResponse<any>> {
+    return this.httpClient.post<HttpResponse<any>>(this.url + '/' + chatId + "/members/", {userId: userId}, {
+      observe: 'response',
+    });
+  }
+
+  public removeMemberFromChat(chatId: BigInteger, userId: BigInteger): Observable<HttpResponse<any>> {
+    return this.httpClient.patch<HttpResponse<any>>(this.url + '/' + chatId + "/members/" + userId, {status: "LEFT"}, {
+      observe: 'response',
+    });
+  }
 }
