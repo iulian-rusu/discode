@@ -65,11 +65,10 @@ class UserController : ScopeGuarded(UserController::class) {
     @GetMapping("/{userId}/chats")
     fun getUserChats(
         @PathVariable userId: Long,
-        @RequestParam searchParams: Map<String, String>,
         @RequestHeader("Authorization") authHeader: String?
     ): ResponseEntity<List<Chat>> {
         return guardedWith(HttpStatus.NOT_FOUND, "Cannot find resource") {
-            ResponseEntity.ok(userService.getUserChats(userId, searchParams, authHeader))
+            ResponseEntity.ok(userService.getUserChats(userId, authHeader))
         }
     }
 }

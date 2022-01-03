@@ -9,7 +9,7 @@ This is a RESTful API that connects to a MySQL database using SpringBoot and JPA
    2. `DISCODE_DB_USER_NAME=<user-name>` (for the user with read/write privileges only)
    3. `DISCODE_DB_USER_PASSWORD=<user-password>`
     * Don't forget to add `.env` to `.gitignore`
-4. In IntelliJ, go to `Run Configurations` -> `Enable EnvFile` and add the `.env` file.
+4. In the project root folder, run `scripts/deploy.sh`.
 5. Run the server and check `localhost:8008/api`.
 
 ## Reference Documentation

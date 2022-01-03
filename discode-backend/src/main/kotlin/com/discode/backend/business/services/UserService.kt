@@ -11,9 +11,7 @@ import com.discode.backend.business.services.interfaces.ImageServiceInterface
 import com.discode.backend.business.services.interfaces.UserServiceInterface
 import com.discode.backend.persistence.GenericQueryRepository
 import com.discode.backend.persistence.UserRepository
-import com.discode.backend.persistence.mappers.ChatRowMapper
 import com.discode.backend.persistence.mappers.UserRowMapper
-import com.discode.backend.persistence.query.SearchChatQuery
 import com.discode.backend.persistence.query.SearchUserQuery
 import com.discode.backend.persistence.query.UpdateUserQuery
 import org.springframework.beans.factory.annotation.Autowired
@@ -70,16 +68,14 @@ class UserService : JwtAuthorized(), UserServiceInterface {
         }
     }
 
-    override fun getUserChats(userId: Long, searchParams: Map<String, String>, authHeader: String?): List<Chat> {
+    override fun getUserChats(userId: Long, authHeader: String?): List<Chat> {
         return ifAuthorized(
             header = authHeader,
             authorizer = { details ->
                 details.userId == userId || details.isAdmin
             },
             action = {
-                val query = SearchChatQuery(userId, searchParams)
-                genericQueryRepository.find(query, ChatRowMapper())
-                    .toList()
+                userRepository.findChats(userId)
             }
         )
     }
