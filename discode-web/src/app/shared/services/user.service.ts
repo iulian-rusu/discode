@@ -11,8 +11,11 @@ export class UserService {
 
   private url: string = 'http://localhost:8008/api/';
 
-  public getUsers(): Observable<HttpResponse<any>> {
+  public getUsers(username: string = ""): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(this.url + 'users', {
+      params: {
+        username: username
+      },
       observe: 'response',
     });
   }
