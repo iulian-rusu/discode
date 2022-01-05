@@ -1,25 +1,27 @@
 <div class="message-box">
-  <div style="display: flex;">
-    <img src="" alt="Avatar" style="width:100%;">
-    <div>
-      <div style="display: flex;">
-        <p class="username">username</p> |
-        <span class="message-time">{{time}}</span>
-      </div>
-      <p>{{message}}</p>
+    <div class="message-container d-flex-row">
+        <img src="https://icons.iconarchive.com/icons/papirus-team/papirus-status/512/avatar-default-icon.png" alt="Avatar" class="message-profile-pic">
+        <div>
+            <div class="d-flex-row message-info">
+                <span class="username">username</span>
+                <span class="divider">|</span>
+                <span class="message-time">{{time}}</span>
+                <span class="report">Report</span>
+                <!-- <div ngbDropdown class="dropdown more-actions">
+                    <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1"
+                        aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                            <path
+                                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg>
+                    </button>
+                    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="dropdown-menu-list">
+                        <li><a class="menu-list bg-discode-darker" ngbDropdownItem>Report message</a></li>
+                    </ul>
+                </div> -->
+            </div>
+            <div class="message-content">{{message}}</div>
+        </div>
     </div>
-  </div>
-  <div ngbDropdown class="dropdown more-actions">
-    <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1"
-      aria-expanded="false">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-        class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-        <path
-          d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-      </svg>
-    </button>
-    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker">
-      <li><a class="menu-list" ngbDropdownItem>Report message</a></li>
-    </ul>
-  </div>
 </div>

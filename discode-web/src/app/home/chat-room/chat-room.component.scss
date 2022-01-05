@@ -11,6 +11,7 @@
 .chat-room-top-div {
     min-width: 100%;
     min-height: 85%;
+    max-height: 85%;
     margin-bottom: 10px;
 }
 
@@ -20,7 +21,6 @@
     flex-direction: column;
     justify-content: flex-start;
     overflow: auto;
-    height: 80%;
 }
 
 .chat-room-members {

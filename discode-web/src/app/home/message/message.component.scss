@@ -1,8 +1,27 @@
+@import "src/styles.scss";
+
 .message-box {
-    border: 1px solid white;
     border-radius: 5px;
     padding: 10px;
     margin: 10px 10px;
+    overflow-x: hidden;
+
+    .report {
+        display: none;
+    }
+}
+
+.message-box:hover {
+    background-color: $discode-darker;
+
+    .btn-discode-darker {
+        background-color: $discode-green !important;
+        color: black;
+    }
+
+    .report {
+        display: inline;
+    }
 }
 
 .message-box::after {
@@ -20,26 +39,45 @@
 }
 
 .message-time {
-    float: right;
-    font-size: x-small;
+    font-size: small;
     font-style: italic;
-    padding: 6px;
+    margin-top: 3px;
 }
 
 .username{
     font-weight: bold;
-    padding-left: 6px;
-    padding-right: 6px;
 }
 
-.more-actions{
-    display: block;
-    float: right;
-    top: 0px;
-    margin-top: 0px;
+.divider {
+    color: $discode-blue;
+}
+
+.report {
+    font-style: italic;
+    color: $discode-green;
+    margin-left: 10px;
+}
+
+.report:hover{
+    cursor: pointer;
+    color: $discode-dark-green;
+}
+
+.more-actions {
+    margin-left: 52vw;
 }
 
 li .menu-list{
-    z-index: auto;
     cursor: pointer;
+}
+.message-profile-pic {
+    width: 100%;
+    height: 100%;
+}
+
+.message-info>span {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: flex; 
+    justify-content: center
 }
