@@ -16,12 +16,15 @@
 
 .chat-room-messages {
     min-width: 90%;
-    flex-direction: column-reverse;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+    height: 80%;
 }
 
 .chat-room-members {
     min-width: 10%;
-
 }
 
 .chat-room-input-box {

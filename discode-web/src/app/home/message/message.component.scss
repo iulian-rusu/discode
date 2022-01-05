@@ -1,0 +1,45 @@
+.message-box {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 10px;
+}
+
+.message-box::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.message-box img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+.message-time {
+    float: right;
+    font-size: x-small;
+    font-style: italic;
+    padding: 6px;
+}
+
+.username{
+    font-weight: bold;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.more-actions{
+    display: block;
+    float: right;
+    top: 0px;
+    margin-top: 0px;
+}
+
+li .menu-list{
+    z-index: auto;
+    cursor: pointer;
+}
