@@ -18,7 +18,12 @@ import { Server } from "socket.io";
 
 const backend_url = "http://localhost:8008/api";
 const port = 8010;
-const server = new Server(port);
+const server = new Server(port, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 // { chatId: "", memberCount: 0 }
 let rooms = [];
@@ -81,6 +86,7 @@ server.on("connection", socket => {
                 }
                 else {
                     socket.emit("message", body);
+                    socket.broadcast.to(room).emit("message", body);
                 }
             })
             .catch(exception => {
