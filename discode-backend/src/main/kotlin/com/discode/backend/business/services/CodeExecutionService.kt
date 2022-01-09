@@ -39,8 +39,15 @@ class CodeExecutionService : JwtAuthorized(), CodeExecutionServiceInterface {
     private fun sendRequest(message: Message, language: Language): String? {
         val restTemplate = RestTemplate()
         val uri = "$CODE_EXECUTION_ENDPOINT/${language.compiler}/compile"
+        val sourceCode = message.content.let { content ->
+            if (content.length > 2 && content.first() == '`' && content.last() == '`')
+                content.substring(1, content.lastIndex)
+            else
+                content
+        }
+
         val request = GodboltCodeExecutionRequest(
-            source = message.content,
+            source = sourceCode,
             compiler = language.compiler,
             lang = language.id
         )
