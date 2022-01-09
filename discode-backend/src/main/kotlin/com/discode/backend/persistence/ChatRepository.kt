@@ -139,8 +139,13 @@ class ChatRepository : RepositoryBase() {
 
     fun findMessage(messageId: Long): Message {
         return jdbcTemplate.query(
-            "SELECT * FROM messages m INNER JOIN chat_members cm USING (chat_member_id) WHERE message_id = ?",
-            MessageRowMapper(), messageId
+            """
+            SELECT * FROM messages m 
+            INNER JOIN chat_members cm USING (chat_member_id)
+            INNER JOIN user_credentials USING(user_id)
+            INNER JOIN user_accounts USING(user_id)
+            WHERE message_id = ?
+            """, MessageRowMapper(), messageId
         ).first()
     }
 

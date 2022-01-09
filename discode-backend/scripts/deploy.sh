@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -a
+set -ae
 . ./.env
 set +a
 
@@ -13,4 +13,4 @@ else
   ./mvnw package
 fi
 
-java -jar target/backend-1.0.0.war
+java -jar $TARGET_PACKAGE
