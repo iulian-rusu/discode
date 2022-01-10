@@ -6,6 +6,7 @@ import { ChatService } from '../shared/services/chat.service';
 import { UserService } from '../shared/services/user.service';
 import { Chat } from './models/chat.model';
 import { Member } from './models/member.model';
+import { Message } from './models/message.model';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public chatMembers: Member[] | undefined;
   public chatId: BigInteger | undefined;
   display = 'none';
+  messages: Message[] | undefined;
 
   constructor(
     private readonly userService: UserService,
@@ -62,6 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.selectedChat = chatName;
     this.chatId = chatId;
     this.getMembers();
+    this.getMessages();
     this.isChatSelected = true;
   }
 
@@ -72,6 +75,18 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe((data: HttpResponse<any>) => {
           if (data.status == 200) {
             this.chatMembers = data.body;
+          }
+        })
+    );
+  }
+
+  getMessages(){
+    this.subs.push(
+      this.chatService
+        .getMessages(this.chatId!!)
+        .subscribe((data: HttpResponse<any>) => {
+          if (data.status == 200) {
+            this.messages = data.body;
           }
         })
     );
