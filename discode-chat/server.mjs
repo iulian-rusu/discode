@@ -38,6 +38,7 @@ server.on("connection", socket => {
             --room.memberCount;
             if (room.memberCount <= 0)
                 rooms.splice(rooms.indexOf(room), 1);
+            socket.leave(room);
         }
         room = undefined;
     };
@@ -60,6 +61,7 @@ server.on("connection", socket => {
             room = { chatId: chatId, memberCount: 1 };
             rooms.push(room);
         }
+        socket.join(room);
     });
 
     socket.on("leave", () => {
