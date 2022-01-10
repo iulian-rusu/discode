@@ -21,7 +21,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .chat-room-members {
