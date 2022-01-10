@@ -1,10 +1,13 @@
 import { HttpResponse } from '@angular/common/http';
 import {
+  AfterViewChecked,
   Component,
+  ElementRef,
   Input,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,11 +23,13 @@ import { Message } from '../models/message.model';
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.scss'],
 })
-export class ChatRoomComponent implements OnInit, OnDestroy {
+export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() public chatId: BigInteger | undefined;
   @Input() public chatName: string | undefined;
   @Input() public chatMembers: Member[] | undefined;
   @Input() public messages: Message[] | undefined;
+
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
   subs: Subscription[];
   deleteMemberModalDisplay = 'none';
@@ -56,6 +61,9 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     );
 
   }
+  ngAfterViewChecked(): void {
+    this.scrollToBottom(); 
+  }
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {
       sub.unsubscribe();
@@ -70,6 +78,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     this.messageService.onNewMessage().subscribe(msg => {
       let m: Message = msg as any;
       this.messages?.push(m);
+
+      this.scrollToBottom();
     });
   }
 
@@ -77,7 +87,19 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     if (changes.chatId) {
       this.messageService.joinChat(changes.chatId.currentValue);
     }
+    this.scrollToBottom();
   }
+
+  scrollToBottom(): void {
+    
+    try {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        console.log("scroll");
+    } catch(err) {
+      console.log(err);
+     }   
+                   
+}
 
   openDeleteMemberModal() {
     this.deleteMemberModalDisplay = 'block';
