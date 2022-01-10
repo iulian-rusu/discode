@@ -35,14 +35,43 @@ export class ChatService {
     });
   }
 
-  public addMemberToChat(chatId: BigInteger, userId: BigInteger): Observable<HttpResponse<any>> {
-    return this.httpClient.post<HttpResponse<any>>(this.url + '/' + chatId + "/members/", {userId: userId}, {
-      observe: 'response',
-    });
+  public addMemberToChat(
+    chatId: BigInteger,
+    userId: BigInteger
+  ): Observable<HttpResponse<any>> {
+    return this.httpClient.post<HttpResponse<any>>(
+      this.url + '/' + chatId + '/members/',
+      { userId: userId },
+      {
+        observe: 'response',
+      }
+    );
   }
 
-  public changeStatus(chatId: BigInteger, userId: BigInteger, status: string): Observable<HttpResponse<any>> {
-    return this.httpClient.patch<HttpResponse<any>>(this.url + '/' + chatId + "/members/" + userId, {status: status}, {
+  public changeStatus(
+    chatId: BigInteger,
+    userId: BigInteger,
+    status: string
+  ): Observable<HttpResponse<any>> {
+    return this.httpClient.patch<HttpResponse<any>>(
+      this.url + '/' + chatId + '/members/' + userId,
+      { status: status },
+      {
+        observe: 'response',
+      }
+    );
+  }
+
+  public getMessages(
+    chatId: BigInteger,
+    page: number = 1,
+    itemsPerPage: number = 20
+  ): Observable<HttpResponse<any>> {
+    return this.httpClient.get<HttpResponse<any>>(this.url + '/' + chatId + '/messages', {
+      params: {
+        page: page,
+        items_per_page: itemsPerPage,
+      },
       observe: 'response',
     });
   }
