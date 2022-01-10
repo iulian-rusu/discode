@@ -46,23 +46,22 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     private readonly formBuilder: FormBuilder,
     private readonly router: Router
   ) {
+    this.messageService.connect();
     this.subs = new Array<Subscription>();
 
-    this.messageFormGroup = this.formBuilder.group(
-      {
-        message: [
-          '',
-          [
-            Validators.required,
-            Validators.maxLength(1000),
-            Validators.minLength(1),
-          ]]
-      }
-    );
-
+    this.messageFormGroup = this.formBuilder.group({
+      message: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(1000),
+          Validators.minLength(1),
+        ],
+      ],
+    });
   }
   ngAfterViewChecked(): void {
-    this.scrollToBottom(); 
+    this.scrollToBottom();
   }
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {
@@ -73,9 +72,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    this.messageService.connect();
-
-    this.messageService.onNewMessage().subscribe(msg => {
+    this.messageService.onNewMessage().subscribe((msg) => {
       let m: Message = msg as any;
       this.messages?.push(m);
 
@@ -91,12 +88,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   scrollToBottom(): void {
-    
     try {
-        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }   
-                   
-}
+      this.myScrollContainer.nativeElement.scrollTop =
+        this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
 
   openDeleteMemberModal() {
     this.deleteMemberModalDisplay = 'block';
@@ -193,8 +189,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     return 'NONE';
   }
 
-  sendMessage(){
-    this.messageService.sendMessage(this.messageFormGroup.get('message')?.value);
+  sendMessage() {
+    this.messageService.sendMessage(
+      this.messageFormGroup.get('message')?.value
+    );
     this.messageFormGroup.get('message')?.reset();
   }
 }
