@@ -76,7 +76,7 @@ server.on("connection", socket => {
                 },
                 body: JSON.stringify({
                         "userId": userId,
-                        "content": "Message"
+                        "content": content
                 })
             })
             .then(response => response.json())
