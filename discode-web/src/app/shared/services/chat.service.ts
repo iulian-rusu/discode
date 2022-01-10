@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Message } from 'src/app/home/models/message.model';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -67,12 +68,33 @@ export class ChatService {
     page: number = 1,
     itemsPerPage: number = 20
   ): Observable<HttpResponse<any>> {
-    return this.httpClient.get<HttpResponse<any>>(this.url + '/' + chatId + '/messages', {
-      params: {
-        page: page,
-        items_per_page: itemsPerPage,
+    return this.httpClient.get<HttpResponse<any>>(
+      this.url + '/' + chatId + '/messages',
+      {
+        params: {
+          page: page,
+          items_per_page: itemsPerPage,
+        },
+        observe: 'response',
+      }
+    );
+  }
+
+  public reportMessage(
+    messageId: BigInteger,
+    reporter: BigInteger,
+    reason: string | undefined
+  ): Observable<HttpResponse<any>> {
+    return this.httpClient.post<HttpResponse<any>>(
+      'http://localhost:8008/api/reports',
+      {
+        messageId: messageId,
+        reporterId: reporter,
+        reportReason: reason,
       },
-      observe: 'response',
-    });
+      {
+        observe: 'response',
+      }
+    );
   }
 }

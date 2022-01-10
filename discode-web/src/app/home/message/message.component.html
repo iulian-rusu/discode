@@ -6,9 +6,39 @@
                 <span class="username">{{message?.author?.username}}</span>
                 <span class="divider">|</span>
                 <span class="message-time">{{transform(message?.creationDate!!)}}</span>
-                <span class="report">Report</span>
+                <span *ngIf="message?.author?.userId != userId" class="report" (click)="openModal()">Report</span>
             </div>
             <div class="message-content">{{message?.content}}</div>
         </div>
     </div>
+
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report message</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <form class="form-discode-blue" role="reason">
+                            <div class="mb-4 border-primary">
+                                <label class="form-label">Reason</label>
+                                <textarea name="reason" rows="3" cols="60" class="form-control" placeholder="..."
+                                    style="resize: none;" [(ngModel)]="reason"></textarea>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
+                        (click)="onCloseHandled()">Cancel</button>
+
+                    <button type="button" class="btn btn-secondary btn-discode-green" data-bs-dismiss="modal"
+                        (click)="reportMessage()">Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

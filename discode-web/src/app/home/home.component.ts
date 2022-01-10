@@ -87,6 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe((data: HttpResponse<any>) => {
           if (data.status == 200) {
             this.messages = data.body;
+            this.messages?.reverse();
           }
         })
     );

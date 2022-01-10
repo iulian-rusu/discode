@@ -16,7 +16,8 @@ import { Server } from "socket.io";
  * exception
 */
 
-const backend_url = "http://localhost:8008/api";
+
+const backend_url = `http://localhost:8008/api`;
 const port = 8010;
 const server = new Server(port, {
     cors: {

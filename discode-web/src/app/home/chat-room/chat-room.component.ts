@@ -1,10 +1,14 @@
 import { HttpResponse } from '@angular/common/http';
 import {
+  AfterViewChecked,
   Component,
+  ElementRef,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,11 +24,13 @@ import { Message } from '../models/message.model';
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.scss'],
 })
-export class ChatRoomComponent implements OnInit, OnDestroy {
+export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() public chatId: BigInteger | undefined;
   @Input() public chatName: string | undefined;
   @Input() public chatMembers: Member[] | undefined;
   @Input() public messages: Message[] | undefined;
+
+  @ViewChild('scrollMessages') private scrollContainer!: ElementRef;
 
   subs: Subscription[];
   deleteMemberModalDisplay = 'none';
@@ -41,20 +47,23 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     private readonly formBuilder: FormBuilder,
     private readonly router: Router
   ) {
+    this.messageService.connect();
     this.subs = new Array<Subscription>();
 
-    this.messageFormGroup = this.formBuilder.group(
-      {
-        message: [
-          '',
-          [
-            Validators.required,
-            Validators.maxLength(1000),
-            Validators.minLength(1),
-          ]]
-      }
-    );
-
+    this.messageFormGroup = this.formBuilder.group({
+      message: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(1000),
+          Validators.minLength(1),
+        ],
+      ],
+    });
+    this.scrollToBottom();
+  }
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {
@@ -65,18 +74,25 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.messageService.connect();
-
-    this.messageService.onNewMessage().subscribe(msg => {
+    this.messageService.onNewMessage().subscribe((msg) => {
       let m: Message = msg as any;
       this.messages?.push(m);
+      this.scrollToBottom();
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.chatId) {
       this.messageService.joinChat(changes.chatId.currentValue);
+      this.scrollToBottom();
     }
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.scrollContainer.nativeElement.scrollTop = 
+        this.scrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   openDeleteMemberModal() {
@@ -174,8 +190,25 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     return 'NONE';
   }
 
-  sendMessage(){
-    this.messageService.sendMessage(this.messageFormGroup.get('message')?.value);
+  sendMessage() {
+    this.messageService.sendMessage(
+      this.messageFormGroup.get('message')?.value
+    );
     this.messageFormGroup.get('message')?.reset();
   }
+  
+  /*
+  @HostListener('scroll', ['$event'])
+  onScroll(event: any) {
+    // visible height + pixel scrolled >= total height
+    //console.log(event.target.offsetHeight + " " + event.target.scrollTop);
+    if (
+      event.target.offsetHeight + event.target.scrollTop >=
+      event.target.scrollHeight
+    ) {
+      console.log('End');
+    }
+  }
+  */
+ 
 }

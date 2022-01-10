@@ -1,0 +1,56 @@
+version: "3.7"
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: discode_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    networks:
+      - discode-net
+    volumes:
+      - ./docker/db:/docker-entrypoint-initdb.d
+
+  backend:
+    container_name: discode_backend
+    build:
+      context: discode-backend
+    restart: always
+    environment:
+      DISCODE_DB_HOST: discode_db
+    ports:
+      - 8008:8008
+    networks:
+      - discode-net
+    depends_on:
+      - db
+
+  chat:
+    container_name: discode_chat
+    build:
+      context: discode-chat
+    restart: always
+    ports:
+      - 8010:8010
+    networks:
+      - discode-net
+
+  # web:
+  #   container_name: discode_web
+  #   build:
+  #     context: discode-web
+  #   restart: always
+  #   ports:
+  #     - 4200:80
+  #   networks:
+  #     - discode-net
+  #   depends_on:   
+  #     - backend
+  #     - chat
+
+networks:
+  discode-net:
+    driver: bridge

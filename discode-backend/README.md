@@ -3,7 +3,7 @@ This is a RESTful API that connects to a MySQL database using SpringBoot and JPA
 
 ## Running the server
 1. Create a new databse in MySQL and connect to it.
-2. Run the `sql/create_database.sql` script (using a database user with all privileges).
+2. Run the `sql/create_tables.sql` script (using a database user with all privileges).
 3. Create a `.env` file in the root folder of the project (`discode-backend/.env`) and add the following lines:
    1. `DISCODE_BACKEND_PORT=<backend-server-port>`
    2. `DISCODE_DB_HOST=<database-host>`
