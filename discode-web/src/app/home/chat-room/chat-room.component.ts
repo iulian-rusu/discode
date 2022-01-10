@@ -94,10 +94,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     
     try {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        console.log("scroll");
-    } catch(err) {
-      console.log(err);
-     }   
+    } catch(err) { }   
                    
 }
 
