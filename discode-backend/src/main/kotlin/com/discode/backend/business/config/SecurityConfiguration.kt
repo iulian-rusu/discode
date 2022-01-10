@@ -31,6 +31,7 @@ class SecurityConfiguration(private val jwtProvider: JwtProvider) : WebSecurityC
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
             .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/images/*").permitAll()
             .anyRequest().authenticated()
             .and().exceptionHandling().authenticationEntryPoint(JwtAuthenticationEntryPoint())
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

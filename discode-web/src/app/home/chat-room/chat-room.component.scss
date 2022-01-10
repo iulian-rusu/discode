@@ -9,14 +9,15 @@
 }
 
 .chat-room-top-div {
-    min-width: 100%;
-    min-height: 85%;
+    height: 85%;
     max-height: 85%;
+    min-width: 100%;
     margin-bottom: 10px;
 }
 
 .chat-room-messages {
     min-width: 90%;
+    height: 100%;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-start;
