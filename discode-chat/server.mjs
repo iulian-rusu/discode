@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
+import { createServer } from "http";
 import { Server } from "socket.io";
+import process from 'process';
 /*
  * Treated events:
  *
@@ -7,6 +9,7 @@ import { Server } from "socket.io";
  * join
  * leave
  * message
+ * new-member
 */
 
 /*
@@ -14,12 +17,17 @@ import { Server } from "socket.io";
  *
  * message
  * exception
+ * new-chat
+ * new-member
 */
 
-
-const backend_url = `http://localhost:8008/api`;
+const backend_host = process.env.DISCODE_BACKEND_HOST || "localhost";
+const backend_url = `http://${backend_host}:8008/api`;
+const host = process.env.DISCODE_CHAT_HOST || "localhost";
 const port = 8010;
-const server = new Server(port, {
+
+const httpServer = createServer();
+const server = new Server(httpServer, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
@@ -104,3 +112,5 @@ server.on("connection", socket => {
          * // socket.emit("invalid-chat"); dacă eroare
          */
 });
+
+httpServer.listen(port, host);
