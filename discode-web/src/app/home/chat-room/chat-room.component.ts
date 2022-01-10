@@ -90,7 +90,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop = 
+      this.scrollContainer.nativeElement.scrollTop =
         this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
@@ -156,6 +156,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
             if (data.status == 200) {
               alert(username + ' joined the chat!');
               this.searchText = '';
+              this.messageService.newMember(userId);
             }
           })
       );
@@ -196,7 +197,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     );
     this.messageFormGroup.get('message')?.reset();
   }
-  
+
   /*
   @HostListener('scroll', ['$event'])
   onScroll(event: any) {
@@ -210,5 +211,5 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
   */
- 
+
 }

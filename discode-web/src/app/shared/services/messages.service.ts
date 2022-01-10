@@ -40,4 +40,8 @@ export class MessagesService {
     let token = sessionStorage.getItem('token');
     this.socket.emit('message', message, token);
   }
+
+  newMember() {
+    this.socket.emit('new-member');
+  }
 }
