@@ -72,7 +72,7 @@
 
 <div class="d-flex align-items-center chat-room-div">
   <div class="d-flex-row chat-room-top-div">
-    <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMe >
+    <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages >
       <app-message *ngFor="let message of messages" [message]="message"></app-message>
     </div>
     <div class="d-flex chat-room-members bg-discode-darker">

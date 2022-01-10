@@ -3,6 +3,7 @@ import {
   AfterViewChecked,
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -29,7 +30,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() public chatMembers: Member[] | undefined;
   @Input() public messages: Message[] | undefined;
 
-  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
+  @ViewChild('scrollMessages') private scrollContainer!: ElementRef;
 
   subs: Subscription[];
   deleteMemberModalDisplay = 'none';
@@ -59,6 +60,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
         ],
       ],
     });
+    this.scrollToBottom();
   }
   ngAfterViewChecked(): void {
     this.scrollToBottom();
@@ -75,7 +77,6 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.messageService.onNewMessage().subscribe((msg) => {
       let m: Message = msg as any;
       this.messages?.push(m);
-
       this.scrollToBottom();
     });
   }
@@ -83,14 +84,14 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.chatId) {
       this.messageService.joinChat(changes.chatId.currentValue);
+      this.scrollToBottom();
     }
-    this.scrollToBottom();
   }
 
   scrollToBottom(): void {
     try {
-      this.myScrollContainer.nativeElement.scrollTop =
-        this.myScrollContainer.nativeElement.scrollHeight;
+      this.scrollContainer.nativeElement.scrollTop = 
+        this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
 
@@ -195,4 +196,19 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     );
     this.messageFormGroup.get('message')?.reset();
   }
+  
+  /*
+  @HostListener('scroll', ['$event'])
+  onScroll(event: any) {
+    // visible height + pixel scrolled >= total height
+    //console.log(event.target.offsetHeight + " " + event.target.scrollTop);
+    if (
+      event.target.offsetHeight + event.target.scrollTop >=
+      event.target.scrollHeight
+    ) {
+      console.log('End');
+    }
+  }
+  */
+ 
 }
