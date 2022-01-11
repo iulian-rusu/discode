@@ -3,4 +3,4 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-ENRYPOINT [ "node", "server.mjs" ]
+ENTRYPOINT [ "node", "server.mjs" ]

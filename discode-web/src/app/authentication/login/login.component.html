@@ -1,22 +1,24 @@
-<form class="form-discode-blue" [formGroup]="formGroup">
-  <!-- Username input -->
-  <div class="mb-4 border-primary">
-    <label class="form-label" for="loginUsername">Username</label>
-    <input type="text" id="loginUsername" placeholder="Username" class="form-control" formControlName="username" />
-  </div>
-
-  <!-- Password input -->
-  <div class="mb-4 border-primary">
-    <label class="form-label" for="loginPassword">Password</label>
-    <input type="password" id="loginPassword" placeholder="Password" class="form-control" formControlName="password" />
-  </div>
-  <!-- Submit button -->
-  <button type="submit" class="btn btn-primary btn-block mb-4" (click)="login()">Log in</button>
-
-  <!-- Register buttons -->
-  <div class="text-center ">
-    <p>Don't have an account? <a href="/auth/register">Register</a></p>
-  </div>
-</form>
-
-<div id="errors"></div>
+<div class="login-container d-flex">
+    <form class="form-discode-blue" [formGroup]="formGroup">
+        <!-- Username input -->
+        <div class="mb-4 border-primary">
+          <label class="form-label" for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" placeholder="Username" class="form-control" formControlName="username" />
+        </div>
+      
+        <!-- Password input -->
+        <div class="mb-4 border-primary">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Password" class="form-control" formControlName="password" />
+        </div>
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4" (click)="login()">Log in</button>
+      
+        <!-- Register buttons -->
+        <div class="text-center ">
+          <p>Don't have an account? <a href="/auth/register">Register</a></p>
+        </div>
+      </form>
+      
+      <div id="errors"></div>
+</div>

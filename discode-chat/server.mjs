@@ -23,7 +23,6 @@ import process from 'process';
 
 const backend_host = process.env.DISCODE_BACKEND_HOST || "localhost";
 const backend_url = `http://${backend_host}:8008/api`;
-const host = process.env.DISCODE_CHAT_HOST || "localhost";
 const port = 8010;
 
 const httpServer = createServer();
@@ -113,4 +112,4 @@ server.on("connection", socket => {
          */
 });
 
-httpServer.listen(port, host);
+httpServer.listen(port);
