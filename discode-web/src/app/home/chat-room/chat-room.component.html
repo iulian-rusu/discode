@@ -107,14 +107,16 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
-                <ngx-codemirror name="code" [(ngModel)]="codeMessage" [options]="{
+                <ngx-codemirror name="code" id="code" [(ngModel)]="codeMessage" [options]="{
                         lineWrapping: false,
                         theme: 'material',
                         mode: mode,
                         indentUnit: 4,
                         smartIndent: true,
-                        showCursorWhenSelecting: true
-                    }" class="code-editor">
+                        showCursorWhenSelecting: true,
+                        autoRefresh: true,
+                        autoFocus: true
+                    }" class="code-editor" #code>
                 </ngx-codemirror>
             </div>
             <div class="modal-footer d-flex align-items-center">

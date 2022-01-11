@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
+import * as CodeMirror from 'codemirror';
 import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/shared/services/chat.service';
 import { CodeService } from 'src/app/shared/services/code.service';
@@ -32,6 +34,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() public messages: Message[] | undefined;
 
   @ViewChild('scrollMessages') private scrollContainer!: ElementRef;
+  @ViewChild('code')
+  private codeEditor!: CodemirrorComponent;
 
   subs: Subscription[];
   deleteMemberModalDisplay = 'none';
@@ -140,11 +144,14 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.codeMessage = "";
         this.messageService.sendMessage(source);
     }
+    this.codeEditor.codeMirror?.setValue(this.codeMessage);
+    this.codeEditor.codeMirror?.refresh();
     this.onCloseHandled();
   }
 
   openCodeModal(){
     this.codeModalDisplay = 'block';
+    this.codeEditor.codeMirror?.focus();
   }
 
   onChange(newMode: string) {
