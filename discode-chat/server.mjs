@@ -33,12 +33,14 @@ const server = new Server(httpServer, {
     }
 });
 
-// { chatId: "", memberCount: 0 }
+// { userId: 0, socket: {} }
+let connections = [];
+// { chatId: 0, memberCount: 0 }
 let rooms = [];
 
 server.on("connection", socket => {
     console.info(`Client connecting with id=${socket.id}`);
-    let userId = undefined;
+    let connection = undefined;
     let room = undefined;
 
     let disconnect = () => {
@@ -51,8 +53,9 @@ server.on("connection", socket => {
         room = undefined;
     };
 
-    socket.on("connect-user", pUserId => {
-        userId = pUserId;
+    socket.on("connect-user", userId => {
+        connection = { userId: userId, socket: socket };
+        connections.push(connection);
     });
 
     socket.on("disconnect", () => {
@@ -85,7 +88,7 @@ server.on("connection", socket => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                        "userId": userId,
+                        "userId": connection.userId,
                         "content": content
                 })
             })
@@ -105,11 +108,18 @@ server.on("connection", socket => {
         }
     });
 
-        /*
-         * userid, content, token
-         * când e gata primești răspuns și trimiți la toți
-         * // socket.emit("invalid-chat"); dacă eroare
-         */
+    socket.on("new-member", newUser => {
+        if (room) {
+            for (let con in connection) {
+                if (con.userId == newUser) {
+                    con.socket.emit("new-chat");
+                    break;
+                }
+            }
+            socket.emit("new-member");
+            socket.broadcast.to(room).emit("new-member");
+        }
+    });
 });
 
 httpServer.listen(port);

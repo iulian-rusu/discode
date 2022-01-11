@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~mdb-ui-kit/css/mdb.dark.min.css";
+@import '~codemirror/lib/codemirror';
+@import '~codemirror/theme/material';
 
 $discode-darkest: #23272a;
 $discode-dark: #2c2f33;
