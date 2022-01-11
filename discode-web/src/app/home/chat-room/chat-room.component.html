@@ -1,136 +1,135 @@
 <div ngbDropdown class="dropdown chat-title">
-  <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1" aria-expanded="false"
-    style="font-size: 16px;">
-    {{chatName}}
-  </button>
-  <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker">
-    <li><a class="menu-list" ngbDropdownItem (click)="openAddMemberModal()">Add member</a></li>
-    <li><a class="menu-list" ngbDropdownItem (click)="openDeleteMemberModal()">Remove member</a></li>
-    <li><a class="menu-list" ngbDropdownItem (click)="deleteChat()">Delete chat</a></li>
-  </ul>
+    <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1"
+        aria-expanded="false" style="font-size: 16px;">
+        {{chatName}}
+    </button>
+    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker">
+        <li><a class="menu-list" ngbDropdownItem (click)="openAddMemberModal()">Add member</a></li>
+        <li><a class="menu-list" ngbDropdownItem (click)="openDeleteMemberModal()">Remove member</a></li>
+        <li><a class="menu-list" ngbDropdownItem (click)="deleteChat()">Delete chat</a></li>
+    </ul>
 </div>
 
 <hr class="solid">
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':deleteMemberModalDisplay}">
-  <div class=" modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Remove member form chat</h5>
-      </div>
-      <div class="modal-body">
-        <div *ngFor="let member of chatMembers" class="member-list">
-          <p *ngIf="member.status !== 'LEFT'">@{{member.username}}</p>
-          <button *ngIf="!(member.status === 'LEFT' || member.status === 'OWNER')"
-            class="btn btn-secondary btn-discode-green"
-            (click)="removeFromChat(member.userId!!, member.username!!)">Remove</button>
-          <p *ngIf=" member.status === 'OWNER'" style="font-style: italic;">owner</p>
+    <div class=" modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Remove member form chat</h5>
+            </div>
+            <div class="modal-body">
+                <div *ngFor="let member of chatMembers" class="member-list">
+                    <p *ngIf="member.status !== 'LEFT'">@{{member.username}}</p>
+                    <button *ngIf="!(member.status === 'LEFT' || member.status === 'OWNER')"
+                        class="btn btn-secondary btn-discode-green"
+                        (click)="removeFromChat(member.userId!!, member.username!!)">Remove</button>
+                    <p *ngIf=" member.status === 'OWNER'" style="font-style: italic;">owner</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
+                    (click)="onDeleteMemberModalCloseHandled()">Cancel</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
-          (click)="onDeleteMemberModalCloseHandled()">Cancel</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':addMemberModalDisplay}">
-  <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add member in chat</h5>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex justify-content-center">
-          <form class="form-discode-blue" role="search">
-            <div class="mb-4 border-primary">
-              <label class="form-label">Search by username</label>
-              <input name="search" type="text" [(ngModel)]="searchText" (ngModelChange)="getUsers()" id="chatName"
-                placeholder="username" class="form-control" />
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add member in chat</h5>
             </div>
-          </form>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <form class="form-discode-blue" role="search">
+                        <div class="mb-4 border-primary">
+                            <label class="form-label">Search by username</label>
+                            <input name="search" type="text" [(ngModel)]="searchText" (ngModelChange)="getUsers()"
+                                id="chatName" placeholder="username" class="form-control" />
+                        </div>
+                    </form>
 
-          <div *ngFor="let user of search" class="member-list">
-            <p>@{{user.username}}</p>
-            <button *ngIf="isAlreadyMember(user.userId!!) !== 'OWNER' && isAlreadyMember(user.userId!!) !== 'GUEST'"
-              class="btn btn-secondary btn-discode-green"
-              (click)="addInChat(user.userId!!, user.username!!)">Add</button>
-          </div>
+                    <div *ngFor="let user of search" class="member-list">
+                        <p>@{{user.username}}</p>
+                        <button
+                            *ngIf="isAlreadyMember(user.userId!!) !== 'OWNER' && isAlreadyMember(user.userId!!) !== 'GUEST'"
+                            class="btn btn-secondary btn-discode-green"
+                            (click)="addInChat(user.userId!!, user.username!!)">Add</button>
+                    </div>
 
-          <div class="spinner-border" role="status" [ngStyle]="{'display':spinnerDisplay}">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+                    <div class="spinner-border" role="status" [ngStyle]="{'display':spinnerDisplay}">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
+                    (click)="onAddMemberModalCloseHandled()">Cancel</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
-          (click)="onAddMemberModalCloseHandled()">Cancel</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <div class="d-flex align-items-center chat-room-div">
-  <div class="d-flex-row chat-room-top-div">
-    <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages>
-      <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
-    </div>
-    <div class="d-flex chat-room-members bg-discode-darker">
-      <ul class='d-flex chat-room-members-list'>
-        <div *ngFor="let member of chatMembers">
-          <li *ngIf="member.status !== 'LEFT'">{{member.firstName + " " + member.lastName}}</li>
+    <div class="d-flex-row chat-room-top-div">
+        <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages>
+            <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
         </div>
-      </ul>
+        <div class="d-flex chat-room-members bg-discode-darker">
+            <ul class='d-flex chat-room-members-list'>
+                <div *ngFor="let member of chatMembers">
+                    <li *ngIf="member.status !== 'LEFT'">{{member.firstName + " " + member.lastName}}</li>
+                </div>
+            </ul>
+        </div>
     </div>
-  </div>
 
-  <div class="d-flex chat-room-input-box bg-discode-darkest">
-    <form class="form-discode-blue send-message-form" role="sendMessage" [formGroup]="messageFormGroup">
-      <div class="mb-4 border-primary message-box">
-        <textarea name="sendMessage" rows="3" cols="60" name="message" class="form-control" placeholder="..."
-          style="resize: none;" formControlName="message"></textarea>
-      </div>
+    <div class="d-flex chat-room-input-box bg-discode-darkest">
+        <form class="form-discode-blue send-message-form" role="sendMessage" [formGroup]="messageFormGroup">
+            <div class="mb-4 border-primary message-box">
+                <textarea name="sendMessage" rows="3" cols="60" name="message" class="form-control" placeholder="..."
+                    style="resize: none;" formControlName="message"></textarea>
+            </div>
 
-      <button type="submit" class="btn btn-primary btn-block mb-4 send-message"
-        [disabled]="this.messageFormGroup.invalid" (click)="sendMessage()">Send</button>
-    </form>
-    <button class="btn btn-primary btn-block mb-4 " (click)="openCodeModal()">Code mode</button>
-  </div>
+            <div class="d-flex">
+                <button class="btn btn-primary btn-block send-message" [disabled]="this.messageFormGroup.invalid"
+                    (click)="sendMessage()">Send</button>
+                <button class="btn btn-primary btn-block" (click)="openCodeModal()">Code mode</button>
+            </div>
+        </form>
+
+    </div>
 </div>
 
-
 <div class="modal code-modal" tabindex="-1" role="dialog" [ngStyle]="{'display':codeModalDisplay }">
-  <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Type your code</h5>
-        <select class="form-select" [ngModel]="mode" (ngModelChange)="onChange($event)">
-          <option selected value="text/x-c++src">C++</option>
-          <option value="text/x-csrc">C</option>
-          <option value="text/x-java">Java</option>
-        </select>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex justify-content-center">
-          <form class="form-discode-blue code-form" role="code">
-            <div class="border-primary">
-
-              <ngx-codemirror name="code" [(ngModel)]="codeMessage" [options]="{
-                    lineWrapping: false,
-                    theme: 'material',
-                    mode: mode
-                  }" class="code">
-              </ngx-codemirror>
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <ngx-codemirror name="code" [(ngModel)]="codeMessage" [options]="{
+                        lineWrapping: false,
+                        theme: 'material',
+                        mode: mode,
+                        indentUnit: 4,
+                        smartIndent: true,
+                        showCursorWhenSelecting: true
+                    }" class="code-editor">
+                </ngx-codemirror>
             </div>
-          </form>
-
+            <div class="modal-footer d-flex align-items-center">
+                <span class="d-flex-row footer-btns">   
+                    <select class="language-selector select-discode-darkest form-select" [ngModel]="mode" (ngModelChange)="onChange($event)">
+                        <option selected value="text/x-c++src">C++</option>
+                        <option value="text/x-csrc">C</option>
+                        <option value="text/x-java">Java</option>
+                    </select>
+                    <button type="button" class="btn btn-primary btn-discode-green" data-bs-dismiss="modal"
+                        (click)="onSendCode()">Send</button>
+                    <button type="button" class="btn btn-primary btn-discode-green" data-bs-dismiss="modal"
+                        (click)="onCloseHandled()">Exit</button>
+                </span>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
-          (click)="onCloseHandled()">Exit code mode</button>
-      </div>
     </div>
-  </div>
 </div>

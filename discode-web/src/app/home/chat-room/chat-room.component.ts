@@ -132,8 +132,15 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   onCloseHandled(){
     this.codeModalDisplay = 'none';
-    if(this.codeMessage !== '')
-      this.messageFormGroup.get('message')?.setValue("`" + this.codeMessage + "`");
+  }
+
+  onSendCode() {
+    if(this.codeMessage !== '') {
+        const source = "`" + this.codeMessage + "`";
+        this.codeMessage = "";
+        this.messageService.sendMessage(source);
+    }
+    this.onCloseHandled();
   }
 
   openCodeModal(){

@@ -16,16 +16,17 @@
                 </div>
             </div>
             <div *ngIf="isCode()">
-                <pre><code>{{code}}</code></pre>
-                <button class="btn btn-primary btn-discode-green" [disabled]="mode == ''" type="button" (click)="runCode()">Run</button>
-                <select class="form-select" [ngModel]="mode" (ngModelChange)="onChange($event)">
-                    <option value="" selected [disabled]="true">Select a language</option>
-                    <option *ngFor="let language of languages" value="{{language}}">{{language}}</option>
-                </select>
-
-                <textarea name="output" id="codeOutput" rows="3" cols="60" class="form-control" placeholder="..." readonly>
-                    {{message.codeOutput}}
-                </textarea>
+                <pre class='code-content'><code>{{code}}</code></pre>
+                <div class="code-options d-flex">
+                    <span class="d-flex-row">
+                        <select class="form-select select-discode-green language-selector" [ngModel]="mode" (ngModelChange)="onChange($event)">
+                            <option value="" selected [disabled]="true">Select a language</option>
+                            <option *ngFor="let language of languages" value="{{language}}">{{language}}</option>
+                        </select>
+                        <button class="btn btn-primary btn-discode-green" [disabled]="mode == ''" type="button" (click)="runCode()">Run</button>
+                    </span>
+                    <pre class='code-content'><code> {{message.codeOutput}}</code></pre>
+                </div>
             </div>
             <div *ngIf="!isCode()" class="message-content">{{message?.content}}
             </div>

@@ -61,6 +61,18 @@ a:hover {
     color: $discode-blue !important;
 }
 
+.select-discode-darkest {
+    background-color: $discode-darkest;
+    color: $discode-blue;
+    border: none;
+}
+
+.select-discode-green {
+    background-color: $discode-green;
+    color: white;
+    border: none;
+}
+
 .btn-discode-green {
     background-color: $discode-green !important;
 }

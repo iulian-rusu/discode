@@ -77,3 +77,21 @@ li .menu-list{
     display: flex; 
     justify-content: center
 }
+
+.code-content {
+    background-color: $discode-darkest;
+    padding: 15px;
+    border-radius: 4px;
+    max-height: 400px;
+    min-width: 600px;
+}
+
+.language-selector {
+    max-width: 250px;
+    max-height: 40px;
+    font-size: small;
+}
+
+.code-options *{
+    margin: 5px;
+}
