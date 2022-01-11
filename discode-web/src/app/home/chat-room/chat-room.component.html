@@ -53,7 +53,8 @@
 
           <div *ngFor="let user of search" class="member-list">
             <p>@{{user.username}}</p>
-            <button *ngIf="isAlreadyMember(user.userId!!) !== 'OWNER' && isAlreadyMember(user.userId!!) !== 'GUEST'" class="btn btn-secondary btn-discode-green"
+            <button *ngIf="isAlreadyMember(user.userId!!) !== 'OWNER' && isAlreadyMember(user.userId!!) !== 'GUEST'"
+              class="btn btn-secondary btn-discode-green"
               (click)="addInChat(user.userId!!, user.username!!)">Add</button>
           </div>
 
@@ -72,8 +73,8 @@
 
 <div class="d-flex align-items-center chat-room-div">
   <div class="d-flex-row chat-room-top-div">
-    <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages >
-      <app-message *ngFor="let message of messages" [message]="message"></app-message>
+    <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages>
+      <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
     </div>
     <div class="d-flex chat-room-members bg-discode-darker">
       <ul class='d-flex chat-room-members-list'>
@@ -91,7 +92,45 @@
           style="resize: none;" formControlName="message"></textarea>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block mb-4 send-message" [disabled]="this.messageFormGroup.invalid" (click)="sendMessage()">Send</button>
+      <button type="submit" class="btn btn-primary btn-block mb-4 send-message"
+        [disabled]="this.messageFormGroup.invalid" (click)="sendMessage()">Send</button>
     </form>
+    <button class="btn btn-primary btn-block mb-4 " (click)="openCodeModal()">Code mode</button>
+  </div>
+</div>
+
+
+<div class="modal code-modal" tabindex="-1" role="dialog" [ngStyle]="{'display':codeModalDisplay }">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Type your code</h5>
+        <select class="form-select" [ngModel]="mode" (ngModelChange)="onChange($event)">
+          <option selected value="text/x-c++src">C++</option>
+          <option value="text/x-csrc">C</option>
+          <option value="text/x-java">Java</option>
+        </select>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center">
+          <form class="form-discode-blue code-form" role="code">
+            <div class="border-primary">
+
+              <ngx-codemirror name="code" [(ngModel)]="codeMessage" [options]="{
+                    lineWrapping: false,
+                    theme: 'material',
+                    mode: mode
+                  }" class="code">
+              </ngx-codemirror>
+            </div>
+          </form>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-discode-dark" data-bs-dismiss="modal"
+          (click)="onCloseHandled()">Exit code mode</button>
+      </div>
+    </div>
   </div>
 </div>

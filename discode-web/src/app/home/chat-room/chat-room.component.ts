@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/shared/services/chat.service';
+import { CodeService } from 'src/app/shared/services/code.service';
 import { MessagesService } from 'src/app/shared/services/messages.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { Member } from '../models/member.model';
@@ -36,15 +37,20 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   deleteMemberModalDisplay = 'none';
   addMemberModalDisplay = 'none';
   spinnerDisplay = 'none';
+  codeModalDisplay = 'none';
   searchText = '';
+  mode = "text/x-c++src";
   search: Member[] | undefined;
   messageFormGroup: FormGroup;
+  codeMessage = '';
+  languages: string[] | undefined;
 
   constructor(
     private readonly chatService: ChatService,
     private readonly userService: UserService,
     private readonly messageService: MessagesService,
     private readonly formBuilder: FormBuilder,
+    private readonly codeService: CodeService,
     private readonly router: Router
   ) {
     this.messageService.connect();
@@ -74,11 +80,24 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.getLanguages();
     this.messageService.onNewMessage().subscribe((msg) => {
       let m: Message = msg as any;
       this.messages?.push(m);
       this.scrollToBottom();
     });
+  }
+
+  getLanguages() {
+    this.subs.push(
+      this.codeService
+        .getLanguages()
+        .subscribe((data: HttpResponse<any>) => {
+          if (data.status == 200) {
+            this.languages = data.body;
+          }
+        })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -110,6 +129,20 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   onAddMemberModalCloseHandled() {
     this.addMemberModalDisplay = 'none';
   }
+
+  onCloseHandled(){
+    this.codeModalDisplay = 'none';
+    if(this.codeMessage !== '')
+      this.messageFormGroup.get('message')?.setValue("`" + this.codeMessage + "`");
+  }
+
+  openCodeModal(){
+    this.codeModalDisplay = 'block';
+  }
+
+  onChange(newMode: string) {
+    this.mode = newMode;
+}
 
   deleteChat(): void {
     this.subs.push(
@@ -156,7 +189,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
             if (data.status == 200) {
               alert(username + ' joined the chat!');
               this.searchText = '';
-              this.messageService.newMember(userId);
+              this.messageService.newMember();
             }
           })
       );

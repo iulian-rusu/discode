@@ -1,14 +1,34 @@
 <div class="message-box">
     <div class="message-container d-flex-row">
-        <img src="http://localhost:8008/api/images/default.png" alt="Avatar" class="message-profile-pic">
+        <img *ngIf="message?.author?.imagePath === null" src="http://localhost:8008/api/images/default.png" alt="Avatar"
+            class="message-profile-pic">
+        <img *ngIf="message?.author?.imagePath !== null"
+            src="http://localhost:8008/api/images/{{message?.author?.imagePath}}" alt="Avatar"
+            class="message-profile-pic">
         <div>
             <div class="d-flex-row message-info">
                 <span class="username">{{message?.author?.username}}</span>
                 <span class="divider">|</span>
                 <span class="message-time">{{transform(message?.creationDate!!)}}</span>
                 <span *ngIf="message?.author?.userId != userId" class="report" (click)="openModal()">Report</span>
+                <div *ngIf="isCode()">
+
+                </div>
             </div>
-            <div class="message-content">{{message?.content}}</div>
+            <div *ngIf="isCode()">
+                <pre><code>{{code}}</code></pre>
+                <button class="btn btn-primary btn-discode-green" [disabled]="mode == ''" type="button" (click)="runCode()">Run</button>
+                <select class="form-select" [ngModel]="mode" (ngModelChange)="onChange($event)">
+                    <option value="" selected [disabled]="true">Select a language</option>
+                    <option *ngFor="let language of languages" value="{{language}}">{{language}}</option>
+                </select>
+
+                <textarea name="output" id="codeOutput" rows="3" cols="60" class="form-control" placeholder="..." readonly>
+                    {{message.codeOutput}}
+                </textarea>
+            </div>
+            <div *ngIf="!isCode()" class="message-content">{{message?.content}}
+            </div>
         </div>
     </div>
 
