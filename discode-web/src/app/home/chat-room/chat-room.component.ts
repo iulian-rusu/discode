@@ -1,6 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import {
   AfterViewChecked,
+  AfterViewInit,
   Component,
   ElementRef,
   HostListener,
@@ -70,8 +71,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
         ],
       ],
     });
-    this.scrollToBottom();
   }
+
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
@@ -113,8 +114,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop =
-        this.scrollContainer.nativeElement.scrollHeight;
+      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
 

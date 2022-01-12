@@ -24,6 +24,7 @@
     "bootstrap-icons": "^1.7.0",
     "codemirror": "^5.65.0",
     "mdb-ui-kit": "^3.9.0",
+    "ngx-highlightjs": "^6.1.1",
     "rxjs": "~6.6.0",
     "socket.io-client": "^4.4.1",
     "tslib": "^2.2.0",

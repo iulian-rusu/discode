@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthorizationInterceptor } from './shared/interceptors/authorization.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     AppRoutingModule,
     SharedModule,
+    HighlightModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
@@ -32,6 +34,12 @@ import { SharedModule } from './shared/shared.module';
       useClass: AuthorizationInterceptor,
       multi: true
     },
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        fullLibraryLoader: () => import('highlight.js'),
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

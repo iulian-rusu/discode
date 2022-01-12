@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MessageComponent } from './message/message.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { HighlightModule } from 'ngx-highlightjs';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    CodemirrorModule
+    CodemirrorModule,
+    HighlightModule
   ]
 })
 export class HomeModule { }

@@ -19,7 +19,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   @Input()
   public languages!: string[];
 
-  code: String | undefined;
+  code: string | undefined;
 
   display = 'none';
   reason: string | undefined;
