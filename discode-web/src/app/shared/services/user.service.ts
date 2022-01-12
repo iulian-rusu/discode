@@ -11,10 +11,30 @@ export class UserService {
 
   private url: string = 'http://localhost:8008/api/';
 
-  public getUsers(username: string = ""): Observable<HttpResponse<any>> {
+  public setUser(token: string, user: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', user);
+  }
+
+  public getUserId(): any {
+    try {
+      return JSON.parse(localStorage.getItem('user')!)['userId'];
+    } catch {
+      return null;
+    }
+  }
+  public getUserToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  public logoutUser() {
+    localStorage.clear();
+  }
+
+  public getUsers(username: string = ''): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(this.url + 'users', {
       params: {
-        username: username
+        username: username,
       },
       observe: 'response',
     });

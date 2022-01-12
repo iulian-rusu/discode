@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly formBuilder: FormBuilder
   ) {
     this.subs = new Array<Subscription>();
-    this.userId = JSON.parse(sessionStorage.getItem('user')!)['userId'];
+    this.userId = userService.getUserId();
 
     this.createChatFormGroup = this.formBuilder.group({
       chatName: ['', [Validators.required, Validators.minLength(2)]],

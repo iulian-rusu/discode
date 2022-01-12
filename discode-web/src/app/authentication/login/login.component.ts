@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoginService } from '../services/login.service';
 import { LoginModel } from '../models/login.model';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly loginService: LoginService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService
   ) {
     this.formGroup = this.formBuilder.group({
       username: '',
@@ -48,8 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.loginService.login(data).subscribe((data: HttpResponse<any>) => {
         if (data.status == 200) {
-          sessionStorage.setItem('token', data.body['token']);
-          sessionStorage.setItem('user', JSON.stringify(data.body['user']));
+          this.userService.setUser(data.body['token'], JSON.stringify(data.body['user']));
           this.router.navigate(['/home']);
         }
       }, this.handleError)

@@ -21,7 +21,7 @@ import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => sessionStorage.getItem('userToken'),
+        tokenGetter: () => localStorage.getItem('token'),
         allowedDomains: [],
         disallowedRoutes: [],
       },

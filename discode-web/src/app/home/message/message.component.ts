@@ -4,6 +4,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/shared/services/chat.service';
 import { CodeService } from 'src/app/shared/services/code.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { Message } from '../models/message.model';
 
 @Component({
@@ -24,15 +25,17 @@ export class MessageComponent implements OnInit, OnDestroy {
   display = 'none';
   reason: string | undefined;
   subs: Subscription[];
-  userId: BigInteger = JSON.parse(sessionStorage.getItem('user')!)['userId'];
+  userId: BigInteger;
   mode = '';
 
   constructor(
     private readonly chatService: ChatService,
     private readonly codeService: CodeService,
+    private readonly userService: UserService,
     private readonly datePipe: DatePipe
   ) {
     this.subs = new Array<Subscription>();
+    this.userId = userService.getUserId();
   }
 
   ngOnDestroy(): void {

@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/shared/services/user.service';
 import { RegisterModel } from '../models/register.model';
 import { RegisterService } from '../services/register.service';
 
@@ -25,7 +26,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly registerService: RegisterService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService
   ) {
     this.formGroup = this.formBuilder.group(
       {
@@ -90,8 +92,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         .register(data)
         .subscribe((data: HttpResponse<any>) => {
           if (data.status == 201) {
-            sessionStorage.setItem('token', data.body['token']);
-            sessionStorage.setItem('user', JSON.stringify(data.body['user']));
+            this.userService.setUser(data.body['token'], JSON.stringify(data.body['user']));
             this.router.navigate(['/home']);
           }
         }, this.handleError)

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { Message } from 'src/app/home/models/message.model';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,14 @@ import { Message } from 'src/app/home/models/message.model';
 export class MessagesService {
   private socket: Socket;
 
-  constructor() {
+  constructor(private readonly userService: UserService) {
     const host = 'localhost';
     const port = 8010;
     this.socket = io(`http://${host}:${port}`);
   }
 
   connect() {
-    let id = JSON.parse(sessionStorage.getItem('user')!)['userId'];
+    let id = this.userService.getUserId();
     this.socket.emit('connect-user', id);
   }
 
@@ -37,7 +38,7 @@ export class MessagesService {
   }
 
   sendMessage(message: String) {
-    let token = sessionStorage.getItem('token');
+    let token = this.userService.getUserToken();
     this.socket.emit('message', message, token);
   }
 
