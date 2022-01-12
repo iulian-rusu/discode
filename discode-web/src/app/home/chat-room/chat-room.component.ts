@@ -48,7 +48,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   search: Member[] | undefined;
   messageFormGroup: FormGroup;
   codeMessage = '';
-  languages: string[] | undefined;
+  languages: any[] | undefined;
 
   constructor(
     private readonly chatService: ChatService,
