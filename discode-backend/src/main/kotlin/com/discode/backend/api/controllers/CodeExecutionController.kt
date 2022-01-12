@@ -16,21 +16,23 @@ import java.util.*
 @RestController
 @RequestMapping("/api/code-execution")
 class CodeExecutionController : ScopeGuarded(CodeExecutionController::class) {
+    companion object {
+        val languageList = Language.values().map { lang ->
+            NamedLanguage(
+                name = lang,
+                displayName = lang.id.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                }
+            )
+        }
+    }
+
     @Autowired
     private lateinit var codeExecutionService: CodeExecutionServiceInterface
 
     @GetMapping("/languages")
     fun getLanguages(): ResponseEntity<List<NamedLanguage>> {
-        return ResponseEntity.ok(
-            Language.values().map { lang ->
-                NamedLanguage(
-                    name = lang,
-                    displayName = lang.id.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                    }
-                )
-            }
-        )
+        return ResponseEntity.ok(languageList)
     }
 
     @PostMapping("")

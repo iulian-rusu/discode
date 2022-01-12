@@ -84,6 +84,20 @@ li .menu-list{
     border-radius: 4px;
     max-height: 400px;
     min-width: 600px;
+
+    code {
+        background-color: $discode-darkest;
+    }
+}
+
+.code-output {
+    padding: 20px;
+    border-radius: 4px;
+    max-height: 400px;
+    min-width: 600px;
+    background-color: $discode-darkest;
+    font-size: 100%;
+    color: $discode-light;
 }
 
 .language-selector {

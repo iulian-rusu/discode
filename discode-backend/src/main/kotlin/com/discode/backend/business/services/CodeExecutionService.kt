@@ -55,8 +55,12 @@ class CodeExecutionService : JwtAuthorized(), CodeExecutionServiceInterface {
         if (response.statusCode != HttpStatus.OK) {
             throw ResponseStatusException(response.statusCode, "Cannot execute code")
         }
-        return response.body?.let {
-            it.substring(it.indexOf("\n\n") + 2)
+        return response.body?.let{
+            val index = it.indexOf("Standard")
+            if (index == -1)
+                it
+            else
+                it.substring(it.indexOf(":", index) + 2)
         }
     }
 }

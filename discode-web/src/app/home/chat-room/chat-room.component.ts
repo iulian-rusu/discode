@@ -44,7 +44,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   spinnerDisplay = 'none';
   codeModalDisplay = 'none';
   searchText = '';
-  mode = "text/x-c++src";
+  mode = "text/x-python";
   search: Member[] | undefined;
   messageFormGroup: FormGroup;
   codeMessage = '';

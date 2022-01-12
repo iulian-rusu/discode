@@ -109,7 +109,7 @@
             <div class="modal-body">
                 <ngx-codemirror name="code" id="code" [(ngModel)]="codeMessage" [options]="{
                         lineWrapping: false,
-                        theme: 'material',
+                        theme: 'material-palenight',
                         mode: mode,
                         indentUnit: 4,
                         smartIndent: true,
@@ -123,9 +123,20 @@
                 <span class="d-flex-row footer-btns">
                     <select class="language-selector select-discode-darkest form-select" [ngModel]="mode"
                         (ngModelChange)="onChange($event)">
-                        <option selected value="text/x-c++src">C++</option>
+                        <option selected value="text/x-python">Python</option>
+                        <option value="text/x-c++src">C++</option>
                         <option value="text/x-csrc">C</option>
+                        <option value="text/x-rustsrc">Rust</option>
                         <option value="text/x-java">Java</option>
+                        <option value="text/x-kotlin">Kotlin</option>
+                        <option value="text/x-swift">Swift</option>
+                        <option value="text/x-d">D</option>
+                        <option value="text/x-go">Go</option>
+                        <option value="text/x-ruby">Ruby</option>
+                        <option value="text/x-haskell">Haskell</option>
+                        <option value="text/x-fortran">Fortran</option>
+                        <option value="text/x-pascal">Pascal</option>
+                        <option value="text/x-rustsrc">Zig</option>
                     </select>
                     <button type="button" class="btn btn-primary btn-discode-green" data-bs-dismiss="modal"
                         (click)="onSendCode()">Send</button>
