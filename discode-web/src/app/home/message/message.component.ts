@@ -17,7 +17,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   public message!: Message;
 
   @Input()
-  public languages!: string[];
+  public languages!: any[];
 
   code: String | undefined;
 

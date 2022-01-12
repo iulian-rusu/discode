@@ -96,7 +96,7 @@
             <div class="d-flex">
                 <button class="btn btn-primary btn-block send-message" [disabled]="this.messageFormGroup.invalid"
                     (click)="sendMessage()">Send</button>
-                <button class="btn btn-primary btn-block" (click)="openCodeModal()">Code mode</button>
+                <button class="btn btn-primary btn-block" (click)="openCodeModal()">Code</button>
             </div>
         </form>
 
@@ -120,8 +120,9 @@
                 </ngx-codemirror>
             </div>
             <div class="modal-footer d-flex align-items-center">
-                <span class="d-flex-row footer-btns">   
-                    <select class="language-selector select-discode-darkest form-select" [ngModel]="mode" (ngModelChange)="onChange($event)">
+                <span class="d-flex-row footer-btns">
+                    <select class="language-selector select-discode-darkest form-select" [ngModel]="mode"
+                        (ngModelChange)="onChange($event)">
                         <option selected value="text/x-c++src">C++</option>
                         <option value="text/x-csrc">C</option>
                         <option value="text/x-java">Java</option>
