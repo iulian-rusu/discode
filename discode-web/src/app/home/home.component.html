@@ -1,18 +1,34 @@
 <div class="row">
-    <div class="col side-nav bg-discode-darker  d-flex">
-        <label style="text-align: center; padding: 20px; font-size: 16px;">Create new chat</label>
-        <button type="button" class=" btn btn-primary btn-discode-green create-chat" (click)="openModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path
-                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg>
-        </button>
-
-        <div class="chats btn-group-vertical bg-discode-darkest" data-bs-spy="scroll">
-            <button type="button" class="chat-btn btn btn-primary btn-discode-green btn-rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{chat.chatName}}"
-                *ngFor="let chat of chatList" (click)="chatClick(chat.chatId, chat.chatName)">{{chat.chatName}}
+    <div class="col side-nav bg-discode-darker  d-flex" data-bs-spy="scroll">
+        <div class="d-flex-row new-chat-container"> 
+            <button type="button" class="btn btn-primary btn-discode-dark create-chat" (click)="openModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
             </button>
+            <div class="lbl-create-chat" (click)="openModal()">New Chat</div>
         </div>
+        <div class="h-divider"></div>
+        <span class="chats d-flex">
+            <div *ngFor="let chat of chatList" class="d-flex-row">
+                <button type="button" class="chat-icon btn" (click)="chatClick(chat.chatId, chat.chatName)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                        <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                      </svg>
+                </button>
+                <div class="chat-link" (click)="chatClick(chat.chatId, chat.chatName)">
+                    {{chat.chatName}}
+                </div>
+                <div class="chat-leave-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </div>
+            </div>
+        </span>
     </div>
     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
         <div class="modal-dialog">

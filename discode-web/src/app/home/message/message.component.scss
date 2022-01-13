@@ -1,4 +1,8 @@
-@import "src/styles.scss";
+@import "src/colors.scss";
+
+code, code * {
+    font-size: medium !important;
+}
 
 .message-box {
     border-radius: 5px;

@@ -1,0 +1,11 @@
+$discode-darkest: #23272a;
+$discode-dark: #2c2f33;
+$discode-darker: darken($discode-dark, 2%);
+$discode-grey: lighten($discode-dark, 5%);
+$discode-light: #97a9b4;
+$discode-lighter: lighten($discode-light, 10%);
+$discode-blue: #7289da;
+$discode-dark-blue: darken($discode-blue, 10%);
+$discode-green: rgb(59, 165, 93);
+$discode-light-green: lighten($discode-green, 10%);
+$discode-dark-green: darken($discode-green, 5%);

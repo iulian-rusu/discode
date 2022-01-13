@@ -4,17 +4,7 @@
 @import '~codemirror/theme/material-ocean';
 @import '~codemirror/theme/material-palenight';
 @import '~highlight.js/styles/github-dark-dimmed.css';
-
-$discode-darkest: #23272a;
-$discode-dark: #2c2f33;
-$discode-darker: darken($discode-dark, 2%);
-$discode-grey: lighten($discode-dark, 5%);
-$discode-light: #97a9b4;
-$discode-blue: #7289da;
-$discode-dark-blue: darken($discode-blue, 10%);
-$discode-green: rgb(59, 165, 93);
-$discode-light-green: lighten($discode-green, 10%);
-$discode-dark-green: darken($discode-green, 5%);
+@import 'colors.scss';
 
 body {
     overflow-x: hidden;
@@ -210,3 +200,9 @@ background: $discode-darker;
 .modal-content {
     background-color: $discode-grey;
  }
+
+ .modal-content {
+    >* {
+        border: none;
+    }
+}
