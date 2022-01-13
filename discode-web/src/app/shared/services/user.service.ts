@@ -28,7 +28,8 @@ export class UserService {
   }
 
   public logoutUser() {
-    localStorage.clear();
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 
   public getUsers(username: string = ''): Observable<HttpResponse<any>> {

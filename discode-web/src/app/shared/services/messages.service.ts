@@ -29,6 +29,15 @@ export class MessagesService {
     });
   }
 
+  onNewMember() {
+    return new Observable((observer) => {
+      this.socket.on('new-chat', (msg: any) => {
+        console.log("abc");
+        observer.next(msg);
+      });
+    });
+  }
+
   joinChat(chatId: BigInteger) {
     this.socket.emit('join', chatId);
   }
@@ -42,7 +51,8 @@ export class MessagesService {
     this.socket.emit('message', message, token);
   }
 
-  newMember() {
-    this.socket.emit('new-member');
+  newMember(userId: BigInteger) {
+    this.socket.emit('new-member', userId);
+    console.log("add user");
   }
 }

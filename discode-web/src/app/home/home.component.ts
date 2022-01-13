@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../shared/services/chat.service';
+import { MessagesService } from '../shared/services/messages.service';
 import { UserService } from '../shared/services/user.service';
 import { Chat } from './models/chat.model';
 import { Member } from './models/member.model';
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private readonly userService: UserService,
     private readonly chatService: ChatService,
+    private readonly messageService: MessagesService,
     private readonly formBuilder: FormBuilder
   ) {
     this.subs = new Array<Subscription>();
@@ -49,6 +51,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         })
     );
+
+    this.messageService.onNewMember().subscribe((msg) => {
+      console.log("hjhf")
+    });
+
   }
 
   ngOnDestroy(): void {

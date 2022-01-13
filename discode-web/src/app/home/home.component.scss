@@ -1,6 +1,6 @@
 .side-nav {
-    max-width: 300px;
-    min-width: 200px;
+    max-width: 200px;
+    min-width: 100px;
     height: 90vh;
     margin: 10px 10px 0px 10px;
     align-items: center;
@@ -32,13 +32,13 @@
 .chat-btn {
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 80%;
-    height: 40px;
-    max-height: 40px;
-    min-height: 40px;
+    max-width: 50%;
+    border-radius: 10px;
+    max-height: 10%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    
 }
 
 .center{

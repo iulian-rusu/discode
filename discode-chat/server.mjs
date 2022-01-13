@@ -45,17 +45,24 @@ server.on("connection", socket => {
 
     let disconnect = () => {
         if (room) {
+
             --room.memberCount;
+
             if (room.memberCount <= 0)
                 rooms.splice(rooms.indexOf(room), 1);
+            
             socket.leave(room);
         }
+        if(connection)
+            connections.splice(connections.indexOf(connection), 1);
+
         room = undefined;
     };
 
     socket.on("connect-user", userId => {
         connection = { userId: userId, socket: socket };
         connections.push(connection);
+        console.log(`connect user ${userId}`);
     });
 
     socket.on("disconnect", () => {
@@ -109,10 +116,16 @@ server.on("connection", socket => {
     });
 
     socket.on("new-member", newUser => {
+
+        for(let con of connections){
+            console.log(`${con.userId}, ${con.socket.id}`);
+        }
+        console.log(`${newUser}`)
         if (room) {
-            for (let con in connection) {
+            for (let con of connections) {
                 if (con.userId == newUser) {
                     con.socket.emit("new-chat");
+                    console.log(`${con.userId}, ${con.socket.id}`);
                     break;
                 }
             }

@@ -73,7 +73,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
 
     this.subs = new Array<Subscription>();
-    this.userId = JSON.parse(sessionStorage.getItem('user')!)['userId'];
+    this.userId = userService.getUserId();
   }
 
   ngOnDestroy(): void {

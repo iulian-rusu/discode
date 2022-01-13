@@ -9,7 +9,7 @@
         </button>
 
         <div class="chats btn-group-vertical bg-discode-darkest" data-bs-spy="scroll">
-            <button type="button" class="chat-btn btn btn-primary btn-discode-green btn-rounded"
+            <button type="button" class="chat-btn btn btn-primary btn-discode-green btn-rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{chat.chatName}}"
                 *ngFor="let chat of chatList" (click)="chatClick(chat.chatId, chat.chatName)">{{chat.chatName}}
             </button>
         </div>

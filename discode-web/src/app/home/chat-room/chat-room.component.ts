@@ -192,6 +192,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
             if (data.status == 200) {
               alert(username + ' joined the chat!');
               this.searchText = '';
+              this.messageService.newMember(userId);
             }
           })
       );
@@ -203,7 +204,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
             if (data.status == 200) {
               alert(username + ' joined the chat!');
               this.searchText = '';
-              this.messageService.newMember();
+              this.messageService.newMember(userId);
             }
           })
       );
