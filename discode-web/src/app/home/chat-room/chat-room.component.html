@@ -1,22 +1,23 @@
-<div ngbDropdown class="dropdown chat-title">
-    <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1"
+<div ngbDropdown class="dropdown chat-title d-flex align-items-center">
+    <button ngbDropdownToggle class="btn btn-discode-darker d-flex-row align-items-center" type="button"
         aria-expanded="false" style="font-size: 16px;">
-        {{chatName}}
+        <div class="chat-title-content">
+            {{chatName}}
+        </div>
     </button>
     <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker" *ngIf="isAlreadyMember(userId) === 'OWNER'">
         <li><a class="menu-list" ngbDropdownItem (click)="openAddMemberModal()">Add member</a></li>
         <li><a class="menu-list" ngbDropdownItem (click)="openDeleteMemberModal()">Remove member</a></li>
         <li><a class="menu-list" ngbDropdownItem (click)="deleteChat()">Delete chat</a></li>
     </ul>
+    <hr class="solid">
 </div>
-
-<hr class="solid">
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':deleteMemberModalDisplay}">
     <div class=" modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Remove member form chat</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Remove member from this chat</h5>
             </div>
             <div class="modal-body">
                 <div *ngFor="let member of chatMembers" class="member-list">
@@ -39,7 +40,7 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add member in chat</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add member to this chat</h5>
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-center">
@@ -78,11 +79,18 @@
             <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
         </div>
         <div class="d-flex chat-room-members bg-discode-darker">
-            <ul class='d-flex chat-room-members-list'>
-                <div *ngFor="let member of chatMembers">
-                    <li *ngIf="member.status !== 'LEFT'">{{member.username}}</li>
+            <div *ngFor="let member of chatMembers" class="chat-room-member"> 
+                <div *ngIf="member.status !== 'LEFT'">
+                    <span class="chat-room-member-tooltip">
+                        {{member.firstName}} {{member.lastName}}
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    </svg>
+                    {{member.username}}
+                    <br/>
                 </div>
-            </ul>
+            </div>
         </div>
     </div>
 

@@ -1,3 +1,5 @@
+@import 'src/colors.scss';
+
 .chat-room-div {
     height: 90%;
     padding-right: 10px;
@@ -27,6 +29,48 @@
 
 .chat-room-members {
     min-width: 10%;
+    align-items: center;
+    padding-top: 5px;
+    align-items: center;
+
+    .chat-room-member {
+        width: 90%;
+        min-width: 90%;
+        border-radius: 4px;
+        padding: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        .chat-room-member-tooltip {
+            visibility: hidden;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 5px 10px 5px 10px;
+            margin: -5px;
+            background-color: $discode-dark-blue;
+            color: white;
+            width: fit-content;
+            max-width: 300px;
+            border-radius: 4px;
+            position: absolute;
+            z-index: 1;
+            right: 9%;
+            text-align: right;
+        }
+    }
+
+
+    .chat-room-member:hover {
+        background-color: $discode-dark;
+        color: white;
+        cursor: default;
+
+        .chat-room-member-tooltip {
+            visibility: visible;
+        }
+    }
 }
 
 .chat-room-input-box {
@@ -39,13 +83,24 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 0px;
+
+    button {
+        width: fit-content;
+        max-width: 30%;
+    }
+
+    .chat-title-content {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 hr.solid {
-    width: 100%;
-    border-width: 1px;
-    border-style: solid;
     margin-top: 0px;
+    width: 99%;
+    border-top: 2.5px solid $discode-light;
+    border-radius: 1px;
 }
 
 .menu-list {

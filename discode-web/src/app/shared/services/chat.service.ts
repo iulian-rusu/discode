@@ -66,7 +66,7 @@ export class ChatService {
   public getMessages(
     chatId: BigInteger,
     page: number = 1,
-    itemsPerPage: number = 20
+    itemsPerPage: number = 100
   ): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(
       this.url + '/' + chatId + '/messages',
