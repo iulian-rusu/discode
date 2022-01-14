@@ -5,6 +5,7 @@
     min-width: 300px;
     height: 93vh;
     margin: 0px 10px 0px 10px;
+    margin-right: 0 !important;
     align-items: center;
     border-radius: 4px;
     overflow-y: scroll;
@@ -68,7 +69,7 @@
     margin-top: 5px;
     width: 100%;
 
-    > * {
+    >* {
         margin: 5px;
     }
 }
@@ -149,4 +150,6 @@
 
 .owner, .owner:hover{
     visibility: hidden !important;
+    max-height: 93vh;
+    margin-left: 0 !important;
 }

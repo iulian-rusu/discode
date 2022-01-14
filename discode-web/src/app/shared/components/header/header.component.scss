@@ -1,7 +1,8 @@
+@import 'src/colors.scss';
+
 .right-span {
     position: fixed;
     right: 0;
-
     button {
         width: 45px;
         height: 45px;
@@ -14,4 +15,19 @@
     width: 100%;
     z-index: 200;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    img {
+        max-width: 230px;
+    }
+}
+
+button {
+    transition: border-radius 0.3s;
+    color: $discode-green;
+}
+
+button:hover {
+    border-radius: 30% !important;
+    background-color: $discode-green !important;
+    color: white !important;
 }
