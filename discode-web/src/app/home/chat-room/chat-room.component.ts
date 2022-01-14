@@ -71,16 +71,17 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
           Validators.required,
           Validators.maxLength(1000),
           Validators.minLength(1),
+          Validators.pattern('(?=\\s*\\S)[\\s\\S]+'),
         ],
       ],
     });
   }
 
   ngAfterViewChecked(): void {
-      if (this.shouldScrollDown) {
-        this.shouldScrollDown = false;
-        this.scrollToBottom();
-      }
+    if (this.shouldScrollDown) {
+      this.shouldScrollDown = false;
+      this.scrollToBottom();
+    }
   }
 
   ngOnDestroy(): void {
@@ -121,7 +122,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     try {
       this.scrollContainer.nativeElement.scroll({
         top: this.scrollContainer.nativeElement.scrollHeight,
-        left: 0
+        left: 0,
       });
     } catch (err) {}
   }
@@ -252,10 +253,12 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   sendMessage() {
-    this.messageService.sendMessage(
-      this.messageFormGroup.get('message')?.value
-    );
-    this.messageFormGroup.get('message')?.reset();
+    if (!this.messageFormGroup.invalid) {
+      this.messageService.sendMessage(
+        this.messageFormGroup.get('message')?.value
+      );
+      this.messageFormGroup.get('message')?.reset();
+    }
   }
 
   /*

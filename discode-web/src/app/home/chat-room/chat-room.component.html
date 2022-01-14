@@ -99,13 +99,11 @@
     <div class="d-flex chat-room-input-box bg-discode-darkest">
         <form class="form-discode-blue send-message-form" role="sendMessage" [formGroup]="messageFormGroup">
             <div class="mb-4 border-primary message-box">
-                <textarea name="sendMessage" rows="3" cols="60" name="message" class="form-control" placeholder="..."
+                <textarea name="sendMessage" rows="1" cols="60" name="message" class="form-control" placeholder="..."
                     style="resize: none;" formControlName="message" (keyup.enter)="sendMessage()"></textarea>
             </div>
 
             <div class="d-flex">
-                <button class="btn btn-primary btn-block send-message" [disabled]="this.messageFormGroup.invalid"
-                    (click)="sendMessage()">Send</button>
                 <button class="btn btn-primary btn-block" (click)="openCodeModal()">Code</button>
             </div>
         </form>
