@@ -56,11 +56,13 @@ class CodeExecutionService : JwtAuthorized(), CodeExecutionServiceInterface {
             throw ResponseStatusException(response.statusCode, "Cannot execute code")
         }
         return response.body?.let{
-            val index = it.indexOf("Standard")
+            val newlineIndex = it.indexOf("\n\n")
+            val output = if (newlineIndex >= 0) it.substring(newlineIndex + 2) else it
+            val index = output.indexOf("Standard")
             if (index == -1)
-                it
+                output
             else
-                it.substring(it.indexOf(":", index) + 2)
+                output.substring(output.indexOf(":", index) + 2)
         }
     }
 }

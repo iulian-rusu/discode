@@ -38,6 +38,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('code')
   private codeEditor!: CodemirrorComponent;
 
+  private shouldScrollDown = true;
+
   subs: Subscription[];
   deleteMemberModalDisplay = 'none';
   addMemberModalDisplay = 'none';
@@ -75,8 +77,12 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    this.scrollToBottom();
+      if (this.shouldScrollDown) {
+        this.shouldScrollDown = false;
+        this.scrollToBottom();
+      }
   }
+
   ngOnDestroy(): void {
     this.subs.forEach((sub) => {
       sub.unsubscribe();
@@ -89,8 +95,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.getLanguages();
     this.messageService.onNewMessage().subscribe((msg) => {
       let m: Message = msg as any;
+      this.shouldScrollDown = true;
       this.messages?.push(m);
-      this.scrollToBottom();
     });
   }
 
@@ -105,16 +111,18 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.shouldScrollDown = true;
     if (changes.chatId) {
       this.messageService.joinChat(changes.chatId.currentValue);
-      this.scrollToBottom();
     }
   }
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop =
-        this.scrollContainer.nativeElement.scrollHeight;
+      this.scrollContainer.nativeElement.scroll({
+        top: this.scrollContainer.nativeElement.scrollHeight,
+        left: 0
+      });
     } catch (err) {}
   }
 

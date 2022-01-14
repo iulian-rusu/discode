@@ -24,8 +24,7 @@
                 <div class="chat-link" (click)="chatClick(chat.chatId, chat.chatName)">
                     {{chat.chatName}}
                 </div>
-                <div (click)="leaveChat(chat.chatId!!)"
-                    [ngClass]="chat.ownerId !== userId ? 'chat-leave-icon non-owner': 'chat-leave-icon owner'">
+                <div [ngClass]="chat.ownerId !== userId ? 'chat-leave-icon non-owner': 'chat-leave-icon owner'" (click)="leaveChat(chat.chatId!!)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x"
                         viewBox="0 0 16 16">
                         <path
