@@ -145,11 +145,10 @@
 }
 
 .chat-room-container {
-    max-height: 90vh;
+    max-height: 93vh;
+    margin-left: 0 !important;
 }
 
 .owner, .owner:hover{
     visibility: hidden !important;
-    max-height: 93vh;
-    margin-left: 0 !important;
 }
