@@ -1,11 +1,8 @@
 package com.discode.backend.persistence
 
 import com.discode.backend.api.requests.RegisterUserRequest
-import com.discode.backend.business.models.Chat
-import com.discode.backend.business.models.ChatMemberStatus
 import com.discode.backend.business.models.User
 import com.discode.backend.business.security.Encoder
-import com.discode.backend.persistence.mappers.ChatRowMapper
 import com.discode.backend.persistence.mappers.UserRowMapper
 import org.springframework.stereotype.Repository
 
@@ -56,15 +53,6 @@ class UserRepository : RepositoryBase() {
             "SELECT * FROM user_credentials INNER JOIN user_accounts USING(user_id) WHERE user_id = ?",
             UserRowMapper(), userId
         ).first()
-    }
-
-    fun findChats(userId: Long): List<Chat> {
-        return jdbcTemplate.query(
-            """
-            SELECT * FROM chats c
-            WHERE c.chat_id IN (SELECT chat_id FROM chat_members cm WHERE cm.user_id = ? AND cm.status <> ?)
-           """, ChatRowMapper(), userId, ChatMemberStatus.LEFT.toString()
-        )
     }
 
     fun deleteOne(userId: Long) {

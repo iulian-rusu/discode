@@ -3,12 +3,13 @@ package com.discode.backend.business.services
 import com.discode.backend.api.requests.RegisterUserRequest
 import com.discode.backend.api.requests.UpdateUserRequest
 import com.discode.backend.api.responses.AuthResponse
-import com.discode.backend.business.models.Chat
+import com.discode.backend.api.responses.UserChatResponseEntry
 import com.discode.backend.business.models.User
 import com.discode.backend.business.security.Encoder
 import com.discode.backend.business.security.jwt.JwtAuthorized
 import com.discode.backend.business.services.interfaces.ImageServiceInterface
 import com.discode.backend.business.services.interfaces.UserServiceInterface
+import com.discode.backend.persistence.ChatRepository
 import com.discode.backend.persistence.GenericQueryRepository
 import com.discode.backend.persistence.UserRepository
 import com.discode.backend.persistence.mappers.UserRowMapper
@@ -26,6 +27,9 @@ class UserService : JwtAuthorized(), UserServiceInterface {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var chatRepository: ChatRepository
 
     @Autowired
     private lateinit var imageStorage: ImageServiceInterface
@@ -68,14 +72,22 @@ class UserService : JwtAuthorized(), UserServiceInterface {
         }
     }
 
-    override fun getUserChats(userId: Long, authHeader: String?): List<Chat> {
+    override fun getUserChats(userId: Long, authHeader: String?): List<UserChatResponseEntry> {
         return ifAuthorized(
             header = authHeader,
             authorizer = { details ->
                 details.userId == userId || details.isAdmin
             },
             action = {
-                userRepository.findChats(userId)
+                val chats = chatRepository.findUserChats(userId)
+                chats.map { chat ->
+                    val ownerId = chatRepository.findOwnerId(chat.chatId)
+                    UserChatResponseEntry(
+                        ownerId = ownerId,
+                        chatId = chat.chatId,
+                        chat.chatName
+                    )
+                }
             }
         )
     }

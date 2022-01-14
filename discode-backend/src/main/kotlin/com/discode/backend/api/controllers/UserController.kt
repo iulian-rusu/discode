@@ -3,9 +3,9 @@ package com.discode.backend.api.controllers
 import com.discode.backend.api.requests.RegisterUserRequest
 import com.discode.backend.api.requests.UpdateUserRequest
 import com.discode.backend.api.responses.AuthResponse
+import com.discode.backend.api.responses.UserChatResponseEntry
 import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
-import com.discode.backend.business.models.Chat
 import com.discode.backend.business.models.User
 import com.discode.backend.business.services.interfaces.UserServiceInterface
 import com.discode.backend.persistence.query.SearchUserQuery
@@ -66,7 +66,7 @@ class UserController : ScopeGuarded(UserController::class) {
     fun getUserChats(
         @PathVariable userId: Long,
         @RequestHeader("Authorization") authHeader: String?
-    ): ResponseEntity<List<Chat>> {
+    ): ResponseEntity<List<UserChatResponseEntry>> {
         return guardedWith(HttpStatus.NOT_FOUND, "Cannot find resource") {
             ResponseEntity.ok(userService.getUserChats(userId, authHeader))
         }
