@@ -68,7 +68,7 @@ export class UserService {
     });
   }
 
-  public getChats(userId: string): Observable<HttpResponse<any>> {
+  public getChats(userId: BigInteger): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(
       this.url + 'users/' + userId + '/chats',
       {

@@ -17,7 +17,7 @@ import { Message } from './models/message.model';
 export class HomeComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
   public createChatFormGroup: FormGroup;
-  private userId: string;
+  private userId: BigInteger;
   public chatList: Chat[] | undefined;
 
   public isChatSelected: boolean = false;
@@ -53,9 +53,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
 
     this.messageService.onNewMember().subscribe((msg) => {
-      console.log("hjhf")
+      console.log("new member");
     });
-
   }
 
   ngOnDestroy(): void {
@@ -87,7 +86,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
-  getMessages(){
+  getMessages() {
     this.subs.push(
       this.chatService
         .getMessages(this.chatId!!)
@@ -121,6 +120,20 @@ export class HomeComponent implements OnInit, OnDestroy {
             location.reload();
           }
         })
+    );
+  }
+
+  leaveChat(chatId: BigInteger): void {
+    this.subs.push(
+      this.chatService.changeStatus(chatId, this.userId, 'LEFT').subscribe(
+        (data: HttpResponse<any>) => {
+          if (data.status == 200) {
+            alert('You left the chat!');
+            location.reload();
+          }
+        },
+        () => {alert("You are the owner of this chat! You can't leave but you can delete the chat. :)");}
+      )
     );
   }
 }

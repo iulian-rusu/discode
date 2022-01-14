@@ -44,11 +44,12 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   spinnerDisplay = 'none';
   codeModalDisplay = 'none';
   searchText = '';
-  mode = "text/x-python";
+  mode = 'text/x-python';
   search: Member[] | undefined;
   messageFormGroup: FormGroup;
   codeMessage = '';
   languages: any[] | undefined;
+  userId: BigInteger;
 
   constructor(
     private readonly chatService: ChatService,
@@ -60,7 +61,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) {
     this.messageService.connect();
     this.subs = new Array<Subscription>();
-
+    this.userId = userService.getUserId();
     this.messageFormGroup = this.formBuilder.group({
       message: [
         '',
@@ -95,13 +96,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   getLanguages() {
     this.subs.push(
-      this.codeService
-        .getLanguages()
-        .subscribe((data: HttpResponse<any>) => {
-          if (data.status == 200) {
-            this.languages = data.body;
-          }
-        })
+      this.codeService.getLanguages().subscribe((data: HttpResponse<any>) => {
+        if (data.status == 200) {
+          this.languages = data.body;
+        }
+      })
     );
   }
 
@@ -114,7 +113,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+      this.scrollContainer.nativeElement.scrollTop =
+        this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
 
@@ -134,29 +134,29 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.addMemberModalDisplay = 'none';
   }
 
-  onCloseHandled(){
+  onCloseHandled() {
     this.codeModalDisplay = 'none';
   }
 
   onSendCode() {
-    if(this.codeMessage !== '') {
-        const source = "`" + this.codeMessage + "`";
-        this.codeMessage = "";
-        this.messageService.sendMessage(source);
+    if (this.codeMessage !== '') {
+      const source = '`' + this.codeMessage + '`';
+      this.codeMessage = '';
+      this.messageService.sendMessage(source);
     }
     this.codeEditor.codeMirror?.setValue(this.codeMessage);
     this.codeEditor.codeMirror?.refresh();
     this.onCloseHandled();
   }
 
-  openCodeModal(){
+  openCodeModal() {
     this.codeModalDisplay = 'block';
     this.codeEditor.codeMirror?.focus();
   }
 
   onChange(newMode: string) {
     this.mode = newMode;
-}
+  }
 
   deleteChat(): void {
     this.subs.push(
@@ -231,12 +231,16 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   isAlreadyMember(userId: BigInteger): string {
-    for (let member of this.chatMembers!!) {
-      if (member.userId === userId) {
-        return member.status!!;
+    try {
+      for (let member of this.chatMembers!!) {
+        if (member.userId === userId) {
+          return member.status!!;
+        }
       }
+      return 'NONE';
+    } catch {
+      return 'NONE';
     }
-    return 'NONE';
   }
 
   sendMessage() {
@@ -259,5 +263,4 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
   */
-
 }

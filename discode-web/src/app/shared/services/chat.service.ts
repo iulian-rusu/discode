@@ -21,7 +21,7 @@ export class ChatService {
     );
   }
   public createChat(
-    ownerId: string,
+    ownerId: BigInteger,
     chatName: string
   ): Observable<HttpResponse<any>> {
     const data = { ownerId: ownerId, chatName: chatName };
