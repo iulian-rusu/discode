@@ -17,7 +17,7 @@ import { Message } from './models/message.model';
 export class HomeComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
   public createChatFormGroup: FormGroup;
-  private userId: BigInteger;
+  public userId: BigInteger;
   public chatList: Chat[] | undefined;
 
   public isChatSelected: boolean = false;
@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
 
     this.messageService.onNewMember().subscribe((msg) => {
-      console.log("new member");
+      console.log('new member');
     });
   }
 
@@ -132,7 +132,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             location.reload();
           }
         },
-        () => {alert("You are the owner of this chat! You can't leave but you can delete the chat. :)");}
+        () => {}
       )
     );
   }
