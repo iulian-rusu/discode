@@ -16,7 +16,7 @@ Rectangle {
     implicitWidth: logo.width + logout.width
     implicitHeight: 80
 
-    color: Colors.headerBackground
+    color: Colors.foreground
 
     RowLayout {
         id: layout

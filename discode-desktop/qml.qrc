@@ -14,13 +14,14 @@
         <!-- buttons -->
         <file>view/buttons/DButton.qml</file>
         <file>view/buttons/IconOnlyButton.qml</file>
+        <file>view/buttons/DTabButton.qml</file>
 
         <!-- images -->
         <file>view/images/DiscodeLogo.qml</file>
 
         <!-- inputs -->
-        <file>view/inputs/DTextInput.qml</file>
-        <file>view/inputs/SecretInput.qml</file>
+        <file>view/inputs/DTextField.qml</file>
+        <file>view/inputs/SecretField.qml</file>
 
         <!-- labels -->
         <file>view/labels/DLabel.qml</file>
