@@ -5,7 +5,21 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-Button {
+
+TabButton {
+    id: root
+    background: Rectangle {
+        implicitWidth: 100
+        implicitHeight: 40
+        opacity: enabled ? 1 : 0.3
+        border.color: root.down ? "#17a81a" : "#21be2b"
+        border.width: 1
+        radius: 2
+    }
+    height: parent.height
+}
+/*
+TabButton {
     id: root
 
     enum DisplayType {
@@ -127,3 +141,4 @@ Button {
         }
     }
 }
+*/

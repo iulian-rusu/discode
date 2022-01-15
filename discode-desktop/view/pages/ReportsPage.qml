@@ -1,5 +1,18 @@
+import com.discode.colors 1.0
+
+import "../buttons"
+import "../inputs"
+import "../labels"
+
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-Item {
+Page {
+    id: root
 
+    Rectangle {
+        color: "yellow"
+        anchors.fill: parent
+    }
 }
