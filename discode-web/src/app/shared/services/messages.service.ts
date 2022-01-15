@@ -14,6 +14,7 @@ export class MessagesService {
     const host = 'localhost';
     const port = 8010;
     this.socket = io(`http://${host}:${port}`);
+    this.connect();
   }
 
   connect() {
@@ -24,6 +25,7 @@ export class MessagesService {
   onNewMessage() {
     return new Observable((observer) => {
       this.socket.on('message', (msg: Message) => {
+        console.log('new-message');
         observer.next(msg);
       });
     });
@@ -31,9 +33,18 @@ export class MessagesService {
 
   onNewMember() {
     return new Observable((observer) => {
-      this.socket.on('new-chat', (msg: any) => {
-        console.log("abc");
-        observer.next(msg);
+      this.socket.on('new-member', () => {
+        console.log('new-member');
+        observer.next();
+      });
+    });
+  }
+
+  onNewChat() {
+    return new Observable((observer) => {
+      this.socket.on('new-chat', () => {
+        console.log('new-chat');
+        observer.next();
       });
     });
   }
@@ -53,6 +64,5 @@ export class MessagesService {
 
   newMember(userId: BigInteger) {
     this.socket.emit('new-member', userId);
-    console.log("add user");
   }
 }

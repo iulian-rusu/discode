@@ -42,18 +42,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.push(
-      this.userService
-        .getChats(this.userId)
-        .subscribe((data: HttpResponse<any>) => {
-          if (data.status == 200) {
-            this.chatList = data.body;
-          }
-        })
-    );
+    this.getChats();
 
-    this.messageService.onNewMember().subscribe((msg) => {
-      console.log('new member');
+    this.messageService.onNewMember().subscribe(() => {
+      // TODO
+      // UPDATE MEMBER LIST ON THE RIGHT
+      // REMOVE ADD BUTTON FOR THE NEW MEMBER
+      // ADD MEMBER TO THE REMOVE LIST
+      this.getMembers();
+    });
+
+    this.messageService.onNewChat().subscribe(() => {
+      // TODO
+      // ADD NEW CHAT TO LIST
+      this.getChats();
     });
   }
 
@@ -72,6 +74,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getMembers();
     this.getMessages();
     this.isChatSelected = true;
+  }
+
+  getChats(): void {
+    this.subs.push(
+      this.userService
+        .getChats(this.userId)
+        .subscribe((data: HttpResponse<any>) => {
+          if (data.status == 200) {
+            this.chatList = data.body;
+          }
+        })
+    );
   }
 
   getMembers(): void {
