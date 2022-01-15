@@ -17,7 +17,7 @@ Window {
     visible: true
 
     title: "Discode"
-    color: Colors.windowBackground
+    color: Colors.background
 
     ColumnLayout {
         id: windowLayout
@@ -39,10 +39,18 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Component.onCompleted: push("pages/LoginPage.qml");
+            Component.onCompleted: {
+                push("pages/LoginPage.qml");
+                currentItem.loginSuccessful.connect(onLoginSuccessful);
+            }
+
+            function onLoginSuccessful() {
+                push("pages/MainPage.qml", { "anchors.fill": pageView.StackView.view });
+            }
 
             Connections {
                 target: header
+
                 function onLogoutClicked() {
                     pageView.pop();
                 }

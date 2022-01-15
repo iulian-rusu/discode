@@ -1,6 +1,9 @@
+#include <authentication_controller.h>
+
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QString>
 
 static_assert(QT_VERSION >= QT_VERSION_CHECK(6, 0, 0), "QT >= 6.0.0 required");
@@ -19,6 +22,10 @@ int main(int argc, char *argv[])
     app.setWindowIcon(QIcon(APP_ICON_PATH));
     qmlRegisterSingletonType(QString("file:///").append(COLORS_PATH), "com.discode.colors", 1, 0, "Colors");
     qmlRegisterSingletonType(QString("file:///").append(FONT_PATH), "com.discode.fonts", 1, 0, "Font");
+
+    authentication_controller ac{};
+
+    engine.rootContext()->setContextProperty("authenticationController", &ac);
 
     engine.load(url);
 
