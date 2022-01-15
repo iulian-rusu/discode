@@ -1,10 +1,17 @@
 @import "src/colors.scss";
 
+.home-page-container {
+    position: fixed;
+    top: 7vh;
+    min-width: 100vw;
+    margin: 0;
+}
+
 .side-nav {
     max-width: 300px;
     min-width: 300px;
     height: 93vh;
-    margin: 0px 10px 0px 10px;
+    margin-top: 0;
     margin-right: 0 !important;
     align-items: center;
     border-radius: 4px;

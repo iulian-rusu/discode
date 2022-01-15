@@ -2,7 +2,10 @@
 
 .right-span {
     position: fixed;
+    top: 0;
     right: 0;
+    max-height: 7vh;
+    height: 7vh;
     button {
         width: 45px;
         height: 45px;
@@ -15,9 +18,10 @@
     width: 100%;
     z-index: 200;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    max-height: 7vh;
 
     img {
-        max-width: 230px;
+        max-height: 5.5vh;
     }
 }
 

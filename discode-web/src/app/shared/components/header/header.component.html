@@ -1,8 +1,9 @@
-<nav class="bg-discode-darkest flex discode-header">
+<nav class="bg-discode-darkest flex discode-header align-items-center">
     <a href="/home">
         <img class="m-2" src="assets/logo-dark.png" alt="" />
     </a>
-    <span class="right-span" *ngIf="isAuthenticated">
+
+    <span class="right-span align-items-center d-flex-row" *ngIf="isAuthenticated">
         <a href="/profile">
             <button type="button" class="m-2 btn btn-primary btn-floating btn-discode-dark">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">

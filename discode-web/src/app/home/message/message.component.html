@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div *ngIf="isCode()">
-                <pre class='code-content'><code [highlight]="code!"></code></pre>
+                <pre class='code-window code-content'><code [highlight]="code!"></code></pre>
                 <div class="code-options d-flex">
                     <span class="d-flex-row">
                         <select class="form-select select-discode-green language-selector" [ngModel]="mode"
@@ -35,7 +35,7 @@
                         </button>
                     </span>
                     <code *ngIf="message.codeOutput">
-                        <pre class='code-output'>{{message.codeOutput}}</pre>
+                        <pre class='code-window code-output'>{{message.codeOutput}}</pre>
                     </code>
                 </div>
             </div>

@@ -7,7 +7,7 @@ code, code * {
 .message-box {
     border-radius: 5px;
     padding: 10px;
-    margin: 10px 10px;
+    margin: 0;
     overflow-x: hidden;
 
     .report {
@@ -82,24 +82,23 @@ li .menu-list{
     justify-content: center
 }
 
-.code-content {
+.code-window {
     background-color: $discode-darkest;
-    padding: 15px;
     border-radius: 4px;
     max-height: 400px;
     min-width: 600px;
+    max-width: 65vw;
 
+}
+
+.code-content {
     code {
         background-color: $discode-darkest;
     }
 }
 
 .code-output {
-    padding: 20px;
-    border-radius: 4px;
-    max-height: 400px;
-    min-width: 600px;
-    background-color: $discode-darkest;
+    padding: 15px;
     font-size: 100%;
     color: $discode-light;
 }
@@ -117,4 +116,9 @@ li .menu-list{
 .message-content{
     max-width: 60vw;
     word-wrap: break-word;
+
+    pre {
+        font-size: medium !important;
+        font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    }
 }
