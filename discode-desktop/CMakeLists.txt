@@ -32,8 +32,9 @@ else()
     endif()
 endif()
 
-find_package(QT NAMES Qt6 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
+set(QT_FEATURE_intelcet ON)
+find_package(QT NAMES Qt6 COMPONENTS Core Quick Network REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Network REQUIRED)
 
 add_subdirectory(controller)
 add_subdirectory(model)

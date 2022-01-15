@@ -4,8 +4,7 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 
-
-class authentication_service {
+class authentication_service : public QObject {
     Q_OBJECT
 public:
 
