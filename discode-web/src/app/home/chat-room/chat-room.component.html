@@ -77,6 +77,10 @@
 <div class="d-flex align-items-center chat-room-div">
     <div class="d-flex-row chat-room-top-div">
         <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages>
+            <div *ngIf="canLoadMoreMessages()"
+                class="btn-load-more d-flex-row align-items-center">
+                Load more ...
+            </div>
             <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
         </div>
         <div class="d-flex chat-room-members bg-discode-darker">
@@ -97,7 +101,8 @@
     </div>
 
     <div class="d-flex chat-room-input-box bg-discode-darkest">
-        <form class="form-discode-blue send-message-form d-flex-row align-items-center" role="sendMessage" [formGroup]="messageFormGroup">
+        <form class="form-discode-blue send-message-form d-flex-row align-items-center" role="sendMessage"
+            [formGroup]="messageFormGroup">
             <div class="message-box d-flex-row align-items-center">
                 <textarea name="sendMessage" rows="1" cols="60" name="message" class="form-control" placeholder="..."
                     style="resize: none;" formControlName="message" (keyup.enter)="sendMessage()"></textarea>

@@ -62,7 +62,9 @@
     </div>
     <div class="col chat-room-container">
         <app-chat-room *ngIf="isChatSelected" [chatId]="chatId" [chatName]="selectedChat" [chatMembers]="chatMembers"
-            [messages]="messages"></app-chat-room>
+            [messages]="messages"
+            [messagesPerPage]="this.messagesPerPage"
+            ></app-chat-room>
         <div *ngIf="!isChatSelected" class="center">
             <img src="assets/welcome_cats.svg" alt="welcome">
         </div>

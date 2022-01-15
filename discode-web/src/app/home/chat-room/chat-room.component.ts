@@ -33,6 +33,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Input() public chatName: string | undefined;
     @Input() public chatMembers: Member[] | undefined;
     @Input() public messages: Message[] | undefined;
+    @Input() public messagesPerPage: number = 30;
 
     @ViewChild('scrollMessages') private scrollContainer!: ElementRef;
     @ViewChild('code')
@@ -79,7 +80,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     ngAfterViewChecked(): void {
         if (this.shouldScrollDown) {
             this.scrollToBottom();
-            this.shouldScrollDown = false;
+            setTimeout(() => { this.shouldScrollDown = false; }, 25);
         }
     }
 
@@ -96,12 +97,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.messageService.onNewMessage().subscribe((msg) => {
             let m: Message = msg as any;
             this.messages?.push(m);
-            setTimeout(() => {
-                if (m.author?.userId == this.userId) {
-                    this.shouldScrollDown = true;
-                }
-            }, 50);
-
+            this.shouldScrollDown = true;
         });
     }
 
@@ -264,6 +260,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
             );
             this.messageFormGroup.get('message')?.reset();
         }
+    }
+
+    canLoadMoreMessages() {
+        return this.messages !== undefined && this.messages.length >= this.messagesPerPage;
     }
 
     /*

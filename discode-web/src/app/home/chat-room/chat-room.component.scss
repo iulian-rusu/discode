@@ -127,7 +127,7 @@ hr.solid {
     .message-box {
         width: 90%;
         padding: 0;
-        
+
         textarea {
             padding-top: 0.5em;
             padding-bottom: 0;
@@ -148,7 +148,7 @@ hr.solid {
     position: absolute;
     padding: 0 !important;
     width: 50%;
-    height: 47%;
+    height: 51%;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -197,4 +197,16 @@ hr.solid {
         margin-top: 5px;
         margin-bottom: 5px;
     }
+}
+
+.btn-load-more {
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 10vw;
+    border-radius: 4px;
+    background-color: $discode-grey;
+    color: $discode-light;
+    align-self: center;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
