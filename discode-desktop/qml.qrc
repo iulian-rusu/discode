@@ -1,5 +1,40 @@
 <RCC>
     <qresource prefix="/">
+
+        <!-- main -->
         <file>view/main.qml</file>
+
+        <!-- resources -->
+        <file>view/resources/icons/box-arrow-right.svg</file>
+        <file>view/resources/icons/favicon.png</file>
+        <file>view/resources/icons/logo-dark.png</file>
+        <file>view/resources/icons/logo-full-dark.png</file>
+
+        <!-- buttons -->
+        <file>view/buttons/DButton.qml</file>
+        <file>view/buttons/IconButton.qml</file>
+        <file>view/buttons/TextButton.qml</file>
+
+        <!-- images -->
+        <file>view/images/Discode.qml</file>
+
+        <!-- inputs -->
+        <file>view/inputs/DTextInput.qml</file>
+        <file>view/inputs/SecretInput.qml</file>
+
+        <!-- labels -->
+        <file>view/labels/DLabel.qml</file>
+
+        <!-- lists -->
+        <file>view/lists/BanDelegate.qml</file>
+        <file>view/lists/DDelegate.qml</file>
+        <file>view/lists/ReportDelegate.qml</file>
+
+        <!-- pages -->
+        <file>view/pages/BansPage.qml</file>
+        <file>view/pages/LoginPage.qml</file>
+        <file>view/pages/MainPage.qml</file>
+        <file>view/pages/ReportsPage.qml</file>
+
     </qresource>
 </RCC>
