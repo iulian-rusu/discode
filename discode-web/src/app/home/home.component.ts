@@ -52,8 +52,16 @@ export class HomeComponent implements OnInit, OnDestroy {
         })
     );
 
-    this.messageService.onNewMember().subscribe((msg) => {
-      console.log('new member');
+    this.messageService.onNewMember().subscribe(() => {
+      // TODO
+      // UPDATE MEMBER LIST ON THE RIGHT
+      // REMOVE ADD BUTTON FOR THE NEW MEMBER
+      // ADD MEMBER TO THE REMOVE LIST
+    });
+
+    this.messageService.onNewChat().subscribe(() => {
+      // TODO
+      // ADD NEW CHAT TO LIST
     });
   }
 

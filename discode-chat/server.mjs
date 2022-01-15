@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import process from 'process';
+
 /*
  * Treated events:
  *
@@ -44,17 +45,19 @@ server.on("connection", socket => {
     let room = undefined;
 
     let disconnect = () => {
-        if (room) {
-
-            --room.memberCount;
-
-            if (room.memberCount <= 0)
-                rooms.splice(rooms.indexOf(room), 1);
-            
-            socket.leave(room);
-        }
+        leave();
         if(connection)
             connections.splice(connections.indexOf(connection), 1);
+    };
+
+    let leave = () => {
+        if (room) {
+            --room.memberCount;
+            if (room.memberCount <= 0)
+                rooms.splice(rooms.indexOf(room), 1);
+
+            socket.leave(room);
+        }
 
         room = undefined;
     };
@@ -62,7 +65,6 @@ server.on("connection", socket => {
     socket.on("connect-user", userId => {
         connection = { userId: userId, socket: socket };
         connections.push(connection);
-        console.log(`connect user ${userId}`);
     });
 
     socket.on("disconnect", () => {
@@ -83,7 +85,7 @@ server.on("connection", socket => {
     });
 
     socket.on("leave", () => {
-        disconnect();
+        leave();
     });
 
     socket.on("message", async (content, token) => {
@@ -116,21 +118,15 @@ server.on("connection", socket => {
     });
 
     socket.on("new-member", newUser => {
-
-        for(let con of connections){
-            console.log(`${con.userId}, ${con.socket.id}`);
-        }
-        console.log(`${newUser}`)
         if (room) {
+            socket.emit("new-member");
+            socket.broadcast.to(room).emit("new-member");
             for (let con of connections) {
                 if (con.userId == newUser) {
                     con.socket.emit("new-chat");
-                    console.log(`${con.userId}, ${con.socket.id}`);
                     break;
                 }
             }
-            socket.emit("new-member");
-            socket.broadcast.to(room).emit("new-member");
         }
     });
 });

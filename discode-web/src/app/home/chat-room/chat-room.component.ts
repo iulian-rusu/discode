@@ -61,7 +61,6 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     private readonly codeService: CodeService,
     private readonly router: Router
   ) {
-    this.messageService.connect();
     this.subs = new Array<Subscription>();
     this.userId = userService.getUserId();
     this.messageFormGroup = this.formBuilder.group({
