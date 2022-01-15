@@ -54,8 +54,8 @@ Rectangle {
 
             visible: root.logoutVisible
 
-            iconSource: "../resources/icons/box-arrow-right-green.svg"
-            iconSourceHovered: "../resources/icons/box-arrow-right-white.svg"
+            iconSource: "qrc:/view/resources/icons/box-arrow-right-green.svg"
+            iconSourceHovered: "qrc:/view/resources/icons/box-arrow-right-white.svg"
             iconWidth: preferredSize
             iconHeight: preferredSize
 

@@ -53,6 +53,9 @@ Button {
     property int borderWidth: 1
     property real radius: 5
 
+    implicitHeight: 50
+    implicitWidth: 120
+
     clip: true
     flat: true
     highlighted: true

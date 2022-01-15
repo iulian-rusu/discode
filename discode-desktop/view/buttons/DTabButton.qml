@@ -5,20 +5,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-
-TabButton {
-    id: root
-    background: Rectangle {
-        implicitWidth: 100
-        implicitHeight: 40
-        opacity: enabled ? 1 : 0.3
-        border.color: root.down ? "#17a81a" : "#21be2b"
-        border.width: 1
-        radius: 2
-    }
-    height: parent.height
-}
-/*
 TabButton {
     id: root
 
@@ -31,22 +17,22 @@ TabButton {
         TextBelowIcon
     }
 
-    property color backgroundColor: Colors.buttonBackground
-    property color backgroundColorHovered: Colors.buttonBackgroundHovered
-    property color backgroundColorDown: Colors.buttonBackgroundDown
+    property color backgroundColor: Colors.discode
+    property color backgroundColorHovered: Colors.discodeDim
+    property color backgroundColorChecked: backgroundColorHovered
     property color backgroundColorDisabled: Colors.buttonBackgroundDisabled
 
-    property color textColor: Colors.buttonText
-    property color textColorHovered: Colors.buttonTextHovered
-    property color textColorDown: Colors.buttonTextDown
+    property color textColor: Colors.buttonTextHovered
+    property color textColorHovered: Colors.staticText
+    property color textColorChecked: textColor
 
-    property color borderColor: Colors.buttonBorder
-    property color borderColorHovered: Colors.buttonBorderHovered
-    property color borderColorDown: Colors.buttonBorderDown
+    property color borderColor: Colors.buttonTextHovered
+    property color borderColorHovered: Colors.staticText
+    property color borderColorChecked: borderColor
 
     property url iconSource: ""
     property url iconSourceHovered: ""
-    property url iconSourceDown: iconSourceHovered
+    property url iconSourceChecked: iconSourceHovered
 
     readonly property bool textVisible: displayType !== DButton.DisplayType.IconOnly
     readonly property bool iconVisible: displayType !== DButton.DisplayType.TextOnly
@@ -64,12 +50,13 @@ TabButton {
     property real iconHeight: buttonIcon.implicitHeight
     property int iconFillMode: Image.PreserveAspectFit
 
-    property int borderWidth: 1
-    property real radius: 5
+    property int borderWidth: 2
+    property real radius: 0
+
+    implicitHeight: 50
+    implicitWidth: 120
 
     clip: true
-    flat: true
-    highlighted: true
 
     text: "Placeholder"
 
@@ -80,9 +67,9 @@ TabButton {
         radius: root.radius
 
         color: !root.enabled ? root.backgroundColorDisabled :
-                    root.down ? root.backgroundColorDown :
+                    root.checked ? root.backgroundColorChecked :
                         root.hovered ? root.backgroundColorHovered : root.backgroundColor
-        border.color: root.down ? root.borderColorDown :
+        border.color: root.checked ? root.borderColorChecked :
                 root.hovered ? root.borderColorHovered : root.borderColor
     }
 
@@ -106,7 +93,8 @@ TabButton {
 
             Layout.row: root.textRow
             Layout.column: root.textColumn
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            // TODO Make alignment depend on display type
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.maximumWidth: maximumWidth > 0 ? maximumWidth : 0
             Layout.maximumHeight: maximumHeight > 0 ? maximumHeight : 0
 
@@ -118,7 +106,7 @@ TabButton {
             font.pointSize: root.pointSize
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            color: root.down ? root.textColorDown :
+            color: root.checked ? root.textColorChecked :
                     root.hovered ? root.textColorHovered : root.textColor
         }
 
@@ -127,7 +115,8 @@ TabButton {
 
             Layout.row: root.iconRow
             Layout.column: root.iconColumn
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            // TODO Make alignment depend on display type
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.preferredWidth: root.iconWidth
             Layout.preferredHeight: root.iconHeight
             Layout.maximumWidth: parent.width
@@ -135,10 +124,9 @@ TabButton {
 
             visible: root.iconVisible
 
-            source: root.down ? root.iconSourceDown:
+            source: root.checked ? root.iconSourceChecked:
                         root.hovered ? root.iconSourceHovered : root.iconSource
             fillMode: root.iconFillMode
         }
     }
 }
-*/

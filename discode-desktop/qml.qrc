@@ -5,9 +5,13 @@
         <file>view/main.qml</file>
 
         <!-- resources -->
+        <file>view/resources/icons/auto_delete_black_48dp_dim.svg</file>
+        <file>view/resources/icons/auto_delete_black_48dp_normal.svg</file>
         <file>view/resources/icons/box-arrow-right-green.svg</file>
         <file>view/resources/icons/box-arrow-right-white.svg</file>
         <file>view/resources/icons/favicon.png</file>
+        <file>view/resources/icons/flag_black_48dp_dim.svg</file>
+        <file>view/resources/icons/flag_black_48dp_normal.svg</file>
         <file>view/resources/icons/logo-dark.png</file>
         <file>view/resources/icons/logo-full-dark.png</file>
 
