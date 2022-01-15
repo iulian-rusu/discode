@@ -61,6 +61,7 @@ target_link_libraries(${PROJECT_NAME}
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick controller model network view)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC APP_ICON_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/icons/favicon.png")
+target_compile_definitions(${PROJECT_NAME} PUBLIC COLORS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/Colors.qml")
 target_compile_definitions(${PROJECT_NAME} PUBLIC FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/Font.qml")
 
 qt_import_qml_plugins(${PROJECT_NAME})

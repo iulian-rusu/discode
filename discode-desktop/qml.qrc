@@ -5,18 +5,18 @@
         <file>view/main.qml</file>
 
         <!-- resources -->
-        <file>view/resources/icons/box-arrow-right.svg</file>
+        <file>view/resources/icons/box-arrow-right-green.svg</file>
+        <file>view/resources/icons/box-arrow-right-white.svg</file>
         <file>view/resources/icons/favicon.png</file>
         <file>view/resources/icons/logo-dark.png</file>
         <file>view/resources/icons/logo-full-dark.png</file>
 
         <!-- buttons -->
         <file>view/buttons/DButton.qml</file>
-        <file>view/buttons/IconButton.qml</file>
-        <file>view/buttons/TextButton.qml</file>
+        <file>view/buttons/IconOnlyButton.qml</file>
 
         <!-- images -->
-        <file>view/images/Discode.qml</file>
+        <file>view/images/DiscodeLogo.qml</file>
 
         <!-- inputs -->
         <file>view/inputs/DTextInput.qml</file>
@@ -29,6 +29,9 @@
         <file>view/lists/BanDelegate.qml</file>
         <file>view/lists/DDelegate.qml</file>
         <file>view/lists/ReportDelegate.qml</file>
+
+        <!-- others -->
+        <file>view/others/Header.qml</file>
 
         <!-- pages -->
         <file>view/pages/BansPage.qml</file>

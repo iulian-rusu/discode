@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     app.setWindowIcon(QIcon(APP_ICON_PATH));
+    qmlRegisterSingletonType(QString("file:///").append(COLORS_PATH), "com.discode.colors", 1, 0, "Colors");
     qmlRegisterSingletonType(QString("file:///").append(FONT_PATH), "com.discode.fonts", 1, 0, "Font");
 
     engine.load(url);
