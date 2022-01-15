@@ -1,22 +1,24 @@
-<div ngbDropdown class="dropdown chat-title">
-    <button ngbDropdownToggle class="btn btn-discode-darker" type="button" id="dropdownMenuButton1"
+<div ngbDropdown class="dropdown chat-title d-flex align-items-center">
+    <button ngbDropdownToggle class="btn btn-discode-darker d-flex-row align-items-center" type="button"
         aria-expanded="false" style="font-size: 16px;">
-        {{chatName}}
+        <div class="chat-title-content">
+            {{chatName}}
+        </div>
     </button>
-    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker">
+    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1" class="bg-discode-darker"
+        *ngIf="isAlreadyMember(userId) === 'OWNER'">
         <li><a class="menu-list" ngbDropdownItem (click)="openAddMemberModal()">Add member</a></li>
         <li><a class="menu-list" ngbDropdownItem (click)="openDeleteMemberModal()">Remove member</a></li>
         <li><a class="menu-list" ngbDropdownItem (click)="deleteChat()">Delete chat</a></li>
     </ul>
+    <hr class="solid">
 </div>
-
-<hr class="solid">
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':deleteMemberModalDisplay}">
     <div class=" modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Remove member form chat</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Remove member from this chat</h5>
             </div>
             <div class="modal-body">
                 <div *ngFor="let member of chatMembers" class="member-list">
@@ -39,7 +41,7 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add member in chat</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add member to this chat</h5>
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-center">
@@ -75,31 +77,41 @@
 <div class="d-flex align-items-center chat-room-div">
     <div class="d-flex-row chat-room-top-div">
         <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages>
+            <div *ngIf="canLoadMoreMessages()"
+                class="btn-load-more d-flex-row align-items-center">
+                Load more ...
+            </div>
             <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
         </div>
         <div class="d-flex chat-room-members bg-discode-darker">
-            <ul class='d-flex chat-room-members-list'>
-                <div *ngFor="let member of chatMembers">
-                    <li *ngIf="member.status !== 'LEFT'">{{member.firstName + " " + member.lastName}}</li>
+            <div *ngFor="let member of chatMembers" class="chat-room-member">
+                <div *ngIf="member.status !== 'LEFT'">
+                    <span class="chat-room-member-tooltip">
+                        {{member.firstName}} {{member.lastName}}
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                    </svg>
+                    {{member.username}}
+                    <br />
                 </div>
-            </ul>
+            </div>
         </div>
     </div>
 
     <div class="d-flex chat-room-input-box bg-discode-darkest">
-        <form class="form-discode-blue send-message-form" role="sendMessage" [formGroup]="messageFormGroup">
-            <div class="mb-4 border-primary message-box">
-                <textarea name="sendMessage" rows="3" cols="60" name="message" class="form-control" placeholder="..."
-                    style="resize: none;" formControlName="message"></textarea>
+        <form class="form-discode-blue send-message-form d-flex-row align-items-center" role="sendMessage"
+            [formGroup]="messageFormGroup">
+            <div class="message-box d-flex-row align-items-center">
+                <textarea name="sendMessage" rows="1" cols="60" name="message" class="form-control" placeholder="..."
+                    style="resize: none;" formControlName="message" (keyup.enter)="sendMessage()"></textarea>
             </div>
 
-            <div class="d-flex">
-                <button class="btn btn-primary btn-block send-message" [disabled]="this.messageFormGroup.invalid"
-                    (click)="sendMessage()">Send</button>
+            <div class="d-flex align-items-center">
                 <button class="btn btn-primary btn-block" (click)="openCodeModal()">Code</button>
             </div>
         </form>
-
     </div>
 </div>
 
@@ -109,7 +121,7 @@
             <div class="modal-body">
                 <ngx-codemirror name="code" id="code" [(ngModel)]="codeMessage" [options]="{
                         lineWrapping: false,
-                        theme: 'material',
+                        theme: 'material-palenight',
                         mode: mode,
                         indentUnit: 4,
                         smartIndent: true,
@@ -123,9 +135,20 @@
                 <span class="d-flex-row footer-btns">
                     <select class="language-selector select-discode-darkest form-select" [ngModel]="mode"
                         (ngModelChange)="onChange($event)">
-                        <option selected value="text/x-c++src">C++</option>
+                        <option selected value="text/x-python">Python</option>
+                        <option value="text/x-c++src">C++</option>
                         <option value="text/x-csrc">C</option>
+                        <option value="text/x-rustsrc">Rust</option>
                         <option value="text/x-java">Java</option>
+                        <option value="text/x-kotlin">Kotlin</option>
+                        <option value="text/x-swift">Swift</option>
+                        <option value="text/x-d">D</option>
+                        <option value="text/x-go">Go</option>
+                        <option value="text/x-ruby">Ruby</option>
+                        <option value="text/x-haskell">Haskell</option>
+                        <option value="text/x-fortran">Fortran</option>
+                        <option value="text/x-pascal">Pascal</option>
+                        <option value="text/x-rustsrc">Zig</option>
                     </select>
                     <button type="button" class="btn btn-primary btn-discode-green" data-bs-dismiss="modal"
                         (click)="onSendCode()">Send</button>

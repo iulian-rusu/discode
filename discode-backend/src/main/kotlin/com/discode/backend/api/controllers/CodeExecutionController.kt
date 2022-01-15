@@ -1,7 +1,7 @@
 package com.discode.backend.api.controllers
 
 import com.discode.backend.api.requests.CodeExecutionRequest
-import com.discode.backend.api.responses.NamedLanguage
+import com.discode.backend.api.responses.LanguageResponseEntry
 import com.discode.backend.api.utils.HttpResponse
 import com.discode.backend.api.utils.ScopeGuarded
 import com.discode.backend.business.models.Language
@@ -16,21 +16,23 @@ import java.util.*
 @RestController
 @RequestMapping("/api/code-execution")
 class CodeExecutionController : ScopeGuarded(CodeExecutionController::class) {
+    companion object {
+        val languageList = Language.values().map { lang ->
+            LanguageResponseEntry(
+                name = lang,
+                displayName = lang.id.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                }
+            )
+        }
+    }
+
     @Autowired
     private lateinit var codeExecutionService: CodeExecutionServiceInterface
 
     @GetMapping("/languages")
-    fun getLanguages(): ResponseEntity<List<NamedLanguage>> {
-        return ResponseEntity.ok(
-            Language.values().map { lang ->
-                NamedLanguage(
-                    name = lang,
-                    displayName = lang.id.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                    }
-                )
-            }
-        )
+    fun getLanguages(): ResponseEntity<List<LanguageResponseEntry>> {
+        return ResponseEntity.ok(languageList)
     }
 
     @PostMapping("")

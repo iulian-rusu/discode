@@ -48,6 +48,15 @@ class ChatRepository : RepositoryBase() {
         jdbcTemplate.update("DELETE FROM chats WHERE chat_id = ?", chatId)
     }
 
+    fun findUserChats(userId: Long): List<Chat> {
+        return jdbcTemplate.query(
+            """
+            SELECT * FROM chats c
+            WHERE c.chat_id IN (SELECT chat_id FROM chat_members cm WHERE cm.user_id = ? AND cm.status <> ?)
+           """, ChatRowMapper(), userId, ChatMemberStatus.LEFT.toString()
+        )
+    }
+
     fun findOwnerId(chatId: Long): Long {
         return jdbcTemplate.queryForObject(
             "SELECT user_id FROM chat_members WHERE chat_id = ? AND status = ?",

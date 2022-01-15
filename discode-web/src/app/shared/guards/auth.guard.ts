@@ -8,12 +8,14 @@ import {
 } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private helper: JwtHelperService) {}
+  constructor(private router: Router, private helper: JwtHelperService,
+    private userService: UserService) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -22,8 +24,8 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const token = sessionStorage.getItem('token');
-    if (token == undefined) {
+    const token = this.userService.getUserToken();
+    if (token == undefined || token == null) {
       this.router.navigate(['auth']);
       return false;
     }

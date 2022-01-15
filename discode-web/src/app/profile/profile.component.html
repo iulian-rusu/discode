@@ -11,12 +11,12 @@
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                     </svg>
 
-                    <img [src]=image *ngIf="image" width="100">
+                    <img class="profile-pic bg-discode-darker" [src]=image *ngIf="image">
                 </div>
             </div>
             <div class="col">
                 <label class="form-label" for="updateImage">Profile picture</label>
-                <input type="file" #fileInput [multiple]="false" class="form-control mb-4" id="customFile" />
+                <input type="file" #fileInput [multiple]="false" class="file-name form-control mb-4" id="customFile" />
                 <button type="submit" class="btn btn-primary btn-block mb-4" (click)="updateImage(fileInput)">Update
                     image</button>
             </div>

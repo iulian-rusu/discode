@@ -1,9 +1,13 @@
-@import "src/styles.scss";
+@import "src/colors.scss";
+
+code, code * {
+    font-size: medium !important;
+}
 
 .message-box {
     border-radius: 5px;
     padding: 10px;
-    margin: 10px 10px;
+    margin: 0;
     overflow-x: hidden;
 
     .report {
@@ -66,9 +70,11 @@ li .menu-list{
 .message-profile-pic {
     width: 100%;
     height: 100%;
-    float: left;
     max-width: 60px;
+    max-height: 60px;
     margin-right: 20px;
+    border-radius: 4px;
+    float: left;
 }
 
 .message-info>span {
@@ -78,12 +84,24 @@ li .menu-list{
     justify-content: center
 }
 
-.code-content {
+.code-window {
     background-color: $discode-darkest;
-    padding: 15px;
     border-radius: 4px;
     max-height: 400px;
     min-width: 600px;
+    max-width: 65vw;
+}
+
+.code-content {
+    code {
+        background-color: $discode-darkest;
+    }
+}
+
+.code-output {
+    padding: 15px;
+    font-size: 100%;
+    color: $discode-light;
 }
 
 .language-selector {
@@ -94,4 +112,14 @@ li .menu-list{
 
 .code-options *{
     margin: 5px;
+}
+
+.message-content{
+    max-width: 60vw;
+    word-wrap: break-word;
+
+    pre {
+        font-size: medium !important;
+        font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    }
 }

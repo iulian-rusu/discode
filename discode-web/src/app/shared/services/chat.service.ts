@@ -21,7 +21,7 @@ export class ChatService {
     );
   }
   public createChat(
-    ownerId: string,
+    ownerId: BigInteger,
     chatName: string
   ): Observable<HttpResponse<any>> {
     const data = { ownerId: ownerId, chatName: chatName };
@@ -66,7 +66,7 @@ export class ChatService {
   public getMessages(
     chatId: BigInteger,
     page: number = 1,
-    itemsPerPage: number = 20
+    itemsPerPage: number = 30
   ): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(
       this.url + '/' + chatId + '/messages',
