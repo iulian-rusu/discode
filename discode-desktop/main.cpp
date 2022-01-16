@@ -1,4 +1,6 @@
-#include <authentication_controller.h>
+#include "authentication_controller.h"
+#include "ban_controller.h"
+#include "report_controller.h"
 
 #include <QGuiApplication>
 #include <QIcon>
@@ -24,8 +26,13 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType(QString("file:///").append(FONT_PATH), "com.discode.fonts", 1, 0, "Font");
 
     authentication_controller ac{};
-
     engine.rootContext()->setContextProperty("authenticationController", &ac);
+
+    ban_controller bc{};
+    engine.rootContext()->setContextProperty("banController", &bc);
+
+    report_controller rc{};
+    engine.rootContext()->setContextProperty("reportController", &rc);
 
     engine.load(url);
 
