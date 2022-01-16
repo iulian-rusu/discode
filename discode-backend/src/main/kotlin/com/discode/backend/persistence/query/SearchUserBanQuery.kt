@@ -9,7 +9,7 @@ class SearchUserBanQuery(queryParams: Map<String, String>) : PagedSearchQuery(qu
     }
 
     override fun getSql(): String {
-        val sqlBuilder = StringBuilder("SELECT * FROM user_bans ")
+        val sqlBuilder = StringBuilder("SELECT * FROM user_bans INNER JOIN user_credentials USING(user_id) ")
         if (userId >= 0) {
             sqlBuilder.append(" WHERE user_id = :userId ")
         }

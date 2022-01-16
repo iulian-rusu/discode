@@ -16,7 +16,23 @@ class SearchReportQuery(queryParams: Map<String, String>) : PagedSearchQuery(que
     }
 
     override fun getSql(): String {
-        val sqlBuilder = StringBuilder("SELECT * FROM message_reports ")
+        val sqlBuilder = StringBuilder("""
+            SELECT 
+                mr.*, 
+                reporter_creds.user_id AS reporter_id, 
+                reporter_creds.username AS reporter_username,
+                reported_id, 
+                reported_username
+            FROM message_reports mr
+            INNER JOIN user_credentials reporter_creds ON mr.reporter_id = reporter_creds.user_id
+            INNER JOIN (
+                SELECT user_id AS reported_id, username AS reported_username, message_id
+                FROM user_credentials
+                INNER JOIN chat_members USING(user_id)
+                INNER JOIN messages USING(chat_member_id)
+                INNER JOIN message_reports USING(message_id)
+            ) reported_creds USING(message_id)
+        """.trimMargin())
 
         val conditions = mutableListOf<String>()
         if (status != null) {
@@ -29,7 +45,7 @@ class SearchReportQuery(queryParams: Map<String, String>) : PagedSearchQuery(que
             conditions.add("reporter_id = :reporterId")
         }
         if (conditions.size > 0) {
-            sqlBuilder.append(conditions.joinToString(separator = " AND ", prefix = "WHERE "))
+            sqlBuilder.append(conditions.joinToString(separator = " AND ", prefix = " WHERE "))
         }
 
         sqlBuilder.append(" ORDER BY report_date DESC LIMIT :itemsPerPage OFFSET :offset")

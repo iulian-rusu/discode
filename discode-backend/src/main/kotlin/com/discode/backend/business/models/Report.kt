@@ -4,8 +4,9 @@ import java.util.*
 
 data class Report(
     val messageId: Long,
-    val reporterId: Long,
-    val reportDate: Date,
-    val reportReason: String?,
+    val reported: UserIdentification,
+    val reporter: UserIdentification,
+    val date: Date,
+    val reason: String?,
     val status: ReportStatus
 )

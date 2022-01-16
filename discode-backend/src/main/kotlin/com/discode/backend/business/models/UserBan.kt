@@ -4,8 +4,8 @@ import java.util.*
 
 data class UserBan(
     val banId: Long,
-    val userId: Long,
+    val user: UserIdentification,
     val startDate: Date,
     val endDate: Date,
-    val banReason: String
+    val reason: String
 )

@@ -28,7 +28,13 @@ class UserBanRepository : RepositoryBase() {
     }
 
     fun findOne(banId: Long): UserBan {
-        return jdbcTemplate.query("SELECT * FROM user_bans WHERE ban_id = ?", UserBanRowMapper(), banId).first()
+        return jdbcTemplate.query(
+            """
+                SELECT * FROM user_bans
+                INNER JOIN user_credentials USING(user_id)
+                WHERE ban_id = ?
+            """, UserBanRowMapper(), banId
+        ).first()
     }
 
     fun deleteOne(banId: Long): UserBan {
@@ -39,9 +45,11 @@ class UserBanRepository : RepositoryBase() {
 
     fun findBansForUser(userId: Long): List<UserBan> {
         return jdbcTemplate.query(
-            "SELECT * FROM user_bans WHERE user_id = ? ORDER BY end_date DESC",
-            UserBanRowMapper(),
-            userId
+            """
+               SELECT * FROM user_bans 
+               INNER JOIN user_credentials USING(user_id) 
+               WHERE user_id = ? ORDER BY end_date DESC
+            """.trimIndent(), UserBanRowMapper(), userId
         )
     }
 

@@ -49,7 +49,7 @@ class AuthService : JwtAuthorized(), AuthServiceInterface {
     private fun handleBannedUser(ban: UserBan): Nothing {
         throw ResponseStatusException(
             HttpStatus.FORBIDDEN,
-            "User is banned from ${ban.startDate} until ${ban.endDate}. Reason: ${ban.banReason}"
+            "User is banned from ${ban.startDate} until ${ban.endDate}. Reason: ${ban.reason}"
         )
     }
 }

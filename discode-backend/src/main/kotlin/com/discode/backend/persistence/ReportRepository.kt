@@ -5,13 +5,15 @@ import com.discode.backend.api.requests.UpdateReportsRequest
 import com.discode.backend.business.models.Report
 import com.discode.backend.business.models.ReportStatus
 import com.discode.backend.persistence.mappers.ReportRowMapper
+import com.discode.backend.persistence.query.SearchReportQuery
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 class ReportRepository : RepositoryBase() {
-    fun findReportsForMessage(messageId: Long): List<Report> =
-        jdbcTemplate.query("SELECT * FROM message_reports WHERE message_id = ?", ReportRowMapper(), messageId)
+    fun findReportsForMessage(messageId: Long): List<Report> {
+        val query = SearchReportQuery(hashMapOf("message_id" to messageId.toString()))
+        return namedJdbcTemplate.query(query.getSql(), query.params, ReportRowMapper())
+    }
 
     fun save(request: ReportMessageRequest): Report {
         jdbcTemplate.update(
@@ -20,13 +22,13 @@ class ReportRepository : RepositoryBase() {
             VALUES (?, ?, SYSDATE(), ?, ?)
         """, request.messageId, request.reporterId, request.reportReason, ReportStatus.PENDING.toString()
         )
-        return Report(
-            messageId = request.messageId,
-            reporterId = request.reporterId,
-            reportDate = Date(),
-            reportReason = request.reportReason,
-            status = ReportStatus.PENDING
+        val query = SearchReportQuery(
+            hashMapOf(
+                "message_id" to request.messageId.toString(),
+                "reporter_id" to request.reporterId.toString()
+            )
         )
+        return namedJdbcTemplate.query(query.getSql(), query.params, ReportRowMapper()).first()
     }
 
     fun update(request: UpdateReportsRequest): List<Report> {
