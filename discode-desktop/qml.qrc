@@ -9,6 +9,8 @@
         <file>view/resources/icons/auto_delete_black_48dp_normal.svg</file>
         <file>view/resources/icons/box-arrow-right-green.svg</file>
         <file>view/resources/icons/box-arrow-right-white.svg</file>
+        <file>view/resources/icons/delete_sweep_black_48dp_dim.svg</file>
+        <file>view/resources/icons/delete_sweep_black_48dp_normal.svg</file>
         <file>view/resources/icons/favicon.png</file>
         <file>view/resources/icons/flag_black_48dp_dim.svg</file>
         <file>view/resources/icons/flag_black_48dp_normal.svg</file>
@@ -28,11 +30,11 @@
         <file>view/inputs/SecretField.qml</file>
 
         <!-- labels -->
-        <file>view/labels/DLabel.qml</file>
+        <file>view/labels/DText.qml</file>
+        <file>view/labels/DTextEdit.qml</file>
 
         <!-- lists -->
         <file>view/lists/BanDelegate.qml</file>
-        <file>view/lists/DDelegate.qml</file>
         <file>view/lists/ReportDelegate.qml</file>
 
         <!-- others -->

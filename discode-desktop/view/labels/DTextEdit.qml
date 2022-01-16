@@ -12,5 +12,7 @@ TextEdit {
     font.pointSize: 16
     color: Colors.staticText
 
+    readOnly: true
+
     selectByMouse: true
 }

@@ -38,7 +38,7 @@ Page {
 
             anchors.centerIn: parent
 
-            DLabel {
+            DTextEdit {
                 id: description
 
                 Layout.bottomMargin: 80
@@ -48,7 +48,7 @@ Page {
                 color: Colors.discode
             }
 
-            DLabel {
+            DTextEdit {
                 id: usernameLabel
 
                 Layout.bottomMargin: 15
@@ -68,7 +68,7 @@ Page {
                 onAccepted: root.loginClicked();
             }
 
-            DLabel {
+            DTextEdit {
                 id: passwordLabel
 
                 Layout.bottomMargin: 15

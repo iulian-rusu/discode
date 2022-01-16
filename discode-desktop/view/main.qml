@@ -40,12 +40,13 @@ Window {
             Layout.fillHeight: true
 
             Component.onCompleted: {
-                push("pages/LoginPage.qml");
-                currentItem.loginSuccessful.connect(onLoginSuccessful);
+                // TODO UNCOMMENT push("pages/LoginPage.qml");
+                // currentItem.loginSuccessful.connect(onLoginSuccessful);
+                push("qrc:/view/pages/MainPage.qml");
             }
 
             function onLoginSuccessful() {
-                push("pages/MainPage.qml", { "anchors.fill": pageView.StackView.view });
+                push("qrc:/view/pages/MainPage.qml", { "anchors.fill": pageView.StackView.view });
             }
 
             Connections {

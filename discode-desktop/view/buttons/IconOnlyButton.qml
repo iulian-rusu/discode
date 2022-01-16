@@ -12,9 +12,9 @@ DButton {
 
     states: State {
         name: "hovered"
-        when: logout.hovered
+        when: root.hovered
         PropertyChanges {
-            target: logout
+            target: root
             radius: width / 4
         }
     }
