@@ -12,8 +12,8 @@ Item {
     readonly property color buttonBackground: "#383C41"
     readonly property color buttonBackgroundHovered: "#3BA55D"
     readonly property color buttonBackgroundDown: buttonBackgroundHovered
-    readonly property color buttonBackgroundDim: "#349252"
-    readonly property color buttonBackgroundDisabled: "#555555"
+    readonly property color buttonBackgroundDim: "#297341"
+    readonly property color buttonBackgroundDisabled: "#222222"
 
     readonly property color buttonText: "#3BA55D"
     readonly property color buttonTextHovered: "#E6F4EA"

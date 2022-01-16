@@ -20,9 +20,11 @@ Rectangle {
 
     property real pointSize: 12
 
+    property real verticalPadding: 6
+
     implicitWidth: 500
     implicitHeight: 200
-    height: mouseArea.height
+    height: mouseArea.height + 2 * verticalPadding
 
     border.width: 2
 
@@ -34,11 +36,13 @@ Rectangle {
     MouseArea {
         id: mouseArea
 
-        readonly property bool hovered: containsMouse
+        readonly property bool hovered: containsMouse || unban.hovered
 
         anchors {
             left: parent.left
             right: parent.right
+            top: parent.top
+            topMargin: root.verticalPadding
         }
 
         height: layout.height
@@ -50,9 +54,9 @@ Rectangle {
             id: layout
 
             readonly property real horizontalPadding: 20
-            readonly property real verticalPadding: 6
             readonly property real firstColumnWidth: 300
-            readonly property real rowHeight: 29
+            readonly property real labelHeight: 29
+            readonly property real separatorWidth: root.border.width - 1
 
             anchors {
                 left: parent.left
@@ -61,19 +65,17 @@ Rectangle {
                 rightMargin: horizontalPadding
             }
 
-            columns: 3
+            flow: GridLayout.TopToBottom
             rows: 3
+            columns: 5
             columnSpacing: 20
             rowSpacing: 3
 
             DText {
                 id: userLabel
 
-                Layout.column: 0
-                Layout.row: 0
                 Layout.preferredWidth: layout.firstColumnWidth
-                Layout.preferredHeight: layout.rowHeight
-                Layout.topMargin: verticalPadding
+                Layout.preferredHeight: layout.labelHeight
 
                 text: user
                 font.pointSize: root.pointSize
@@ -83,10 +85,8 @@ Rectangle {
             DText {
                 id: startLabel
 
-                Layout.column: 0
-                Layout.row: 1
                 Layout.preferredWidth: layout.firstColumnWidth
-                Layout.preferredHeight: layout.rowHeight
+                Layout.preferredHeight: layout.labelHeight
 
                 text: `Start: ${start}`
                 font.pointSize: root.pointSize
@@ -96,27 +96,30 @@ Rectangle {
             DText {
                 id: endLabel
 
-                Layout.column: 0
-                Layout.row: 2
                 Layout.preferredWidth: layout.firstColumnWidth
-                Layout.preferredHeight: layout.rowHeight
+                Layout.preferredHeight: layout.labelHeight
 
                 text: `End: ${end}`
                 font.pointSize: root.pointSize
                 color: Colors.buttonTextHovered
-                Layout.bottomMargin: verticalPadding
+            }
+
+            Rectangle {
+                id: firstToSecondSeparator
+
+                Layout.rowSpan: layout.rows
+                Layout.preferredWidth: layout.separatorWidth
+                Layout.fillHeight: true
+
+                color: root.border.color
             }
 
             DText {
                 id: reasonLabel
 
-                Layout.column: 1
-                Layout.row: 0
-                Layout.rowSpan: 3
-                Layout.preferredWidth: layout.width - layout.firstColumnWidth - unban.width - 2 * layout.columnSpacing
+                Layout.rowSpan: layout.rows
+                Layout.preferredWidth: layout.width - layout.firstColumnWidth - unban.width - 2 * layout.separatorWidth - (layout.columns - 1) * layout.columnSpacing
                 Layout.fillHeight: true
-                Layout.topMargin: verticalPadding
-                Layout.bottomMargin: verticalPadding
 
                 text: `Reason: ${reason}`
 
@@ -126,24 +129,35 @@ Rectangle {
                 color: Colors.buttonTextHovered
             }
 
+            Rectangle {
+                id: secondToThirdSeparator
+
+                Layout.rowSpan: layout.rows
+                Layout.preferredWidth: layout.separatorWidth
+                Layout.fillHeight: true
+
+                color: root.border.color
+            }
+
+            Text {
+                id: spacer
+            }
+
             IconOnlyButton {
                 id: unban
 
                 readonly property real preferredSize: 50 - padding
 
-                Layout.column: 2
-                Layout.row: 1
                 Layout.preferredWidth: preferredSize + padding
                 Layout.preferredHeight: preferredSize + padding
 
                 backgroundColorHovered: Colors.buttonBackgroundDisabled
                 backgroundColorDown: backgroundColorHovered
-                iconSource: "qrc:/view/resources/icons/delete_sweep_black_48dp_dim.svg"
-                iconSourceHovered: "qrc:/view/resources/icons/delete_sweep_black_48dp_normal.svg"
+                iconSource: "qrc:/view/resources/icons/delete_sweep_black_48dp_normal.svg"
+                iconSourceHovered: "qrc:/view/resources/icons/delete_sweep_black_48dp_dim.svg"
                 iconWidth: preferredSize
                 iconHeight: preferredSize
 
-                // TODO Call controller function
                 onClicked: banController.onUnban(banId);
             }
         }

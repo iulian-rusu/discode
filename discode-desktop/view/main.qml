@@ -13,7 +13,7 @@ Window {
     width: minimumWidth
     minimumWidth: 1280
     height: minimumHeight
-    minimumHeight: 720
+    minimumHeight: 840
     visible: true
 
     title: "Discode"
@@ -40,9 +40,8 @@ Window {
             Layout.fillHeight: true
 
             Component.onCompleted: {
-                // TODO UNCOMMENT push("pages/LoginPage.qml");
-                // currentItem.loginSuccessful.connect(onLoginSuccessful);
-                push("qrc:/view/pages/MainPage.qml");
+                push("pages/LoginPage.qml");
+                currentItem.loginSuccessful.connect(onLoginSuccessful);
             }
 
             function onLoginSuccessful() {

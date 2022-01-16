@@ -11,11 +11,15 @@
         <file>view/resources/icons/box-arrow-right-white.svg</file>
         <file>view/resources/icons/delete_sweep_black_48dp_dim.svg</file>
         <file>view/resources/icons/delete_sweep_black_48dp_normal.svg</file>
+        <file>view/resources/icons/done_black_48dp_dim.svg</file>
+        <file>view/resources/icons/done_black_48dp_normal.svg</file>
         <file>view/resources/icons/favicon.png</file>
         <file>view/resources/icons/flag_black_48dp_dim.svg</file>
         <file>view/resources/icons/flag_black_48dp_normal.svg</file>
         <file>view/resources/icons/logo-dark.png</file>
         <file>view/resources/icons/logo-full-dark.png</file>
+        <file>view/resources/icons/restore_from_trash_black_48dp_dim.svg</file>
+        <file>view/resources/icons/restore_from_trash_black_48dp_normal.svg</file>
 
         <!-- buttons -->
         <file>view/buttons/DButton.qml</file>
@@ -38,7 +42,9 @@
         <file>view/lists/ReportDelegate.qml</file>
 
         <!-- others -->
+        <file>view/others/BanPopup.qml</file>
         <file>view/others/Header.qml</file>
+        <file>view/others/InfoPopup.qml</file>
 
         <!-- pages -->
         <file>view/pages/BansPage.qml</file>
