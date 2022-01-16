@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getMessages() {
     this.subs.push(
       this.chatService
-        .getMessages(this.chatId!!)
+        .getMessages(this.chatId!!, 1, this.messagesPerPage)
         .subscribe((data: HttpResponse<any>) => {
           if (data.status == 200) {
             this.messages = data.body;

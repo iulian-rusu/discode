@@ -14,7 +14,6 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
-import * as CodeMirror from 'codemirror';
 import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/shared/services/chat.service';
 import { CodeService } from 'src/app/shared/services/code.service';
@@ -263,7 +262,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     canLoadMoreMessages() {
-        return this.messages !== undefined && this.messages.length >= this.messagesPerPage;
+        return this.messages != undefined && this.messages.length >= this.messagesPerPage;
     }
 
     /*
