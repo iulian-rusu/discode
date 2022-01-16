@@ -1,19 +1,17 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include "authentication_controller.h"
+#include "ban_controller.h"
+#include "report_controller.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <sstream>
-#include <stdexcept>
-#endif
+#include <QGuiApplication>
+#include <QIcon>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QString>
+
+static_assert(QT_VERSION >= QT_VERSION_CHECK(6, 0, 0), "QT >= 6.0.0 required");
 
 int main(int argc, char *argv[])
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    std::ostringstream oss;
-    oss << "QT_VERSION = " << QT_VERSION << " >= 6.0.0 REQUIRED QT_VERSION = ";
-    throw std::runtime_error(oss.str());
-#endif
-
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/view/main.qml"));
@@ -22,6 +20,20 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+
+    app.setWindowIcon(QIcon(APP_ICON_PATH));
+    qmlRegisterSingletonType(QString("file:///").append(COLORS_PATH), "com.discode.colors", 1, 0, "Colors");
+    qmlRegisterSingletonType(QString("file:///").append(FONT_PATH), "com.discode.fonts", 1, 0, "Font");
+
+    authentication_controller ac{};
+    engine.rootContext()->setContextProperty("authenticationController", &ac);
+
+    ban_controller bc{};
+    engine.rootContext()->setContextProperty("banController", &bc);
+
+    report_controller rc{};
+    engine.rootContext()->setContextProperty("reportController", &rc);
+
     engine.load(url);
 
     return app.exec();

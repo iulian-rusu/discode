@@ -4,12 +4,12 @@
 #include <QObject>
 #include <QString>
 
-#include <network_helpers>
+#include <network_helpers.h>
 
-class authentication_controller {
+class authentication_controller : public QObject {
     Q_OBJECT
 public slots:
-    void onAuthenticationRequested(QString, QString);
+    void onAuthenticationRequested(QString const &, QString const &);
 
 };
 

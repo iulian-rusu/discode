@@ -1,5 +1,56 @@
 <RCC>
     <qresource prefix="/">
+
+        <!-- main -->
         <file>view/main.qml</file>
+
+        <!-- resources -->
+        <file>view/resources/icons/auto_delete_black_48dp_dim.svg</file>
+        <file>view/resources/icons/auto_delete_black_48dp_normal.svg</file>
+        <file>view/resources/icons/box-arrow-right-green.svg</file>
+        <file>view/resources/icons/box-arrow-right-white.svg</file>
+        <file>view/resources/icons/delete_sweep_black_48dp_dim.svg</file>
+        <file>view/resources/icons/delete_sweep_black_48dp_normal.svg</file>
+        <file>view/resources/icons/done_black_48dp_dim.svg</file>
+        <file>view/resources/icons/done_black_48dp_normal.svg</file>
+        <file>view/resources/icons/favicon.png</file>
+        <file>view/resources/icons/flag_black_48dp_dim.svg</file>
+        <file>view/resources/icons/flag_black_48dp_normal.svg</file>
+        <file>view/resources/icons/logo-dark.png</file>
+        <file>view/resources/icons/logo-full-dark.png</file>
+        <file>view/resources/icons/restore_from_trash_black_48dp_dim.svg</file>
+        <file>view/resources/icons/restore_from_trash_black_48dp_normal.svg</file>
+
+        <!-- buttons -->
+        <file>view/buttons/DButton.qml</file>
+        <file>view/buttons/IconOnlyButton.qml</file>
+        <file>view/buttons/DTabButton.qml</file>
+
+        <!-- images -->
+        <file>view/images/DiscodeLogo.qml</file>
+
+        <!-- inputs -->
+        <file>view/inputs/DTextField.qml</file>
+        <file>view/inputs/SecretField.qml</file>
+
+        <!-- labels -->
+        <file>view/labels/DText.qml</file>
+        <file>view/labels/DTextEdit.qml</file>
+
+        <!-- lists -->
+        <file>view/lists/BanDelegate.qml</file>
+        <file>view/lists/ReportDelegate.qml</file>
+
+        <!-- others -->
+        <file>view/others/BanPopup.qml</file>
+        <file>view/others/Header.qml</file>
+        <file>view/others/InfoPopup.qml</file>
+
+        <!-- pages -->
+        <file>view/pages/BansPage.qml</file>
+        <file>view/pages/LoginPage.qml</file>
+        <file>view/pages/MainPage.qml</file>
+        <file>view/pages/ReportsPage.qml</file>
+
     </qresource>
 </RCC>

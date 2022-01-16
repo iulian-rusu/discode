@@ -32,8 +32,9 @@ else()
     endif()
 endif()
 
-find_package(QT NAMES Qt6 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
+set(QT_FEATURE_intelcet ON)
+find_package(QT NAMES Qt6 COMPONENTS Core Quick Network REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Network REQUIRED)
 
 add_subdirectory(controller)
 add_subdirectory(model)
@@ -58,6 +59,10 @@ target_compile_definitions(${PROJECT_NAME}
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(${PROJECT_NAME}
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick controller model network view)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC APP_ICON_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/icons/favicon.png")
+target_compile_definitions(${PROJECT_NAME} PUBLIC COLORS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/Colors.qml")
+target_compile_definitions(${PROJECT_NAME} PUBLIC FONT_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/Font.qml")
 
 qt_import_qml_plugins(${PROJECT_NAME})
 qt_finalize_executable(${PROJECT_NAME})
