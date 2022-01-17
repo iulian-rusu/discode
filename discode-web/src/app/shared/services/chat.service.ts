@@ -10,7 +10,7 @@ import { User } from '../models/user.model';
 export class ChatService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  private url: string = 'http://localhost:8008/api/chats';
+  private url: string = 'http://90.95.160.110:8008/api/chats';
 
   public getChatMembers(chatId: BigInteger): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(
@@ -86,7 +86,7 @@ export class ChatService {
     reason: string | undefined
   ): Observable<HttpResponse<any>> {
     return this.httpClient.post<HttpResponse<any>>(
-      'http://localhost:8008/api/reports',
+      'http://90.95.160.110:8008/api/reports',
       {
         messageId: messageId,
         reporterId: reporter,

@@ -11,7 +11,7 @@ export class MessagesService {
   private socket: Socket;
 
   constructor(private readonly userService: UserService) {
-    const host = 'localhost';
+    const host = '90.95.160.110';
     const port = 8010;
     this.socket = io(`http://${host}:${port}`);
     this.connect();

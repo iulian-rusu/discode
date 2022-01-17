@@ -1,9 +1,9 @@
 <div class="message-box">
     <div class="message-container d-flex-row">
-        <img *ngIf="message?.author?.imagePath === null" src="http://localhost:8008/api/images/default.png" alt="Avatar"
+        <img *ngIf="message?.author?.imagePath === null" src="http://90.95.160.110:8008/api/images/default.png" alt="Avatar"
             class="message-profile-pic">
         <img *ngIf="message?.author?.imagePath !== null"
-            src="http://localhost:8008/api/images/{{message?.author?.imagePath}}" alt="Avatar"
+            src="http://90.95.160.110:8008/api/images/{{message?.author?.imagePath}}" alt="Avatar"
             class="message-profile-pic">
         <div>
             <div class="d-flex-row message-info">

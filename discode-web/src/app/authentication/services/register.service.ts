@@ -8,7 +8,7 @@ import { RegisterModel } from '../models/register.model';
 })
 export class RegisterService {
   constructor(private readonly httpClient: HttpClient) {}
-  private url: string = 'http://localhost:8008/api/users'
+  private url: string = 'http://90.95.160.110:8008/api/users'
 
   public register(data: RegisterModel): Observable<HttpResponse<any>> {
     return this.httpClient.post<HttpResponse<any>>(this.url, data, {

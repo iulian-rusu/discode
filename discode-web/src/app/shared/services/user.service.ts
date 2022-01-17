@@ -9,7 +9,7 @@ import { User } from '../models/user.model';
 export class UserService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  private url: string = 'http://localhost:8008/api/';
+  private url: string = 'http://90.95.160.110:8008/api/';
 
   public setUser(token: string, user: any) {
     localStorage.setItem('token', token);

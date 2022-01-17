@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export class CodeService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  private url: string = 'http://localhost:8008/api/code-execution';
+  private url: string = 'http://90.95.160.110:8008/api/code-execution';
 
   public getLanguages(): Observable<HttpResponse<any>> {
     return this.httpClient.get<HttpResponse<any>>(this.url + '/languages', {

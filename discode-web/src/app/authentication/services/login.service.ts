@@ -8,7 +8,7 @@ import { LoginModel } from '../models/login.model';
 })
 export class LoginService {
   constructor(private readonly httpClient: HttpClient) {}
-  private url: string = 'http://localhost:8008/api/auth'
+  private url: string = 'http://90.95.160.110:8008/api/auth'
 
   public login(data: LoginModel): Observable<HttpResponse<any>> {
     return this.httpClient.post<HttpResponse<any>>(this.url, data, {

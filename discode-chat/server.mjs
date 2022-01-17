@@ -22,7 +22,7 @@ import process from 'process';
  * new-member
 */
 
-const backend_host = process.env.DISCODE_BACKEND_HOST || "localhost";
+const backend_host = `0.0.0.0`; // process.env.DISCODE_BACKEND_HOST || "localhost";
 const backend_url = `http://${backend_host}:8008/api`;
 const port = 8010;
 
