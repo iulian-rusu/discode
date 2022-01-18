@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public selectedChat: string | undefined;
   public chatMembers: Member[] | undefined;
   public chatId: BigInteger | undefined;
-  public messagesPerPage: number = 50;
+  public messagesPerPage: number = 30;
   display = 'none';
   messages: Message[] | undefined;
 

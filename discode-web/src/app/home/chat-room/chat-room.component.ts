@@ -39,6 +39,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     private codeEditor!: CodemirrorComponent;
 
     private shouldScrollDown = true;
+    private hasMoreMessages = true;
+    private currentPage = 1;
 
     subs: Subscription[];
     deleteMemberModalDisplay = 'none';
@@ -112,6 +114,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     ngOnChanges(changes: SimpleChanges) {
         this.shouldScrollDown = true;
+        this.hasMoreMessages = true;
+        this.currentPage = 1;
         if (changes.chatId) {
             this.messageService.joinChat(changes.chatId.currentValue);
         }
@@ -262,20 +266,25 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     canLoadMoreMessages() {
-        return this.messages != undefined && this.messages.length >= this.messagesPerPage;
+        return this.hasMoreMessages
+            && this.messages != undefined
+            && this.messages.length >= this.messagesPerPage;
     }
 
-    /*
-    @HostListener('scroll', ['$event'])
-    onScroll(event: any) {
-      // visible height + pixel scrolled >= total height
-      //console.log(event.target.offsetHeight + " " + event.target.scrollTop);
-      if (
-        event.target.offsetHeight + event.target.scrollTop >=
-        event.target.scrollHeight
-      ) {
-        console.log('End');
-      }
+    loadMoreMessages() {
+        if (!this.hasMoreMessages) {
+            return;
+        }
+
+        this.currentPage++;
+        this.chatService.getMessages(this.chatId!!, this.currentPage, this.messagesPerPage)
+            .subscribe((data: HttpResponse<any>) => {
+                if (data.status == 200) {
+                    if (data.body.length < this.messagesPerPage) {
+                        this.hasMoreMessages = false;
+                    }
+                    this.messages = [...data.body.reverse(), ...this.messages || []]
+                }
+            })
     }
-    */
 }

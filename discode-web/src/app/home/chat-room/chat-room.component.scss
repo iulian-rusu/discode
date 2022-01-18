@@ -13,7 +13,7 @@
     height: 90%;
     max-height: 90%;
     min-width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .chat-room-messages {
@@ -29,25 +29,26 @@
 .chat-room-members {
     min-width: 10%;
     align-items: center;
-    padding-top: 5px;
+    padding-top: 0.75vh;
     align-items: center;
 
     .chat-room-member {
         width: 90%;
-        min-width: 90%;
+        max-width: 90%;
         border-radius: 4px;
-        padding: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        padding: 1vh;
+        padding-left: 0.75vh;
+        padding-right: 0.75vh;
+        align-items: center;
+        text-align: center;
 
         .chat-room-member-tooltip {
             visibility: hidden;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: 5px 10px 5px 10px;
-            margin: -5px;
+            padding: 0.75vh 1.5vh 0.75vh 1.5vh;
+            margin: -0.75vh;
             background-color: $discode-dark-blue;
             color: white;
             width: fit-content;
@@ -57,6 +58,21 @@
             z-index: 1;
             right: 9%;
             text-align: right;
+        }
+
+        .chat-room-member-icon {
+            width: 2vh;
+            height: 2vh;
+            min-width:  2vh;
+            min-height:  2vh;
+            margin-right: 0.75vh;
+        }
+
+        .chat-room-member-username {
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
@@ -73,15 +89,16 @@
 
 .chat-room-input-box {
     min-width: 100%;
-    height: 0px;
+    height: 8%;
     text-align: center;
-
+    padding-right: 1vh;
+    padding-left: 1vh;
 }
 
 .chat-title {
     font-weight: bold;
     text-align: center;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 
     button {
         width: fit-content;
@@ -99,7 +116,7 @@
 hr.solid {
     margin-top: 0px;
     width: 99%;
-    border-top: 2.5px solid $discode-light;
+    border-top: 0.3vh solid $discode-light;
     border-radius: 1px;
 }
 
@@ -109,28 +126,33 @@ hr.solid {
 
 .member-list {
     display: flex;
-    margin: 5px;
+    margin: 0.75vh;
 
     p {
         width: 50%;
-        padding: 5px;
+        padding: 0.75vh;
         overflow: hidden;
     }
 
     .btn-discode-green {
-        padding: 5px;
-        height: 35px;
+        padding: 0.75vh;
+        height: 5.25vh;
     }
 }
 
 .send-message-form {
+    margin-top: auto;
+    margin-bottom: auto;
+
     .message-box {
         width: 90%;
         padding: 0;
+        min-height: 100%;
 
         textarea {
             padding-top: 0.5em;
             padding-bottom: 0;
+            min-height: 100%;
         }
     }
 
@@ -140,6 +162,8 @@ hr.solid {
             max-height: 4vh !important;
             height: 4vh !important;
             width: 5vw !important;
+            -webkit-text-size-adjust:none;
+            padding: 0 !important;
         }
     }
 }
@@ -195,22 +219,22 @@ hr.solid {
     }
 
     .footer-btns > * {
-        height: 40px;
-        width: 130px;
-        margin-left: 15px;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        height: 60vh;
+        width: 19.5vh;
+        margin-left: 1.5vh;
+        margin-top: 0.75vh;
+        margin-bottom: 0.75vh;
     }
 }
 
 .btn-load-more {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 1.5vh;
+    padding-right: 1.5vh;
     max-width: 10vw;
     border-radius: 4px;
     background-color: $discode-grey;
     color: $discode-light;
     align-self: center;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-bottom: 1.5vh;
 }

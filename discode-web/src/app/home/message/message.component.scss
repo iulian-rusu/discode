@@ -1,6 +1,7 @@
 @import "src/colors.scss";
 
-code, code * {
+code,
+code * {
     font-size: medium !important;
 }
 
@@ -40,8 +41,12 @@ code, code * {
     margin-top: 3px;
 }
 
-.username{
+.username {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: bold;
+    max-width: 20vw;
 }
 
 .divider {
@@ -54,7 +59,7 @@ code, code * {
     margin-left: 10px;
 }
 
-.report:hover{
+.report:hover {
     cursor: pointer;
     color: $discode-dark-green;
 }
@@ -63,7 +68,7 @@ code, code * {
     margin-left: 52vw;
 }
 
-li .menu-list{
+li .menu-list {
     cursor: pointer;
 }
 
@@ -78,11 +83,16 @@ li .menu-list{
     object-fit: contain;
 }
 
-.message-info>span {
-    margin-right: 5px;
-    margin-bottom: 5px;
-    display: flex; 
-    justify-content: center
+.message-info {
+    > span,
+    > div {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        justify-content: center;
+    }
+    > span {
+        display: flex;
+    }
 }
 
 .code-window {
@@ -111,11 +121,11 @@ li .menu-list{
     font-size: small;
 }
 
-.code-options *{
+.code-options * {
     margin: 5px;
 }
 
-.message-content{
+.message-content {
     max-width: 60vw;
     word-wrap: break-word;
 

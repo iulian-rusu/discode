@@ -7,8 +7,16 @@
     max-height: 7vh;
     height: 7vh;
     button {
-        width: 45px;
-        height: 45px;
+        width: 6vh;
+        height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1vh;
+        svg {
+            width: 2.5vh;
+            height: 2.5vh;
+        }
     }
 }
 
@@ -21,6 +29,7 @@
     max-height: 7vh;
 
     img {
+        margin: 1vh;
         max-height: 5.5vh;
     }
 }

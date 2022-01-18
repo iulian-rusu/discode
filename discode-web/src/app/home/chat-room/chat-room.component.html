@@ -78,38 +78,39 @@
     <div class="d-flex-row chat-room-top-div">
         <div class="d-flex chat-room-messages" id="chat-room-messages" #scrollMessages>
             <div *ngIf="canLoadMoreMessages()"
-                class="btn-load-more d-flex-row align-items-center">
+                class="btn-load-more d-flex-row align-items-center"
+                (click)="loadMoreMessages()">
                 Load more ...
             </div>
             <app-message *ngFor="let message of messages" [message]="message" [languages]="languages!"></app-message>
         </div>
         <div class="d-flex chat-room-members bg-discode-darker">
             <div *ngFor="let member of chatMembers" class="chat-room-member">
-                <div *ngIf="member.status !== 'LEFT'">
+                <div *ngIf="member.status !== 'LEFT'" class="d-flex-row align-items-center">
                     <span class="chat-room-member-tooltip">
                         {{member.firstName}} {{member.lastName}}
                     </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-person-fill" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        class="chat-room-member-icon bi bi-person-fill" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                     </svg>
-                    {{member.username}}
-                    <br />
+                    <span class="chat-room-member-username">
+                        {{member.username}}
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex chat-room-input-box bg-discode-darkest">
+    <div class="d-flex chat-room-input-box bg-discode-dark">
         <form class="form-discode-blue send-message-form d-flex-row align-items-center" role="sendMessage"
             [formGroup]="messageFormGroup">
             <div class="message-box d-flex-row align-items-center">
                 <textarea name="sendMessage" rows="1" cols="60" name="message" class="form-control" placeholder="..."
                     style="resize: none;" formControlName="message" (keyup.enter)="sendMessage()"></textarea>
             </div>
-
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary btn-block" (click)="openCodeModal()">Code</button>
+                <button class="btn btn-primary btn-code" (click)="openCodeModal()">Code</button>
             </div>
         </form>
     </div>
