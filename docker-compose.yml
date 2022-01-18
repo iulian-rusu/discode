@@ -28,6 +28,8 @@ services:
       - 8008:8008
     networks:
       - discode-net
+    volumes:
+      - ./docker/images:/images
     depends_on:
       - db
 

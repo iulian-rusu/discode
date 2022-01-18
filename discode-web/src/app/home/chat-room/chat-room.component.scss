@@ -175,8 +175,9 @@ hr.solid {
 .code-modal {
     position: absolute;
     padding: 0 !important;
-    width: 50%;
-    height: 51%;
+    width: 800px;
+    height: 410px;
+    min-width: 50%;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -188,20 +189,35 @@ hr.solid {
 
     .modal-dialog {
         width: 100%;
-        max-width: none;
         height: 100%;
+        max-width: 100%;
         margin: 0;
-    }
 
-    .modal-content {
-        height: 100%;
-        border: 0;
-        border-radius: 0;
-    }
+        .modal-content {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            border: 0;
+            border-radius: 0;
 
-    .modal-body {
-        height: 100%;
-        overflow-y: auto;
+            .modal-body {
+                overflow-y: auto;
+
+                >* {
+                    min-height: 100%;
+                    min-width: 100%;
+                }
+            }
+
+            .footer-btns > * {
+                text-align: center;
+                height: 40px;
+                width: 130px;
+                margin-left: 1.5vh;
+                margin-top: 0.75vh;
+                margin-bottom: 0.75vh;
+            }
+        }
     }
 
     .code-area {
@@ -216,14 +232,6 @@ hr.solid {
     .language-selector {
         max-width: 200px;
         max-height: 40px;
-    }
-
-    .footer-btns > * {
-        height: 60vh;
-        width: 19.5vh;
-        margin-left: 1.5vh;
-        margin-top: 0.75vh;
-        margin-bottom: 0.75vh;
     }
 }
 

@@ -28,13 +28,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     private readonly userService: UserService
   ) {
     this.formGroup = this.formBuilder.group({
-      username: '',
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(64),
+        ],
+      ],
       password: [
         '',
         [
           Validators.required,
           Validators.minLength(8),
-          Validators.maxLength(50),
+          Validators.maxLength(64),
         ],
       ],
     });
