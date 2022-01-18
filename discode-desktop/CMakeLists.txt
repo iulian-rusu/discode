@@ -36,6 +36,7 @@ set(QT_FEATURE_intelcet ON)
 find_package(QT NAMES Qt6 COMPONENTS Core Quick Network REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Network REQUIRED)
 
+add_subdirectory(common)
 add_subdirectory(controller)
 add_subdirectory(model)
 add_subdirectory(network)

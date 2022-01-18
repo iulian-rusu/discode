@@ -1,5 +1,6 @@
 #include "authentication_controller.h"
 #include "ban_controller.h"
+#include "ban_model.h"
 #include "report_controller.h"
 
 #include <QGuiApplication>
@@ -27,12 +28,13 @@ int main(int argc, char *argv[])
 
     authentication_controller ac{};
     engine.rootContext()->setContextProperty("authenticationController", &ac);
-
     ban_controller bc{};
     engine.rootContext()->setContextProperty("banController", &bc);
-
     report_controller rc{};
     engine.rootContext()->setContextProperty("reportController", &rc);
+
+    ban_model bm{};
+    engine.rootContext()->setContextProperty("banModel", &bm);
 
     engine.load(url);
 

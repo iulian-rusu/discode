@@ -21,7 +21,7 @@ Page {
         spacing: 2
         clip: true
 
-        model: bansModel
+        model: banModel
 
         delegate: Component {
             id: delegate

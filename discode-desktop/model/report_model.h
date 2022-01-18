@@ -1,0 +1,10 @@
+#ifndef DISCODE_DESKTOP_REPORT_MODEL_H
+#define DISCODE_DESKTOP_REPORT_MODEL_H
+
+
+class report_model {
+
+};
+
+
+#endif //DISCODE_DESKTOP_REPORT_MODEL_H
