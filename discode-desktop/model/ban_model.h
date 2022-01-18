@@ -17,8 +17,6 @@ public:
     [[nodiscard]] QVariant data(QModelIndex const &, int) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    //[[nodiscard]] Qt::ItemFlags flags(QModelIndex const &) const override;
-
     void clear();
     void replaceAll(std::vector<ban> &&);
     void addOne(ban &&);

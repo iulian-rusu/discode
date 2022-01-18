@@ -35,16 +35,4 @@ Page {
             }
         }
     }
-
-    ListModel {
-        id: bansModel
-
-        ListElement {
-            banId: 0
-            user: "billie123"
-            start: "22.10.2014 22:23"
-            end: "22.10.2014 22:238"
-            reason: "Bill SmithBillBill SmithBillBill SmithBillBill SmithBillBill Bill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillSmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBillBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill SmithBill Smith"
-        }
-    }
 }

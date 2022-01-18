@@ -2,6 +2,7 @@
 #include "ban_controller.h"
 #include "ban_model.h"
 #include "report_controller.h"
+#include "report_model.h"
 
 #include <QGuiApplication>
 #include <QIcon>
@@ -35,6 +36,8 @@ int main(int argc, char *argv[])
 
     ban_model bm{};
     engine.rootContext()->setContextProperty("banModel", &bm);
+    report_model rm{};
+    engine.rootContext()->setContextProperty("reportModel", &rm);
 
     engine.load(url);
 
