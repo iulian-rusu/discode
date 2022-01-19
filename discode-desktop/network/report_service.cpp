@@ -71,10 +71,11 @@ void report_space::report_service::get(session sess, report_space::on_get_callba
 
                     auto message_id = object["messageId"].toInt();
                     auto user_id = object["reported"].toObject()["userId"].toInt();
-                    auto message = object["reason"].toString().toStdString();
+                    auto message = object["message"].toString().toStdString();
+                    auto reason = object["reason"].toString().toStdString();
                     auto issuer = object["reporter"].toObject()["username"].toString().toStdString();
 
-                    reports.emplace_back(message_id, user_id, message, issuer);
+                    reports.emplace_back(message_id, user_id, message, reason, issuer);
                 }
 
                 on_get(reports);

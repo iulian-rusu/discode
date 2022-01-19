@@ -22,6 +22,8 @@ QVariant report_model::data(const QModelIndex &index, int role) const {
                 return { report.userId };
             case static_cast<int>(report_model_roles::Message):
                 return { QString::fromStdString(report.message) };
+            case static_cast<int>(report_model_roles::Reason):
+                return { QString::fromStdString(report.reason) };
             case static_cast<int>(report_model_roles::Issuer):
                 return { QString::fromStdString(report.issuer) };
             default: /* Do nothing */ ;
@@ -38,6 +40,7 @@ QHash<int, QByteArray> report_model::roleNames() const {
     roles[static_cast<int>(report_model_roles::MessageId)] = "messageId";
     roles[static_cast<int>(report_model_roles::UserId)] = "userId";
     roles[static_cast<int>(report_model_roles::Message)] = "message";
+    roles[static_cast<int>(report_model_roles::Reason)] = "reason";
     roles[static_cast<int>(report_model_roles::Issuer)] = "issuer";
 
     return roles;
