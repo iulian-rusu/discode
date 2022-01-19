@@ -9,9 +9,9 @@
 #include <QNetworkReply>
 #include <QObject>
 
-authentication_service::authentication_service(api_config i_ac) : ac(i_ac) { /* Do nothing */ }
+authentication::authentication_service::authentication_service(std::shared_ptr<api_config> i_ac) : ac(std::move(i_ac)) { /* Do nothing */ }
 
-void authentication_service::authenticate(std::string username, std::string password, on_success_callback on_success, on_failure_callback on_failure) {
+void authentication::authentication_service::authenticate(std::string username, std::string password, on_success_callback on_success, on_failure_callback on_failure) {
     auto network_manager{new QNetworkAccessManager{}};
 
     network_manager->post(

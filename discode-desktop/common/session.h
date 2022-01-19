@@ -4,7 +4,8 @@
 #include <string>
 
 struct session {
-    long long user_id{};
+    session() = default;
+    session(std::string i_token) : token(std::move(i_token)) {}
     std::string token{};
 };
 
