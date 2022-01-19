@@ -7,6 +7,7 @@ enum class report_model_roles {
     MessageId = Qt::UserRole + 1,
     UserId,
     Message,
+    Reason,
     Issuer,
 };
 

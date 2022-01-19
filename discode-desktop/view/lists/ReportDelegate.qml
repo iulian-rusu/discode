@@ -101,11 +101,21 @@ Rectangle {
             DText {
                 id: issuerLabel
 
-                Layout.rowSpan: layout.rows
                 Layout.preferredWidth: layout.secondColumnWidth
                 Layout.preferredHeight: layout.labelHeight
 
                 text: `Issuer: ${issuer}`
+                font.pointSize: root.pointSize
+                color: Colors.buttonTextHovered
+            }
+
+            DText {
+                id: reasonLabel
+
+                Layout.preferredWidth: layout.secondColumnWidth
+                Layout.preferredHeight: layout.labelHeight
+
+                text: `Reason: ${reason}`
                 font.pointSize: root.pointSize
                 color: Colors.buttonTextHovered
             }
