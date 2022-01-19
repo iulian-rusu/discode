@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.messageService.connect();
     this.getChats();
 
     this.messageService.onNewMember().subscribe(() => {
