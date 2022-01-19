@@ -14,7 +14,7 @@ export class MessagesService {
     const host = 'localhost';
     const port = 8010;
     this.socket = io(`http://${host}:${port}`);
-    this.connect();
+    //this.connect();
   }
 
   connect() {
