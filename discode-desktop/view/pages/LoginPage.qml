@@ -11,15 +11,13 @@ import QtQuick.Layouts
 Page {
     id: root
 
-    signal loginSuccessful
-
     function loginClicked() {
         if (usernameField.text === "" || passwordField.text === "")
             return;
 
-        authenticationController.onAuthenticationRequested(usernameField.text, passwordField.text);
+        login.enabled = false;
 
-        loginSuccessful();
+        authenticationController.onAuthenticationRequested(usernameField.text, passwordField.text);
     }
 
     Rectangle {
@@ -109,6 +107,25 @@ Page {
 
                 onClicked: root.loginClicked();
             }
+        }
+    }
+
+    function resetPage() {
+        usernameField.clear();
+        passwordField.clear();
+        login.enabled = true;
+    }
+
+    Connections {
+        target: authenticationController
+
+        function onAuthenticationError() {
+            resetPage();
+            console.log("Authentication failed"); // TODO Open popup
+        }
+
+        function onAuthenticated() {
+            resetPage();
         }
     }
 }

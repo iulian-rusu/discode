@@ -41,18 +41,22 @@ Window {
 
             Component.onCompleted: {
                 push("pages/LoginPage.qml");
-                currentItem.loginSuccessful.connect(onLoginSuccessful);
-            }
-
-            function onLoginSuccessful() {
-                push("qrc:/view/pages/MainPage.qml", { "anchors.fill": pageView.StackView.view });
             }
 
             Connections {
                 target: header
 
                 function onLogoutClicked() {
+                    authenticationController.onLogoutRequested();
                     pageView.pop();
+                }
+            }
+
+            Connections {
+                target: authenticationController
+
+                function onAuthenticated() {
+                    pageView.push("qrc:/view/pages/MainPage.qml", { "anchors.fill": pageView.StackView.view });
                 }
             }
         }

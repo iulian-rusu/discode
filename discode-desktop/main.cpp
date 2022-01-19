@@ -1,4 +1,6 @@
+#include "api_config.h"
 #include "authentication_controller.h"
+#include "authentication_service.h"
 #include "ban_controller.h"
 #include "ban_model.h"
 #include "report_controller.h"
@@ -27,17 +29,21 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType(QString("file:///").append(COLORS_PATH), "com.discode.colors", 1, 0, "Colors");
     qmlRegisterSingletonType(QString("file:///").append(FONT_PATH), "com.discode.fonts", 1, 0, "Font");
 
-    authentication_controller ac{};
-    engine.rootContext()->setContextProperty("authenticationController", &ac);
-    ban_controller bc{};
-    engine.rootContext()->setContextProperty("banController", &bc);
-    report_controller rc{};
-    engine.rootContext()->setContextProperty("reportController", &rc);
+    api_config api_conf{IPS_PATH, ROUTES_PATH};
 
     ban_model bm{};
     engine.rootContext()->setContextProperty("banModel", &bm);
     report_model rm{};
     engine.rootContext()->setContextProperty("reportModel", &rm);
+
+    authentication_service as{api_conf};
+
+    authentication_controller ac{as};
+    engine.rootContext()->setContextProperty("authenticationController", &ac);
+    ban_controller bc{};
+    engine.rootContext()->setContextProperty("banController", &bc);
+    report_controller rc{};
+    engine.rootContext()->setContextProperty("reportController", &rc);
 
     engine.load(url);
 

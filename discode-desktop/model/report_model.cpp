@@ -49,7 +49,7 @@ void report_model::clear() {
     endRemoveRows();
 }
 
-void report_model::replaceAll(std::vector<report> &&new_reports) {
+void report_model::replaceAll(std::vector<report> new_reports) {
     clear();
 
     beginInsertRows({}, 0, new_reports.size() - 1);
@@ -57,7 +57,7 @@ void report_model::replaceAll(std::vector<report> &&new_reports) {
     endInsertRows();
 }
 
-void report_model::addOne(report &&new_report) {
+void report_model::addOne(report new_report) {
     beginInsertRows({}, rowCount({}), rowCount({}));
     reports.emplace_back(new_report);
     endInsertRows();

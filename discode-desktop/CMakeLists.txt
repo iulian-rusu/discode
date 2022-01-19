@@ -24,7 +24,7 @@ if (MSVC)
         add_compile_options(/Od)
     endif()
 else()
-    add_compile_options(-Wall -Wextra -Wpedantic -Wuninitialized -Wshadow -Wunused)
+    add_compile_options(-Wall -Wextra -Wpedantic -Wuninitialized -Wshadow -Wunused -fpermissive)
     if (CMAKE_BUILD_TYPE MATCHES Debug)
         add_compile_options(-Og)
     else()
@@ -60,6 +60,9 @@ target_compile_definitions(${PROJECT_NAME}
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(${PROJECT_NAME}
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick controller model network view)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC IPS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/config/ips.cfg")
+target_compile_definitions(${PROJECT_NAME} PUBLIC ROUTES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/config/routes.cfg")
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC APP_ICON_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/icons/favicon.png")
 target_compile_definitions(${PROJECT_NAME} PUBLIC COLORS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/view/resources/Colors.qml")

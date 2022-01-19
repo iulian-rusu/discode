@@ -1,11 +1,9 @@
 #ifndef DISCODE_DESKTOP_BAN_SERVICE_H
 #define DISCODE_DESKTOP_BAN_SERVICE_H
 
-#include <QObject>
 #include <QNetworkAccessManager>
 
-class ban_service : public QObject {
-    Q_OBJECT
+class ban_service {
 public:
 
 private:

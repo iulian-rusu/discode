@@ -52,7 +52,7 @@ void ban_model::clear() {
     endRemoveRows();
 }
 
-void ban_model::replaceAll(std::vector<ban> &&new_bans) {
+void ban_model::replaceAll(std::vector<ban> new_bans) {
     clear();
 
     beginInsertRows({}, 0, new_bans.size() - 1);
@@ -60,7 +60,7 @@ void ban_model::replaceAll(std::vector<ban> &&new_bans) {
     endInsertRows();
 }
 
-void ban_model::addOne(ban &&new_ban) {
+void ban_model::addOne(ban new_ban) {
     beginInsertRows({}, rowCount({}), rowCount({}));
     bans.emplace_back(new_ban);
     endInsertRows();

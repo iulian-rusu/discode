@@ -1,11 +1,9 @@
 #ifndef DISCODE_DESKTOP_REPORT_SERVICE_H
 #define DISCODE_DESKTOP_REPORT_SERVICE_H
 
-#include <QObject>
 #include <QNetworkAccessManager>
 
-class report_service : public QObject {
-    Q_OBJECT
+class report_service {
 public:
 
 private:

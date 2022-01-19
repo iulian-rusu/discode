@@ -18,8 +18,8 @@ public:
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     void clear();
-    void replaceAll(std::vector<report> &&);
-    void addOne(report &&);
+    void replaceAll(std::vector<report>);
+    void addOne(report);
     void removeOne(int);
 
 private:
