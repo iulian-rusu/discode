@@ -10,6 +10,7 @@ class ReportRowMapper : RowMapper<Report> {
     override fun mapRow(rs: ResultSet, rowNum: Int) =
         Report(
             messageId = rs.getLong("message_id"),
+            message = rs.getString("message"),
             reported = UserIdentification(
                 userId = rs.getLong("reported_id"),
                 username = rs.getString("reported_username")

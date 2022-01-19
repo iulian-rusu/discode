@@ -21,12 +21,13 @@ class SearchReportQuery(queryParams: Map<String, String>) : PagedSearchQuery(que
                 mr.*, 
                 reporter_creds.user_id AS reporter_id, 
                 reporter_creds.username AS reporter_username,
+                reported_creds.message AS message,
                 reported_id, 
                 reported_username
             FROM message_reports mr
             INNER JOIN user_credentials reporter_creds ON mr.reporter_id = reporter_creds.user_id
             INNER JOIN (
-                SELECT user_id AS reported_id, username AS reported_username, message_id
+                SELECT user_id AS reported_id, username AS reported_username, message_id, content AS message
                 FROM user_credentials
                 INNER JOIN chat_members USING(user_id)
                 INNER JOIN messages USING(chat_member_id)
