@@ -23,60 +23,53 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public formGroup: FormGroup;
     private subs: Subscription[];
 
-    constructor(
-        private readonly router: Router,
-        private readonly registerService: RegisterService,
-        private readonly formBuilder: FormBuilder,
-        private readonly userService: UserService
-    ) {
-        this.formGroup = this.formBuilder.group(
-            {
-                firstName: [
-                    '',
-                    [
-                        Validators.required,
-                        Validators.maxLength(64),
-                        Validators.minLength(2),
-                        Validators.pattern('^[A-Z]([- ]?[a-zA-Z]+)+$'),
-                    ],
-                ],
-                lastName: [
-                    '',
-                    [
-                        Validators.required,
-                        Validators.maxLength(64),
-                        Validators.minLength(2),
-                        Validators.pattern('^[A-Z]([- ]?[a-zA-Z]+)+$'),
-                    ],
-                ],
-                username: [
-                    '',
-                    [
-                        Validators.required,
-                        Validators.maxLength(64),
-                        Validators.minLength(3),
-                        Validators.pattern('^[_a-zA-Z]\\w{2,}$'),
-                    ],
-                ],
-                email: ['',
-                    [
-                        Validators.required,
-                        Validators.maxLength(128),
-                        Validators.email
-                    ]
-                ],
-                password: [
-                    '',
-                    [
-                        Validators.required,
-                        Validators.minLength(8),
-                        Validators.maxLength(64),
-                    ],
-                ],
-                confirmPassword: ['', Validators.required],
-            },
-            { validators: this.checkPasswords }
-        );
+  constructor(
+    private readonly router: Router,
+    private readonly registerService: RegisterService,
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService
+  ) {
+    this.formGroup = this.formBuilder.group(
+      {
+        firstName: [
+          '',
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.minLength(2),
+            Validators.pattern('^([- ]?[a-zA-Z]+)+$'),
+          ],
+        ],
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.maxLength(150),
+            Validators.minLength(2),
+            Validators.pattern('^([- ]?[a-zA-Z]+)+$'),
+          ],
+        ],
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('^[_a-zA-Z]\\w{2,}$'),
+          ],
+        ],
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(50),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: this.checkPasswords }
+    );
 
         this.subs = new Array<Subscription>();
     }
@@ -91,20 +84,22 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return pass == confirmPass ? null : { notSame: true };
     };
 
-    public register(): void {
-        const data: RegisterModel = this.formGroup.getRawValue();
-        this.cleanErrors();
-        this.subs.push(
-            this.registerService
-                .register(data)
-                .subscribe((data: HttpResponse<any>) => {
-                    if (data.status == 201) {
-                        this.userService.setUser(data.body['token'], JSON.stringify(data.body['user']));
-                        this.router.navigate(['/home']);
-                    }
-                }, this.handleError)
-        );
-    }
+  public register(): void {
+    const data: RegisterModel = this.formGroup.getRawValue();
+    data.firstName =  data.firstName![0].toUpperCase() + data.firstName!.substr(1).toLowerCase();
+    data.lastName =  data.lastName![0].toUpperCase() + data.lastName!.substr(1).toLowerCase();
+    this.cleanErrors();
+    this.subs.push(
+      this.registerService
+        .register(data)
+        .subscribe((data: HttpResponse<any>) => {
+          if (data.status == 201) {
+            this.userService.setUser(data.body['token'], JSON.stringify(data.body['user']));
+            this.router.navigate(['/home']);
+          }
+        }, this.handleError)
+    );
+  }
 
     ngOnDestroy(): void {
         this.subs.forEach((sub) => {
@@ -116,13 +111,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return form.invalid && form.dirty;
     }
 
-    handleError(responseError: HttpErrorResponse): void {
-        let errorElement = document.createElement('div');
-        errorElement.className = 'alert alert-danger';
+  handleError(responseError: HttpErrorResponse): void {
+    let errorElement = document.createElement('div');
+    errorElement.className = 'alert alert-danger';
+    errorElement.innerHTML = `Something went wrong! Please try again.`;
 
-        errorElement.innerHTML = 'Something went wrong! Please try again.';
-        document.getElementById('errors')?.appendChild(errorElement);
+    if(responseError.status == 409){
+      errorElement.innerHTML += `<br/> Username or email already used.`;
     }
+
+    document.getElementById('errors')?.appendChild(errorElement);
+  }
 
     cleanErrors(): void {
         let errorList = document.getElementById('errors')?.childNodes;

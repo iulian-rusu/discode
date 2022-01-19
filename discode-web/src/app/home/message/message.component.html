@@ -31,6 +31,9 @@
                             </svg>
                         </button>
                     </span>
+                    <div class="spinner-border" role="status" [ngStyle]="{'display':spinnerDisplay}">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                     <code *ngIf="message.codeOutput">
                         <pre class='code-window code-output'>{{message.codeOutput}}</pre>
                     </code>

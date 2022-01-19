@@ -70,7 +70,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
                 '',
                 [
                     Validators.required,
-                    Validators.maxLength(1000),
+                    Validators.maxLength(10000),
                     Validators.minLength(1),
                     Validators.pattern('(?=\\s*\\S)[\\s\\S]+'),
                 ],
