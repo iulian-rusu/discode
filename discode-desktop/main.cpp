@@ -6,6 +6,7 @@
 #include "ban_service.h"
 #include "report_controller.h"
 #include "report_model.h"
+#include "report_service.h"
 #include "session_service.h"
 
 #include <utility>
@@ -42,13 +43,14 @@ int main(int argc, char *argv[])
 
     auto as{std::make_shared<authentication::authentication_service>(api_conf)};
     auto bs{std::make_shared<ban_space::ban_service>(api_conf)};
+    auto rs{std::make_shared<report_space::report_service>(api_conf)};
     auto ss{std::make_shared<session_service>()};
 
     authentication_controller ac{as, ss};
     engine.rootContext()->setContextProperty("authenticationController", &ac);
     ban_controller bc{bs, ss, bm};
     engine.rootContext()->setContextProperty("banController", &bc);
-    report_controller rc{};
+    report_controller rc{rs, ss, rm};
     engine.rootContext()->setContextProperty("reportController", &rc);
 
     engine.load(url);

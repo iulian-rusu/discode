@@ -5,6 +5,8 @@
 #include "ban_service.h"
 #include "session_service.h"
 
+#include <memory>
+
 #include <QObject>
 #include <QString>
 

@@ -50,7 +50,7 @@ namespace network_helpers {
     static QNetworkRequest get_ban_request(std::shared_ptr<api_config> ac, std::string token) {
         static QNetworkRequest request;
         if (request.url().isEmpty()) {
-            static QUrl const url{get_url(ac, service_ips::Backend, service_routes::PostBan)};
+            static QUrl const url{get_url(ac, service_ips::Backend, service_routes::Bans)};
             request.setUrl(url);
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
             request.setRawHeader(QByteArray{"Accept"}, "*/*");
@@ -60,9 +60,9 @@ namespace network_helpers {
         return request;
     }
 
-    static QByteArray get_ban_payload(long long ban_id, long long seconds, std::string reason) {
+    static QByteArray get_ban_payload(long long user_id, long long seconds, std::string reason) {
         std::ostringstream buffer{};
-        buffer << R"({"ban_in": ")" << ban_id << R"(","seconds": ")" << seconds << R"(","reason": ")" << reason << "\"}";
+        buffer << R"({"userId": ")" << user_id << R"(","seconds": ")" << seconds << R"(","banReason": ")" << reason << "\"}";
         return QByteArray::fromStdString(buffer.str());
     }
 
@@ -75,6 +75,38 @@ namespace network_helpers {
         }
         QUrl const url{get_url(ac, service_ips::Backend, service_routes::DeleteBan, {{ "{id}", std::to_string(ban_id) }})};
         request.setUrl(url);
+        request.setRawHeader(QByteArray{"Authorization"}, QByteArray::fromStdString(std::string("Bearer ") + token));
+        return request;
+    }
+
+    static QNetworkRequest get_put_report_request(std::shared_ptr<api_config> ac, std::string token) {
+        static QNetworkRequest request;
+        if (request.url().isEmpty()) {
+            static QUrl const url{get_url(ac, service_ips::Backend, service_routes::PutReports)};
+            request.setUrl(url);
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+            request.setRawHeader(QByteArray{"Accept"}, "*/*");
+            request.setRawHeader(QByteArray{"Cache-Control"}, "no-cache");
+        }
+        request.setRawHeader(QByteArray{"Authorization"}, QByteArray::fromStdString(std::string("Bearer ") + token));
+        return request;
+    }
+
+    static QByteArray get_report_payload(long long message_id) {
+        std::ostringstream buffer{};
+        buffer << R"({"messageId": ")" << message_id << R"(","status": "REVIEWED"})";
+        return QByteArray::fromStdString(buffer.str());
+    }
+
+    static QNetworkRequest get_report_request(std::shared_ptr<api_config> ac, std::string token) {
+        static QNetworkRequest request;
+        if (request.url().isEmpty()) {
+            static QUrl const url{get_url(ac, service_ips::Backend, service_routes::GetReports)};
+            request.setUrl(url);
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+            request.setRawHeader(QByteArray{"Accept"}, "*/*");
+            request.setRawHeader(QByteArray{"Cache-Control"}, "no-cache");
+        }
         request.setRawHeader(QByteArray{"Authorization"}, QByteArray::fromStdString(std::string("Bearer ") + token));
         return request;
     }

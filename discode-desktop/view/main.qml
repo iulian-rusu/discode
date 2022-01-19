@@ -56,6 +56,7 @@ Window {
                 target: authenticationController
 
                 function onAuthenticated() {
+                    reportController.onRefresh();
                     banController.onRefresh();
                     pageView.push("qrc:/view/pages/MainPage.qml", { "anchors.fill": pageView.StackView.view });
                 }

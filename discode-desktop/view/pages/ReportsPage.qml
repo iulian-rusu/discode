@@ -49,7 +49,8 @@ Page {
 
         onAccepted: (duration, reason) => {
             banPopup.cleanClose();
-            banController.onBan(messageId, userId, duration, reason);
+            reportController.onReview(messageId);
+            banController.onBan(userId, duration, reason);
         }
     }
 

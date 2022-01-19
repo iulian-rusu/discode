@@ -44,6 +44,28 @@ Rectangle {
         }
 
         IconOnlyButton {
+            id: refresh
+
+            readonly property real preferredSize: 36
+
+            Layout.preferredWidth: preferredSize + padding
+            Layout.preferredHeight: preferredSize + padding
+            Layout.rightMargin: 10
+
+            visible: root.logoutVisible
+
+            iconSource: "qrc:/view/resources/icons/update_black_48dp_green.svg"
+            iconSourceHovered: "qrc:/view/resources/icons/update_black_48dp_white.svg"
+            iconWidth: preferredSize
+            iconHeight: preferredSize
+
+            onClicked: {
+                reportController.onRefresh();
+                banController.onRefresh();
+            }
+        }
+
+        IconOnlyButton {
             id: logout
 
             readonly property real preferredSize: 36

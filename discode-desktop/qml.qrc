@@ -20,6 +20,8 @@
         <file>view/resources/icons/logo-full-dark.png</file>
         <file>view/resources/icons/restore_from_trash_black_48dp_dim.svg</file>
         <file>view/resources/icons/restore_from_trash_black_48dp_normal.svg</file>
+        <file>view/resources/icons/update_black_48dp_green.svg</file>
+        <file>view/resources/icons/update_black_48dp_white.svg</file>
 
         <!-- buttons -->
         <file>view/buttons/DButton.qml</file>

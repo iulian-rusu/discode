@@ -101,7 +101,6 @@ void ban_space::ban_service::unban(long long user_id, session sess, on_success_c
                     on_success = std::move(on_success),
                     on_failure = std::move(on_failure)
             ](QNetworkReply *reply) {
-                qDebug() << reply->error();
                 if (reply->error() != QNetworkReply::NoError) {
                     on_failure();
                     return;

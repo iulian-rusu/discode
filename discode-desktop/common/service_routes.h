@@ -4,10 +4,9 @@
 enum class service_routes {
     Authenticate,
     DeleteBan,
-    GetBans,
-    PostBan,
+    Bans,
     GetReports,
-    PatchReport,
+    PutReports,
 };
 
 #endif //DISCODE_DESKTOP_SERVICE_ROUTES_H

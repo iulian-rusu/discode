@@ -23,10 +23,9 @@ struct api_config {
         static std::unordered_map<std::string, service_routes> const string_to_route{
                 {"Authenticate", service_routes::Authenticate},
                 {"DeleteBan", service_routes::DeleteBan},
-                {"GetBans", service_routes::GetBans},
-                {"PostBan", service_routes::PostBan},
+                {"Bans", service_routes::Bans},
                 {"GetReports", service_routes::GetReports},
-                {"PatchReport", service_routes::PatchReport},
+                {"PutReports", service_routes::PutReports},
         };
 
         std::string key;
