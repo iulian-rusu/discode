@@ -23,6 +23,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   code: string | undefined;
 
   display = 'none';
+  spinnerDisplay = 'none';
   reason: string | undefined;
   subs: Subscription[];
   userId: BigInteger;
@@ -97,12 +98,14 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   runCode(){
+    this.spinnerDisplay = 'block';
     this.subs.push(
       this.codeService
         .runCode(this.message.messageId!, this.mode)
         .subscribe(
           (data: HttpResponse<any>) => {
             if (data.status == 200) {
+              this.spinnerDisplay = 'none';
               this.message.codeOutput = data.body["codeOutput"];
             }
           },
