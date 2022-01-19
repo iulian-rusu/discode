@@ -22,7 +22,7 @@ Page {
         spacing: 2
         clip: true
 
-        model: reportsModel
+        model: reportModel
 
         delegate: Component {
             id: delegate
@@ -34,17 +34,6 @@ Page {
 
                 source: "qrc:/view/lists/ReportDelegate.qml"
             }
-        }
-    }
-
-    ListModel {
-        id: reportsModel
-
-        ListElement {
-            messageId: 0
-            userId: 0
-            message: "billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae billie123 f a fawr aw fwae fawt gaerw treatyaeyt eay ae "
-            issuer: "banbalan pe 3 cai"
         }
     }
 
@@ -60,7 +49,8 @@ Page {
 
         onAccepted: (duration, reason) => {
             banPopup.cleanClose();
-            banController.onBan(messageId, userId, duration, reason);
+            reportController.onReview(messageId);
+            banController.onBan(userId, duration, reason);
         }
     }
 

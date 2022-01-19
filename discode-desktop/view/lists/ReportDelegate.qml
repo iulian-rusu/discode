@@ -73,10 +73,6 @@ Rectangle {
             columnSpacing: 20
             rowSpacing: 3
 
-            Component.onCompleted: {
-                console.log(`suka ${layout.columns} ${layout.columnSpacing}`);
-            }
-
             DText {
                 id: messageLabel
 
@@ -139,7 +135,7 @@ Rectangle {
                 iconWidth: preferredSize
                 iconHeight: preferredSize
 
-                onClicked: reportController.onReportReviewed(messageId);
+                onClicked: reportController.onReview(messageId);
             }
 
             IconOnlyButton {

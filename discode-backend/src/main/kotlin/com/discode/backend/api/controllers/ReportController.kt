@@ -47,4 +47,14 @@ class ReportController : ScopeGuarded(ReportController::class) {
             ResponseEntity.ok(reportService.updateReports(request, authHeader))
         }
     }
+
+    @PutMapping("")
+    fun putReports(
+        @RequestBody request: UpdateReportsRequest,
+        @RequestHeader("Authorization") authHeader: String?
+    ): ResponseEntity<List<Report>> {
+        return guardedWith(HttpStatus.CONFLICT, "Cannot update reports") {
+            ResponseEntity.ok(reportService.updateReports(request, authHeader))
+        }
+    }
 }
