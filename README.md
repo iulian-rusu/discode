@@ -10,9 +10,9 @@ This is a Discord clone that allows sending code segments in the chat, as well a
 
 The project has the following components:
 * A **MySQL** database server, running on port `3435` (in Docker) or `3306` (locally).
-* A **Spring Boot** backend server written in Kotlin.
-* A **NodeJS** server that uses WebSockets to notify users.
-* An **Angular** application deployed on Nginx that serves as the main web frontend.
+* A **Spring Boot** backend server on port `8008` written in Kotlin.
+* A **NodeJS** server on port `8010` that uses WebSockets to notify users.
+* An **Angular** application served by Nginx on port `4200` which is the main web frontend.
 * A  **QT** desktop application written in C++ that is used for administration.
 
 The project runs on 3 servers and uses a MySQL database, as well as a desktop C++ application for administration. The main frontend application is written in Angular and served by an Nginx server deployed in Docker.
