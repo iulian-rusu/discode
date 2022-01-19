@@ -33,11 +33,6 @@ class AuthService : JwtAuthorized(), AuthServiceInterface {
         } else {
             val user = userRepository.findOne(request.username)
             val latestUserBan = userBanRepository.findBansForUser(user.userId).firstOrNull()
-
-            logger.info(Date().time.toString())
-            if (latestUserBan != null)
-                logger.info(latestUserBan.endDate.time.toString())
-
             if (latestUserBan != null && latestUserBan.endDate.time > Date().time) {
                 handleBannedUser(latestUserBan)
             } else {
