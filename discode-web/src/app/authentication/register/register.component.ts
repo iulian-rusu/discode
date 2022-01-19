@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             Validators.required,
             Validators.maxLength(50),
             Validators.minLength(2),
-            Validators.pattern('^[A-Z]([- ]?[a-zA-Z]+)+$'),
+            Validators.pattern('^([- ]?[a-zA-Z]+)+$'),
           ],
         ],
         lastName: [
@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             Validators.required,
             Validators.maxLength(150),
             Validators.minLength(2),
-            Validators.pattern('^[A-Z]([- ]?[a-zA-Z]+)+$'),
+            Validators.pattern('^([- ]?[a-zA-Z]+)+$'),
           ],
         ],
         username: [
@@ -86,6 +86,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   public register(): void {
     const data: RegisterModel = this.formGroup.getRawValue();
+    data.firstName =  data.firstName![0].toUpperCase() + data.firstName!.substr(1).toLowerCase();
+    data.lastName =  data.lastName![0].toUpperCase() + data.lastName!.substr(1).toLowerCase();
     this.cleanErrors();
     this.subs.push(
       this.registerService
@@ -112,8 +114,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
   handleError(responseError: HttpErrorResponse): void {
     let errorElement = document.createElement('div');
     errorElement.className = 'alert alert-danger';
+    errorElement.innerHTML = `Something went wrong! Please try again.`;
 
-    errorElement.innerHTML = 'Something went wrong! Please try again.';
+    if(responseError.status == 409){
+      errorElement.innerHTML += `<br/> Username or email already used.`;
+    }
+
     document.getElementById('errors')?.appendChild(errorElement);
   }
 
